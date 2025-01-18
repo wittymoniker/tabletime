@@ -20,14 +20,15 @@
 				<label for="username">
 				
 				</label>
-				<input type="text" name="username" placeholder="name" id="username" required>
+				<input type="text" name="username" placeholder="name" id="username" required><br>
 				<label for="password">
 				
 				</label>
 				<input type="password" name="password" placeholder="code" id="password" required>
+	<input type="email" name="email" placeholder="msg" id="email" required><br>
 				<label for="email">
 									</label>
-				<input type="email" name="email" placeholder="msg" id="email" required>
+			
 				
             <div class="col-12">
                 <div class="row">
@@ -55,7 +56,7 @@
                 </div>
             </div>
             <input type="submit" name= "submit" id = "submit" value="Register">
-        </form>
+        </form><br>
 
 		
 </th></table>
