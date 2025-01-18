@@ -1,24 +1,21 @@
 
 <!DOCTYPE html>
-<html>
-	<head>
+<html class = "tabletime">
+	<head class = "html">
 		<link href="style.php" rel="stylesheet" type="text/css">
 <a href = "login.php"><h2>Login</h2></a>
 		<title>tabletime</title>
-	</head>
+	
 			
 
 
-<body>
-
-    <table style="background-color:#EFEFEF;" align = 
-"center"><th>
-		<div class="tabletime">
+<body class = "content">
+<div>
+    		
 <?php include 'newuser.php'; ?>
 
-			<h1>Register</h1>
-
-    <div class="tabletime">
+			<h1>tabletime<br></h1>
+<p>enter your name and code, msg<br>and solve the puzzle to access tabletime</p>
         <form method="post"action="newuser.php" autocomplete="off">
 				<label for="username">
 				
@@ -40,7 +37,7 @@
                                    class="col-sm-3 col-form-label">
                                 <?php echo $num1 . '+' . $num2; ?>
                             </label>
-                            <div class="tabletime">
+                            <div>
                                 <input type="hidden" 
                                        name="no1" 
                                        value="<?php echo $num1 ?>">
@@ -60,13 +57,11 @@
             <input type="submit" name= "submit" id = "submit" value="Register">
         </form>
 
-		</div>
+		
 </th></table>
-	</body>
+	</div>
 
        
-    </div>
-
 <h1>How It Works - SAVE THIS TEXT</h1><br>
 	tabletime, while a shockingly detailed social algorithm, <br>obtains its beauty from rather simple effects. the majority <br>of the work is done through tags.<br>
 	tags can be modified in their index values by unique <br>numeric parameters. You can look up and see all useful <br>calculated stats and how by searching anything you want. Tags <br>are considered, modified and delimited where a regular tag <br>value is 1, but with the exception that it is considered a <br>measureless topic tag, automatically factored as 1-to-1 in a <br>separate group from other tags. For example, if you posted a <br>picture of food that got done before the clams and soup with <br>appetizers, and wanted people to find your post only if they <br>were likely to want to show up on time and have a <br>predictable history of doing so;<br><br>
@@ -99,7 +94,7 @@ and ((x number of votes * % voteban from neutral)^2 +1)*time = moksha from being
 
 
  
-
+</head>
 
 </html>
 
