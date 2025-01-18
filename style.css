@@ -1,0 +1,226 @@
+* {
+  	box-sizing: border-box;
+  	font-family: 'Courier New', Courier, monospace;
+  	font-size: 24px;
+	text-decoration: none
+}
+body {
+  	background-color: #cccccc;
+}
+.tabletime{
+  	width: 400px;
+  	background-color: #cccccc;
+  	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
+  	margin: 100px auto;
+}
+.tabletime h1 {
+  	text-align: center;
+  	color: #ddddd;
+  	font-size: 24px;
+  	padding: 20px 0 20px 0;
+  	border-bottom: 1px solid #bababa;
+}
+.tabletime form {
+  	display: flex;
+  	flex-wrap: wrap;
+  	justify-content: center;
+  	padding-top: 20px;
+}
+.tabletime form label {
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	width: 50px;
+  	height: 50px;
+  	background-color: #ebebeb;
+  	color: #4g4g4g;
+}
+.tabletime form input[type="password"], 
+.tabletime form input[type="text"] {
+  	width: 310px;
+  	height: 50px;
+  	border: 1px solid #dee0e4;
+  	margin-bottom: 20px;
+  	padding: 0 15px;
+}
+
+.tabletime form input[type="username"], 
+.tabletime form input[type="text"] {
+  	width: 310px;
+  	height: 50px;
+  	border: 1px solid #dee0e4;
+  	margin-bottom: 20px;
+  	padding: 0 15px;
+}
+.tabletime form input[type="submit"] {
+  	width: 100%;
+  	padding: 20px;
+ 	margin-top: 20px;
+  	background-color: #6e6e6e;
+  	border: 0;
+  	cursor: pointer;
+  	font-weight: bold;
+  	color: #3f3f3f;
+  	transition: background-color 0.2s;
+}
+.tabletime form input[type="submit"]:hover {
+	background-color: #eeeee;
+  	transition: background-color 0.2s;
+}
+
+
+
+
+
+
+
+
+
+
+.navtop {
+	background-color: #afafaf;
+	height: 60px;
+	width: 100%;
+	border: 10%;
+}
+.navtop div {
+	display: flex;
+	margin: 0 auto;
+	width: 1000px;
+	height: 100%;
+}
+.navtop div h1, .navtop div a {
+	display: inline-flex;
+	align-items: center;
+}
+.navtop div h1 {
+	flex: 1;
+	font-size: 24px;
+	padding: 0;
+	margin: 0;
+	color: #ebebeb;
+	font-weight: normal;
+}
+.navtop div a {
+	padding: 0 20px;
+	text-decoration: none;
+	color: #egegeg;
+	font-weight: bold;
+}
+.navtop div a i {
+	padding: 2px 8px 0 0;
+}
+.navtop div a:hover {
+	color: #ececec;
+}
+body.loggedin {
+	background-color: #cdcdcd;
+}
+.content {
+	width: 1000px;
+	margin: 0 auto;
+}
+.content h2 {
+	margin: 0;
+	padding: 25px 0;
+	font-size: 22px;
+	border-bottom: 1px solid #dedede;
+	color: #gbgbgb;
+}
+.content > p, .content > div {
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+	margin: 25px 0;
+	padding: 25px;
+	background-color: #efefef;
+}
+.content > p table td, .content > div table td {
+	padding: 30px;
+}
+.content > p table td:first-child, .content > div table td:first-child {
+	font-weight: bold;
+	color: #gfgfgf;
+	padding-right: 15px;
+}
+.content > div p {
+	padding: 5px;
+	margin: 0 0 10px 0;
+}
+
+
+
+
+html {
+				font-family: Tahoma, Geneva, sans-serif;
+				padding: 30px;
+				background-color: #F8F9F9;
+			}
+			table {
+				border-collapse: collapse;
+				width: 500px;
+			}
+			td, th {
+				padding: 20px;
+			}
+			th {
+				background-color: #bbbbbb;
+				color: #ffffff;
+				font-weight: bold;
+				font-size: 18px;
+				border: 1px solid #eeeeee;
+			}
+			td {
+				color: #636363;
+				border: 1px solid #dddddd;
+			}
+			tr {
+				background-color: #3g3g3g;
+			}
+			tr:nth-child(odd) {
+				background-color: #ffffff;
+			}
+			.list {
+				list-style-type: none;
+				padding: 10px 0;
+				display: inline-flex;
+				justify-content: space-between;
+				box-sizing: border-box;
+			}
+			.list li {
+				box-sizing: border-box;
+				padding-right: 14px;
+			}
+			.list li a {
+				box-sizing: border-box;
+				background-color: #e6e6e6;
+				padding: 12px;
+				text-decoration: none;
+				font-size: 23px;
+				font-weight: bold;
+				color: #egegeg;
+				border-radius: 9px;
+			}
+			.list li a:hover {
+				background-color: #fafafa;
+			}
+			.list .next a, .list .prev a {
+				text-transform: uppercase;
+				font-size: 12px;
+			}
+			.list .currentpage a {
+				background-color: #bebebe;
+				color: #ffffff;
+			}
+			.list .currentpage a:hover {
+				background-color: #afafaf;
+			}
+
+
+
+
+
+.tabletime a {
+    text-decoration: none;
+}
+.content a {
+    text-decoration: none;
+}
