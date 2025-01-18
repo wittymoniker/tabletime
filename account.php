@@ -24,25 +24,26 @@ $stmt->close();
 ?>
 
 <!DOCTYPE html>
-<html>
-	<head>
+<html class = "tabletime">
+		<link href="style.php" rel="stylesheet" type="text/css">
+	<head class = "html">
 		<meta charset="utf-8">
-		<title>timetable</title>
-		<link href="style.css" rel="stylesheet" type="text/css">
-			</head>
-	<body class="loggedin">
+		<title>tabletime</title>
+	<body class="content">
+
+
+			
 		<nav class="navtop">
-			<div>
-				<h1 size = "39"><b>TABLETIME</b></h1>
+			<div class = "tabletime">
+				<p><h1><b>TABLETIME</b></h1>
 				<a href="home.php"><i class="fas fa-user-circle"></i>Home</a>
-				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a></p>
 			</div>
 		</nav>
-		<div class="content">
-			<h2>Account Details Page</h2>
-			<div>
-				<p>Your account details are below:</p>
-				<table>
+<br>
+		<div class = "html">
+			<h2>Account Details Page</h1>
+								<table><th><h2 align = "center">Your account details are below:</h1></th>
 <tr>
 						<td>pic:</td>
 						<td><?=htmlspecialchars($_SESSION['name'], ENT_QUOTES)?></td>
@@ -60,7 +61,8 @@ $stmt->close();
 						<td>msg:</td>
 						<td><?=htmlspecialchars($email, ENT_QUOTES)?></td>
 					</tr>
-<tr>
+			</table>
+
 <p>
 <a href="usrchange.php"><i class="fas fa-user-circle"></i>Change user/pass/msg</a>
 
@@ -71,8 +73,8 @@ $stmt->close();
 <a href="home.php"><i class="fas fa-user-circle"></i>Import Account Data</a>
 <a href="home.php"><i class="fas fa-user-circle"></i>Delete Account</a>
 </p>
-</tr>				</table>
-			</div>
+</tr>	
 		</div>
 	</body>
+</head>
 </html>

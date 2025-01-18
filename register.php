@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link href="style.css" rel="stylesheet" type="text/css">
+		<link href="style.php" rel="stylesheet" type="text/css">
 <a href = "login.php"><h2>Login</h2></a>
 		<title>tabletime</title>
 	</head>

@@ -4,50 +4,46 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-//error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ERROR | E_PARSE);
 ?>
 
 
 <!DOCTYPE html>
-<link href="style.css" rel="stylesheet" type="text/css">
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title size = "39">TABLETIME</title>
-		
-		
-	<body class="loggedin">
-		<nav class="navtop">
-			<div>
-				<h1 size = "39"><b>TABLETIME</b></h1>
+<link href="style.php" rel="stylesheet" type="text/css">
+<html class = "tabletime">
 
-<p align = "center">
+<head class = "html">
+
+		<meta charset="utf-8">
+		<title>TABLETIME</title>
+		
+		
+<body class = "content">  
+ 
+
+		<nav class = "navtop" >
+			
+		<div class = "tabletime">		
+
+<p>
+<h1><b>TABLETIME</b></h1>
 <a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="friends.php"><i class="fas fa-user-circle"></i>Friends </a><a href="Groups.php"><i class="fas fa-user-circle"></i>Groups </a><a href="people.php"><i class="fas fa-user-circle"></i>People </a>
 <a href="Events.php"><i class="fas fa-user-circle"></i>Events </a>
 
 </p>
 
+
 			</div>
-		</nav>
-		<div class="tabletime">
-			<h1><?=htmlspecialchars($_SESSION['name'], ENT_QUOTES)?>'s timetable</h1>
-</div>
-<div>
+</nav>
 
 
-		</div>
+<br><br><h1><?=htmlspecialchars($_SESSION['name'], ENT_QUOTES)?>'s timetable</h1><br><br>
 
 
 
 
-
-
-
-
-
-
-<div class = "content" method = "get" align = "center">
+			<div>
 			<h1>Friends</h1>
 			<p>relevant friends' content<br>
 <a href="post.php"><i class="fas fa-user-circle"></i>Create New Group</a><br>
@@ -115,7 +111,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 			<meta charset="utf-8">
 					
 		<body>
-			<table>
+			<table class = "list">
 				<tr>
 					<th>name</th>
 					<th>post</th>
@@ -186,7 +182,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 
 
 
-	<div class = "content" method = "get" align = "center">
+<div>
 			<h1>Posts</h1>
 			<p>relevant posts<br>
 <a href="post.php"><i class="fas fa-user-circle"></i>Create New Post</a><br>
@@ -252,7 +248,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 			<meta charset="utf-8">
 					
 		<body>
-			<table>
+			<table class = "list">
 				<tr>
 					<th>name</th>
 					<th>post</th>
@@ -317,7 +313,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 
 
 
-<div class = "content" method = "get" align = "center">
+<div>
 			<h1>Events</h1>
 			<p>relevant events<br>
 <a href="post.php"><i class="fas fa-user-circle"></i>Create New Event </a><br>
@@ -387,7 +383,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 			<meta charset="utf-8">
 					
 		<body>
-			<table>
+			<table class = "list">
 				<tr>
 					<th>name</th>
 					<th>post</th>
@@ -451,7 +447,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 
 
 
-<div class = "content" method = "get" align = "center">
+<div>
 			<h1>Global</h1>
 			<p>relevant global events, forums posts<br>
 <a href="post.php"><i class="fas fa-user-circle"></i>Create New Forum Post </a><br>
@@ -519,7 +515,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 			<meta charset="utf-8">
 					
 		<body>
-			<table>
+			<table class = "list">
 				<tr>
 					<th>name</th>
 					<th>post</th>
@@ -599,5 +595,6 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 </p>
 <br>
 <br>
+</head>
 </html>
 

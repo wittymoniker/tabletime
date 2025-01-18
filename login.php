@@ -5,7 +5,7 @@
 	<head>
 <a href = "register.php"><h2>Register</h2></a>
 
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style.php" rel="stylesheet" type="text/css">
 		<title>tabletime</title>
 
 	</head>
