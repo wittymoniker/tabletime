@@ -64,13 +64,13 @@ $stmt->close();
 			</table>
 
 <p>
-<a href="home.php"><i class="fas fa-user-circle"></i>Edit Bio</a>
-<a href="home.php"><i class="fas fa-user-circle"></i>Upload Profile Photo</a>
-<a href="home.php"><i class="fas fa-user-circle"></i>Edit Tags</a>
+<a href="bio.php"><i class="fas fa-user-circle"></i>Edit Bio</a>
+<a href="pfp.php"><i class="fas fa-user-circle"></i>Upload Profile Photo</a>
+<a href="home.php"><i class="fas fa-user-circle"></i>Edit Color Formatting</a><br>
+<a href="export.php"><i class="fas fa-user-circle"></i>Export account data</a>
 <a href="usrchange.php"><i class="fas fa-user-circle"></i>Change user/pass/msg</a>
-<a href="home.php"><i class="fas fa-user-circle"></i>Export account data</a>
-<a href="home.php"><i class="fas fa-user-circle"></i>Import Account Data</a>
-<a href="home.php"><i class="fas fa-user-circle"></i>Delete Account</a>
+<a href="import.php"><i class="fas fa-user-circle"></i>Import Account Data</a><br>
+<a href="support.php"><i class="fas fa-user-circle"></i>Delete Account</a>
 </p>
 </tr>	
 		</div>

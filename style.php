@@ -41,7 +41,7 @@ $fontSize = "14";
   	background-color: <?php echo $colorc; ?>;
 }
 .tabletime{
-  	width: 1000px;
+  	width: 1250px;
   	background-color: <?php echo $colorf2; ?>;
   	margin: 100px auto;
 }
@@ -117,7 +117,7 @@ $fontSize = "14";
 
 .navtop {
 	background-color: <?php echo $colorc2?>;
-	height: 60px;
+	height: 240px;
 	width: 100%;
 	border: 10%;
 }
@@ -151,7 +151,7 @@ $fontSize = "14";
 	color: <?php echo $colorf2; ?>;
 }
 .content {
-	width: 750px;
+	width: 1000px;
 	margin: auto;
 }
 .content h2 {

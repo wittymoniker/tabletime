@@ -44,52 +44,62 @@ if(isset($_POST["submit"]))
 
 	
 
-$directory = 'users/' . $authorid . '/';
+$baseDir = 'files/posts/';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
-    $uploadDir = $directory;
-    $uploadFile = $uploadDir . basename($_FILES['file']['name']);
+$filename = htmlspecialchars(date('Y-m-d H:i:s')) . '/';
+$directory =  htmlspecialchars($_FILES['file']['name']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {    // Upload destination directory
+    $upload_destination = $baseDir . $filename;
+    // Iterate all the files and move the temporary file to the new directory
+        if ($_FILES['file']['size'][$i] > 20000000) {
+            exit('Please upload a file less than 20MB!');
+        }
+        // Add your validation here
+  
+        mkdir($baseDir, 0777, true);
 
-    // Check if the upload directory exists, if not, create it
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
+        $file = $upload_destination . $directory;
+        
+        // Move temporary files to new specified location
+        move_uploaded_file($_FILES['file']['tmp_name'][$i], $file);
     }
-
-    // Move the uploaded file to the desired directory
-    if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFile)) {
-        echo "File successfully uploaded.";
-    } else {
-        echo "File upload failed.";
-    }
-} else {
-    echo "No file uploaded.";
-}                        
-
+    // Output response
 
 
 
 				$postcontent = $_POST['content'];
 				$posttitle = $_POST['title'];
 				$posttags = $_POST['tags'];
-				$postmedia = 'users/' . $authorid . '/' . basename($_FILES['file']['name']);
-				$postauthor = $authorid;
-				$posttime = now();
+				$postmedia = $file;
+				$postauthor = $author;
+				$posttime = date('Y-m-d H:i:s');
 				$postscope = $_POST['scope'];
+                $posttype = $_POST['type'];
+                $postrecipients = $_POST['recipients'];
 
 
-$posttargets = explode(";", $_POST['tr']);
-$postinfo = implode(' , ', $posttitle, $postauthor, $posttime,$postcontent, $postmedia, $posttags, ' ; ');
+$posttargets = explode(";", $_POST['recipients']);
+$postinfo = implode(" ; ", [$postcontent, $posttitle, $uploadFile, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients]);
 $tags = explode(";", $_POST['tags']);
 
-if ($stmt = $con->prepare('INSERT INTO posts (content, title,  file, tags, name, dt, scope) VALUES (?, ?, ?, ?, ?, ?)')) {
-    $stmt->bind_param('sssssss', $postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime);
+
+
+if ($stmt = $con->prepare('INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')) {
+    $stmt->bind_param('sssssssss', $postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients);
     $stmt->execute();
  
+} else {
+    echo "Could not prepare statement";
+}
+
+
+
 
 $con->close();
 
 
-header('Location: login.php');
+
+header('Location: home.php');
 
                    exit();
                }
@@ -103,7 +113,6 @@ header('Location: login.php');
                             </p>";
                 }
              }
-        }
 
 ?>
 

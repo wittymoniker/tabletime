@@ -35,16 +35,38 @@ if (mysqli_connect_errno()) {
 <?php include 'createnew.php'; ?>
 
 <body class = "content">  
-
+<nav class="navtop">
+            <div class = "tabletime">
+                <p><h1><b>TABLETIME</b></h1>
+                <a href="home.php"><i class="fas fa-user-circle"></i>Home</a>
+                <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a></p>
+            </div>
+        </nav>
 <div>
 
-<p> <?php echo $username; ?>'s post. </p>
-<form method="post" action = "createnew.php" autocomplete="off">					<br>				
-          
-
+<p> <?php echo $username; ?>'s post. </p><br>
+        
+<form method="post" action = "createnew.php" enctype="multipart/form-data" autocomplete="off">					<br>				
+<label for="type">
+post type:			</label> 
+<select name = "type" id = "type">
+<option value ="post">message</option>
+<option value ="post">media</option>
+<option value ="post">post</option>
+<option value ="event">event</option>
+<option value ="group">group</option>
+<option value ="forum">forum</option>
+</select>
+<label for="scope">
+			post scope:			</label>
+<select name = "scope" id = "scope">
+<option value ="private">private</option>
+<option value ="public ">public</option>
+<option value ="global">global</option>
+</select>
 <label for="file">
-			files:			</label>
-<input type="file" name="file" placeholder="file directory..." id="file" required> <br>
+			file:			</label>
+<input type="file" name="file"  placeholder="file directory..." id="file" required> <br>
 
 	<label for="title">
 			title:
@@ -54,7 +76,8 @@ if (mysqli_connect_errno()) {
 
 
 	<label for="content">
-			content:</label>  <input type="text" style="height:500px;width:500px;" name="content" placeholder="contents / description (required)" id="content" required><br>
+			content:</label>  
+            <input type="text" style="height:500px;width:500px;" name="content" placeholder="contents / description (required)" id="content" required><br>
 
 			
 
@@ -62,7 +85,12 @@ if (mysqli_connect_errno()) {
 	<label for="tags">
 			tags:
 			</label>
-<input type="text" name="tags" placeholder="tags" id="tags" required>
+<input type="text" name="tags" placeholder="tags (separate by semicolon;)" id="tags" required>
+
+ <br><label for="recipients">
+			recipients:
+			</label>
+<input type="text" name="recipients" placeholder="recipients (separate by semicolon;)" id="recipients" required>
 
  <br>
 
