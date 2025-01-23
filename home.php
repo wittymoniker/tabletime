@@ -5,6 +5,15 @@ if (!isset($_SESSION['loggedin'])) {
 	exit;
 }
 error_reporting(E_ERROR | E_PARSE);
+$DATABASE_HOST = 'localhost';
+$DATABASE_USER = 'root';
+$DATABASE_PASS = '';
+$DATABASE_NAME = 'tabletime';
+$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+if (mysqli_connect_errno()) {
+	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
 ?>
 
 
@@ -16,7 +25,70 @@ error_reporting(E_ERROR | E_PARSE);
 		<title>TABLETIME</title>
 <body class = "content">  
  
+<?php
 
+
+/*
+$id = $_SESSION['id'];
+$colors;
+$sql = "SELECT colors FROM accounts WHERE id = accounts($id)";
+$colors = $mysqli->query($sql);
+if ($colors != NULL){
+	$colors = explode(";", $color);
+	$colora= colors[0];
+	$colorb= colors[1];
+	$colorc= colors[2];
+	$colord= colors[3];
+	$colore= colors[4];
+	$colorf= colors[5];
+	
+	$colora2= colors[6];
+	$colorb2= colors[7];
+	$colorc2= colors[8];
+	$colord2= colors[9];
+	$colore2= colors[10];
+	$colorf2= colors[11];
+	
+	$colora3= colors[12];
+	$colorb3= colors[13];
+	$colorc3= colors[14];
+	$colord3= colors[15];
+	$colore3= colors[16];
+	$colorf3= colors[17];
+	
+	$colort = colors[18];
+	$fontSize = [19];
+	
+}
+else{
+	$colora= #ababab";
+$colorb= "#bcbcbc";
+$colorc= "#cdcdcd";
+$colord= "#dcdcdc";
+$colore= "#ededed";
+$colorf= "#dfdfdf";
+
+$colora2= "#0a0a0a";
+$colorb2= "#1b1b1b";
+$colorc2= "#2c2c2c";
+$colord2= "#3d3d3d";
+$colore2= "#4e4e4e";
+$colorf2= "#5f5f5f";
+
+$colora3= "#a3a3a3";
+$colorb3= "#b2b2b2";
+$colorc3= "#c1c1c1";
+$colord3= "#d1d1d1";
+$colore3= "#e2e2e2";
+$colorf3= "#f3f3f3";
+
+
+
+$colort = "#000000";
+$fontSize = "14";
+}
+*/
+?>
 
 <nav class = "navtop">
 		<div class = "tabletime">		
@@ -49,17 +121,8 @@ error_reporting(E_ERROR | E_PARSE);
 			<div>
 			<h1>Friends</h1>
 			<p>relevant friends' content<br>
-<a href="post.php"><i class="fas fa-user-circle"></i>Create New Group</a><br>
 
 
-
-
-
-
-
-
-
-	
 <?php
 $mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
 

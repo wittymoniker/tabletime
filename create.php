@@ -88,7 +88,7 @@ post type:			</label>
 <input type="text" name="tags" placeholder="tags (separate by semicolon;)" id="tags" required>
 
  <br><label for="recipients">
-			recipients:
+			send to:
 			</label>
 <input type="text" name="recipients" placeholder="recipients (separate by semicolon;)" id="recipients" required>
 

@@ -11,7 +11,7 @@ $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
 // Try and connect using the info above.
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	// If there is an error with the connection, stop the script and display the error.
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
@@ -44,24 +44,19 @@ if(isset($_POST["submit"]))
 
 	
 
-$baseDir = 'files/posts/';
-
-$filename = htmlspecialchars(date('Y-m-d H:i:s')) . '/';
-$directory =  htmlspecialchars($_FILES['file']['name']);
+$baseDir = 'files/' . 'file_' . uniqid() . '/';
+$file = $upload_destination . $_FILES['file']['name'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {    // Upload destination directory
-    $upload_destination = $baseDir . $filename;
+    $upload_destination = $baseDir;
     // Iterate all the files and move the temporary file to the new directory
-        if ($_FILES['file']['size'][$i] > 20000000) {
-            exit('Please upload a file less than 20MB!');
-        }
-        // Add your validation here
+        
   
-        mkdir($baseDir, 0777, true);
+        mkdir($upload_destination, 0777, true);
 
-        $file = $upload_destination . $directory;
+        
         
         // Move temporary files to new specified location
-        move_uploaded_file($_FILES['file']['tmp_name'][$i], $file);
+        move_uploaded_file($_FILES['file']['tmp_name'], $file);
     }
     // Output response
 
@@ -79,22 +74,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {    // Uplo
 
 
 $posttargets = explode(";", $_POST['recipients']);
-$postinfo = implode(" ; ", [$postcontent, $posttitle, $uploadFile, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients]);
+$postinfo = implode(" ; ", [$postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients]);
 $tags = explode(";", $_POST['tags']);
 
 
-
-if ($stmt = $con->prepare('INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')) {
-    $stmt->bind_param('sssssssss', $postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients);
-    $stmt->execute();
- 
-} else {
-    echo "Could not prepare statement";
-}
-
-
+$sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+//$stmt->bind_param('sssssssss', $postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients);
+//$stmt->execute();
+if ($con->query($sql) === TRUE) {
+    echo "New record created successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . $con->error;
+  }
 
 
+
+
+$stmt->close();
 $con->close();
 
 

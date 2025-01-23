@@ -1,5 +1,22 @@
 <?php
+session_start();
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
 header("Content-type: text/css");
+$DATABASE_HOST = 'localhost';
+$DATABASE_USER = 'root';
+$DATABASE_PASS = '';
+$DATABASE_NAME = 'tabletime';
+$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+if (mysqli_connect_errno()) {
+	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
+
+
+
 $colora= #ababab";
 $colorb= "#bcbcbc";
 $colorc= "#cdcdcd";
@@ -16,7 +33,7 @@ $colorf2= "#5f5f5f";
 
 $colora3= "#a3a3a3";
 $colorb3= "#b2b2b2";
-$colorc3= "#c1cccc";
+$colorc3= "#c1c1c1";
 $colord3= "#d1d1d1";
 $colore3= "#e2e2e2";
 $colorf3= "#f3f3f3";
@@ -25,8 +42,9 @@ $colorf3= "#f3f3f3";
 
 $colort = "#000000";
 $fontSize = "14";
-?>
 
+
+?>
 
 * {
   	box-sizing: border-box;
@@ -38,11 +56,11 @@ $fontSize = "14";
 
 }
 .tabletime body {
-  	background-color: <?php echo $colorc; ?>;
+  	background-color: <?php echo $colore; ?>;
 }
 .tabletime{
   	width: 1250px;
-  	background-color: <?php echo $colorf2; ?>;
+  	background-color: <?php echo $colord; ?>;
   	margin: 100px auto;
 }
 .tabletime h1 {
@@ -50,7 +68,7 @@ $fontSize = "14";
   	color: <?php echo $colort; ?>;
   	font-size: <?php echo ($fontSize+14); ?>px;
   	padding: 20px 0 20px 0;
-  	border-bottom: <?php echo $colorb; ?>;
+  	border-bottom: <?php echo $colorc; ?>;
 }
 .tabletime form {
     	padding-top: 20px;
@@ -61,8 +79,8 @@ $fontSize = "14";
   	align-items: center;
   	width: 75px;
   	height: 50px;
-  	background-color: <?php echo $colord; ?>;
-  	color: <?php echo $colora; ?>;
+  	background-color: <?php echo $colorf; ?>;
+  	color: <?php echo $colort; ?>;
 }
 .tabletime form input[type="password"], 
 .tabletime form input[type="text"] {
@@ -116,7 +134,7 @@ $fontSize = "14";
 
 
 .navtop {
-	background-color: <?php echo $colorc2?>;
+	background-color: <?php echo $colore3?>;
 	height: 240px;
 	width: 100%;
 	border: 10%;
@@ -136,19 +154,19 @@ $fontSize = "14";
 	font-size: <?php echo ($fontSize+17); ?>px;
 	padding: 0;
 	margin: 0;
-	color: <?php echo $colorf; ?>;
+	color: <?php echo $colort; ?>;
 	font-weight: bolder;
 }
 .navtop div a {
 	padding: 20px;
 	text-decoration: none;
-	color: <?php echo $colord3; ?>;
+	color: <?php echo $colora2; ?>;
 	font-weight: bold;
 }
 .navtop div a i {
 }
 .navtop div a:hover {
-	color: <?php echo $colorf2; ?>;
+	color: <?php echo $colora3; ?>;
 }
 .content {
 	width: 1000px;
@@ -157,8 +175,8 @@ $fontSize = "14";
 .content h2 {
 	margin: 0;
 	font-size: <?php echo ($fontSize+10); ?>px;
-	border-bottom: <?php echo $colorf2; ?>;
-	color: <?php echo $colort; ?>;
+	border-bottom: <?php echo $colorf3; ?>;
+	color: <?php echo $colort3; ?>;
 }
 .content < p, .content < div {
 	margin: 25px 0;
@@ -170,7 +188,7 @@ $fontSize = "14";
 }
 .content > p table td:first-child, .content > div table td:first-child {
 	font-weight: bold;
-	color: <?php echo $colorf2; ?>;
+	color: <?php echo $colort; ?>;
 }
 .content > div p {
 	padding: 5px;
@@ -203,7 +221,7 @@ align-items: center;
 				border: <?php echo $colorb3; ?>;
 			}
 			.html > td {
-				color: <?php echo $colort; ?>;
+				color: <?php echo $colort2; ?>;
 				border: <?php echo $colorf3; ?>;
 			}
 			.html > tr {
