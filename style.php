@@ -53,10 +53,7 @@ $fontSize = "14";
   	border-bottom: <?php echo $colorb; ?>;
 }
 .tabletime form {
-  	display: flex;
-  	flex-wrap: wrap;
-  	justify-content: center;
-  	padding-top: 20px;
+    	padding-top: 20px;
 }
 .tabletime form label {
   	display: flex;
@@ -83,6 +80,16 @@ $fontSize = "14";
   	margin-bottom: 20px;
   	padding: 0 15px;
 }
+
+.tabletime form input[type="text"] {
+  	width: 500px;
+  	height: 50px;
+  	border: <?php echo $colorb; ?>;
+  	margin-bottom: 20px;
+  	padding: 0 15px;
+}
+
+
 .tabletime form input[type="submit"] {
   	width: 50%;
   	padding: 20px;
