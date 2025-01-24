@@ -61,13 +61,7 @@ $stmt->close();
 
 
 			
-		<nav class="navtop">
-			<div class = "tabletime">
-				<p><h1><b>TABLETIME</b></h1>
-				<a href="home.php"><i class="fas fa-user-circle"></i>Home</a>
-				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a></p>
-			</div>
-		</nav>
+		
 <br>
 		<div class = "html">
 			<h2>Account Details Page</h1>
@@ -104,4 +98,5 @@ $stmt->close();
 		</div>
 	</body>
 </head>
+
 </html>

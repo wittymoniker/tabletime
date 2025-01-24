@@ -27,37 +27,7 @@ $stmt->close();
 
 ?>
 
-<html class = "tabletime">
-		<link href="style.php" rel="stylesheet" type="text/css">
-	<head class = "html">
-		<meta charset="utf-8">
-		<title>tabletime</title>
 
-
-
-		
-	<body class="content">
-
-
-
-	<nav class = "navtop">
-		<div class = "tabletime">		
-
-<h1><b><a href="home.php">tabletime</a></b></h1>
-<p>
-<a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a>
-<a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
-<a href="people.php"><i class="fas fa-user-circle"></i>People</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
-<a href="event.php"><i class="fas fa-user-circle"></i>Events</a><br>
-</p>
-
-<div>
 
 <?php
 
@@ -131,24 +101,60 @@ function get_filetype_icon($filetype) {
 }
 ?>
 
+<html class = "tabletime">
+		<link href="style.php" rel="stylesheet" type="text/css">
+	<head class = "html">
+		<meta charset="utf-8">
+		<title>tabletime</title>
 
 
-<div class="tabletime">
 
-            <div class="tabletime">
-                <h1><?=$current_directory?></h1>
+		
+	<body class="content">
+
+
+
+    <nav class = "navtop">
+		<div class = "tabletime">		
+
+<h1><b><a href="home.php">TABLETIME</a></b></h1>
+<p>
+<a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
+<a href="create.php"><i class="fas fa-user-circle"></i>Create</a>
+<a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="people.php"><i class="fas fa-user-circle"></i>People</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
+<a href="event.php"><i class="fas fa-user-circle"></i>Events</a></p><br>
+
+
+
+
+			</div>
+</nav>
+
+
+
+
+
+
+
+<div class = "html">
                 <a href="createUI.php?directory=<?=$current_directory?>"><i class="fa-solid fa-plus"></i></a>
-            </div>
+
 
             <table class="tabletime">
-                <thead>
+                <th>
                     <tr>
                         <td class="selected-column">Name<i class="fa-solid fa-arrow-down-long fa-xs"></i></td>
                         <td>Size</td>
                         <td>Modified</td>
                         <td>Actions</td>
                     </tr>
-                </thead>
+                </th>
                 <tbody>
                     <?php if (isset($_GET['file']) && realpath($current_directory) != realpath($initial_directory)): ?>
                     <tr>
@@ -170,12 +176,13 @@ function get_filetype_icon($filetype) {
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
-            </table>
+                </table>
                             </div>
         </div>
-
-                            </div>
-                       
+        </div>  
+                
+                                 
+                                       
 </body>
 </head>
 </html>
