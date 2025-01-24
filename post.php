@@ -1,5 +1,20 @@
-<?php ;?>
+<?php
+session_start();
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
+error_reporting(E_ERROR | E_PARSE);
+$DATABASE_HOST = 'localhost';
+$DATABASE_USER = 'root';
+$DATABASE_PASS = '';
+$DATABASE_NAME = 'tabletime';
+$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+if (mysqli_connect_errno()) {
+	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
 
+?>
 
 <html class = "tabletime">
 <link href="style.php" rel="stylesheet" type="text/css">
@@ -11,7 +26,7 @@
 <nav class = "navtop">
 		<div class = "tabletime">		
 
-<h1><b>TABLETIME</b></h1>
+<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="create.php"><i class="fas fa-user-circle"></i>Create</a>
@@ -30,8 +45,87 @@
 			</div>
 </nav>
 <div>
-			<h1>Posts</h1>
-			<p>relevant content<br>
+	<table>
+<form method ="POST">
+	<h1>INSPECTOR- click or search</h1>
+	<th><br><label name ="range">private/public/global range: </label>"
+<input method ="POST" type = "range" id = "view" name = "private/public/global" min = "-256" max = "256">
+<br>
+<br><label name ="index">post search prompt: </label>"
+<input method ="POST" type = "text" name="index" placeholder = "search terms...">"
+</th>
+<tr>
+<br>
+<input method ="POST" type = "submit" value = "submit">
+</tr>
+</form><br>
+</table>
+</div>
+<table>
+	<?php
+$index = $_POST['index'];
+if($_POST['submit']){
+	$index = $_POST['index'];
+	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)';
+	$result = $mysqli->query($sql);
+	$feature;
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+		$sql = 'INSERT INTO $feature VALUES
+		(($row["name"]),
+		($row["title"]),
+		($row["content"]),
+		($row["dt"])),
+		($row["file"]);
+		(($row["tags"]),
+		($row["recipients"]),
+		($row["comments"]),
+		($row["scope"])),
+		($row["type"]))';
+		$result = $mysqli->query($sql);
+		}
+	
+	} else {
+		echo "0 posts";
+	}
+}
+?>
+	<th>name</th>
+					<th>topic</th>
+					<th>content</th>
+					<th>file</th>
+					<th>dt</th>
+					<th>dt</th>
+					<tr>
+					<td><?php echo $feature[0];?>
+	</td>
+					<td><b><?php echo $feature[1];?></b> <br> </td>
+					<td><?php echo $feature[2];?></td>
+					<td><?php echo $feature[3];?></td>
+					<td><b><?php echo $feature[4];?></b> <br> </td>
+				</tr>
+				<th>tags</th>
+				<th>recipients</th>
+				<th>comments</th>
+				<th>scope</th>
+				<th>type</th>
+				<tr>
+					<td><?php echo $feature[5];?></td>
+					<td><b><?php echo $feature[6];?></b> <br> </td>
+					<td><?php echo $feature[7];?></td>
+					<td><?php echo $feature[8];?></td>
+					<td><b><?php echo $feature[9];?></b> <br> </td>
+				</tr>
+</table><br><br><br>
+	 
+
+<form method ="POST">
+<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
+<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
+</form><br><br><br>
+<div>
+			<h1>all posts</h1>
+			<p>
 
 
 <?php
@@ -46,7 +140,7 @@ $uname = $_SESSION['name'];
 /////////
 ///////////
 
-$sql = 'SELECT posts FROM accounts WHERE () LIKE ()';
+$sql = 'SELECT id FROM posts WHERE accounts(posts(name)) LIKE accounts($uname)';
 /////////////
 ///////////
 ///////////
@@ -74,7 +168,8 @@ if ($result->num_rows > 0) {
 	(($row["name"]),
 	($row["title"]),
 	($row["content"]),
-	($row["dt"]))';
+	($row["dt"])),
+	($row["file"])';
 	$result = $mysqli->query($sql);
     }
 
@@ -100,7 +195,9 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 			<table class = "list">
 				<tr>
 					<th>name</th>
-					<th>post</th>
+					<th>topic</th>
+					<th>content</th>
+					<th>file</th>
 					<th>dt</th>
 									</tr>
 
@@ -109,7 +206,9 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 				<tr>
 					<td><?php echo $row['name']; ?></td>
 					<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
-					<td><?php echo $row['dt']; }}?></td>
+					<td><?php echo $row['content']; }}?></td>
+					<td><?php echo $row['file']; ?></td>
+					<td><b><?php echo $row['dt']; echo $row['post']; ?></b> <br> </td>
 				</tr>
 
 			</table>

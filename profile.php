@@ -1,5 +1,20 @@
-<?php ;?>
+<?php
+session_start();
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
+error_reporting(E_ERROR | E_PARSE);
+$DATABASE_HOST = 'localhost';
+$DATABASE_USER = 'root';
+$DATABASE_PASS = '';
+$DATABASE_NAME = 'tabletime';
+$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+if (mysqli_connect_errno()) {
+	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
 
+?>
 
 <html class = "tabletime">
 <link href="style.php" rel="stylesheet" type="text/css">
@@ -12,7 +27,7 @@
 <nav class = "navtop">
 		<div class = "tabletime">		
 
-<h1><b>TABLETIME</b></h1>
+<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="create.php"><i class="fas fa-user-circle"></i>Create</a>
@@ -52,7 +67,7 @@
 
 
 
-</form></form></form></form></form></form>
+</form>
 <form method ="POST">
 <label name ="rate"> leave rating (-/+) karma/moksha: </label>"
 <input type = "range" id = "perspective" name = "rate" min = "-256" max = "256">

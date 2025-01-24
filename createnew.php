@@ -74,13 +74,160 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {    // Uplo
 
 
 $posttargets = explode(";", $_POST['recipients']);
+$posttaglets = explode(";", $_POST['tags']);
 $postinfo = implode(" ; ", [$postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients]);
 $tags = explode(";", $_POST['tags']);
+/*<option value ="message">message</option>
+<option value ="media">media</option>
+<option value ="post">post</option>
+<option value ="event">event</option>
+<option value ="group">group</option>
+<option value ="forum">forum</option>*/
+if ($posttype = "message"){
+    $i=0;
+    foreach  ($posttargets as &$posttarget){
+       
+        $sql= "INSERT INTO accounts (username, messages, votes, files, friends, votes, friends) 
+        VALUES ($posttarget,$postinfo, $postrecipients, $postmedia, $postauthor,$posttags, $postrecipients)";
+     $i=$i+1;
+        if ($con->query($sql) === TRUE) {
+            echo "New record created successfully";
+          } else {
+            echo "Error: " . $sql . "<br>" . $con->error;
+          }
+    }
+    $i=0;
+}
+if ($posttype = "media"){
+    $i=0;
+    foreach  ($posttaglets as &$posttaglet){
+       
+        $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
+        VALUES ($posttaglet, $posttags, $postrecipients, $postinfo, $postrecipients)";
+     $i=$i+1;
+        if ($con->query($sql) === TRUE) {
+            echo "New record created successfully";
+          } else {
+            echo "Error: " . $sql . "<br>" . $con->error;
+          }
+    }
+    $i=0;
+    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
+    if ($con->query($sql) === TRUE) {
+        echo "New record created successfully";
+      } else {
+        echo "Error: " . $sql . "<br>" . $con->error;
+      }
+}
+if ($posttype = "post"){
+    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
-$sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
-//$stmt->bind_param('sssssssss', $postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients);
-//$stmt->execute();
+    if ($con->query($sql) === TRUE) {
+        echo "New record created successfully";
+      } else {
+        echo "Error: " . $sql . "<br>" . $con->error;
+      }
+    
+    $i=0;
+    foreach  ($posttaglets as &$posttaglet){
+       
+        $sql= "INSERT INTO tags (posts, groups, events, forums) WHERE (tags(value) == $posttaglet)
+        VALUES ($postinfo, $postrecipients, $postrecipients, $posttags)";
+     $i=$i+1;
+        if ($con->query($sql) === TRUE) {
+            echo "New record created successfully";
+          } else {
+            echo "Error: " . $sql . "<br>" . $con->error;
+          }
+    }
+    $i=0;
+    
+    
+    
+    $stmt->close();
+    $con->close();
+    
+    
+    $stmt->close();
+    $con->close();
+}
+if ($posttype = "event"){
+    $sql= "INSERT INTO events (title, type, about, groups, members, posts, tags) 
+    VALUES ($posttitle, $posttype, $postcontent, $postrecipients, $postauthor, $postinfo, $posttags)";
+
+    if ($con->query($sql) === TRUE) {
+        echo "New record created successfully";
+      } else {
+        echo "Error: " . $sql . "<br>" . $con->error;
+      }
+    
+    
+      $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+
+      if ($con->query($sql) === TRUE) {
+          echo "New record created successfully";
+        } else {
+          echo "Error: " . $sql . "<br>" . $con->error;
+        }
+    
+    $stmt->close();
+    $con->close();
+
+}
+if ($posttype = "group"){
+    $sql= "INSERT INTO groups (title, about, members, posts, tags, forums, tags) 
+    VALUES ($posttitle, $posttype, $postauthor, $postinfo, $postrecipients, $posttags, $posttags)";
+
+    if ($con->query($sql) === TRUE) {
+        echo "New record created successfully";
+      } else {
+        echo "Error: " . $sql . "<br>" . $con->error;
+      }
+    
+      $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+
+      if ($con->query($sql) === TRUE) {
+          echo "New record created successfully";
+        } else {
+          echo "Error: " . $sql . "<br>" . $con->error;
+        }
+    
+    
+    $stmt->close();
+    $con->close();
+}
+if ($posttype = "forum"){
+    $i=0;
+    foreach ($posttaglets as &$posttaglet){
+       
+        $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
+        VALUES ($posttaglets, $posttags, $postrecipients, $postinfo, $postrecipients)";
+     $i=$i+1;
+        if ($con->query($sql) === TRUE) {
+            echo "New record created successfully";
+          } else {
+            echo "Error: " . $sql . "<br>" . $con->error;
+          }
+    }
+    $i=0;
+    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+
+    if ($con->query($sql) === TRUE) {
+        echo "New record created successfully";
+      } else {
+        echo "Error: " . $sql . "<br>" . $con->error;
+      }
+    
+    
+    $stmt->close();
+    $con->close();
+}
+
+$sql= "INSERT INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, votes) 
+WHERE accounts(username, id) == ($postauthor, $authorid) 
+VALUES ($postinfo, $postinfo, $postmedia, $posttags, $postrecipients, $postinfo, $postinfo, $postinfo, $postinfo)";  ;
+
 if ($con->query($sql) === TRUE) {
     echo "New record created successfully";
   } else {

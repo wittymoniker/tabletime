@@ -1,12 +1,11 @@
 <?php
+// We need to use sessions, so you should always start sessions using the below password.
 session_start();
-
+// If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
 	header('Location: index.html');
 	exit;
 }
-
-
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -15,21 +14,52 @@ $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
+error_reporting(E_ERROR | E_PARSE);
 
+$stmt = $con->prepare('SELECT username, files FROM accounts WHERE id = ?');
 
-
-
-
-$stmt = $con->prepare('SELECT username FROM accounts WHERE id = ?');
 $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
-$stmt->bind_result($username);
+$stmt->bind_result($username, $files);
 $stmt->fetch();
 $stmt->close();
 
-$baseDir = 'files';
-$initial_directory = $baseDir. '/' .  $username . '/post';
-$current_directory = $initial_directory;
+
+?>
+
+<html class = "tabletime">
+		<link href="style.php" rel="stylesheet" type="text/css">
+	<head class = "html">
+		<meta charset="utf-8">
+		<title>tabletime</title>
+
+
+
+		
+	<body class="content">
+
+
+
+	<nav class = "navtop">
+		<div class = "tabletime">		
+
+<h1><b><a href="home.php">tabletime</a></b></h1>
+<p>
+<a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
+<a href="create.php"><i class="fas fa-user-circle"></i>Create</a>
+<a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="people.php"><i class="fas fa-user-circle"></i>People</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
+<a href="event.php"><i class="fas fa-user-circle"></i>Events</a><br>
+</p>
+
+<div>
+
+<?php
 
 
 
@@ -52,7 +82,7 @@ $results = glob(str_replace(['[',']',"\f[","\f]"], ["\f[","\f]",'[[]','[]]'], ($
 // If true, directories will appear first in the populated file list
 $directory_first = true; 
 // Sort files
-$initial_directory = '';
+$initial_directory = 'files/';
 // Sort files
 if ($directory_first) {
     usort($results, function($a, $b){
@@ -103,26 +133,14 @@ function get_filetype_icon($filetype) {
 
 
 
-<html class = "tabletime">
-<link href="style.php" rel="stylesheet" type="text/css">
-<head class = "html">
-		<meta charset="utf-8">
-		<title>TABLETIME</title>
+<div class="tabletime">
 
-<body class = "content">  
-<meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,minimum-scale=1">
-		<title>File Management System</title>
-		<body class = "content">  
-
-<div class="file-manager">
-
-            <div class="file-manager-header">
+            <div class="tabletime">
                 <h1><?=$current_directory?></h1>
-                <a href="create.php?directory=<?=$current_directory?>"><i class="fa-solid fa-plus"></i></a>
+                <a href="createUI.php?directory=<?=$current_directory?>"><i class="fa-solid fa-plus"></i></a>
             </div>
 
-            <table class="file-manager-table">
+            <table class="tabletime">
                 <thead>
                     <tr>
                         <td class="selected-column">Name<i class="fa-solid fa-arrow-down-long fa-xs"></i></td>
@@ -153,11 +171,11 @@ function get_filetype_icon($filetype) {
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            
+                            </div>
         </div>
 
-
-
+                            </div>
+                       
 </body>
 </head>
 </html>

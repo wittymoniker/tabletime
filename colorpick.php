@@ -37,7 +37,7 @@ $stmt->fetch();
 <nav class = "navtop">
 		<div class = "tabletime">		
 
-<h1><b>TABLETIME</b></h1>
+<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="create.php"><i class="fas fa-user-circle"></i>Create</a>
