@@ -30,21 +30,23 @@ if (mysqli_connect_errno()) {
 <h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a>
 <a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
+<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
 <a href="people.php"><i class="fas fa-user-circle"></i>People</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
-<a href="event.php"><i class="fas fa-user-circle"></i>Events</a></p><br>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
+<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></p>
 
 
 
 
 			</div>
 </nav>
+
 
 
 

@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {    // Uplo
 
 $posttargets = explode(";", $_POST['recipients']);
 $posttaglets = explode(";", $_POST['tags']);
-$postinfo = implode(" ; ", [$postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients]);
+$postinfo = implode(" : ", [$postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients]);
 $tags = explode(";", $_POST['tags']);
 /*<option value ="message">message</option>
 <option value ="media">media</option>
@@ -119,6 +119,28 @@ if ($posttype = "media"){
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
+}
+if ($posttype = "comment"){
+  $i=0;
+  foreach  ($posttargets as &$posttarget){
+     
+      $sql= "INSERT INTO posts (comments) WHERE  posts(title, author) = posts($posttitle, $posttarget) 
+      VALUES ($postinfo)";
+   $i=$i+1;
+      if ($con->query($sql) === TRUE) {
+          echo "New record created successfully";
+        } else {
+          echo "Error: " . $sql . "<br>" . $con->error;
+        }
+  }
+  $i=0;
+  $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+
+  if ($con->query($sql) === TRUE) {
+      echo "New record created successfully";
+    } else {
+      echo "Error: " . $sql . "<br>" . $con->error;
+    }
 }
 if ($posttype = "post"){
     $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";

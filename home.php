@@ -28,40 +28,45 @@ if (mysqli_connect_errno()) {
 <?php
 
 
-/*
+
 $id = $_SESSION['id'];
-$colors;
-$sql = "SELECT colors FROM accounts WHERE id = accounts($id)";
-$colors = $mysqli->query($sql);
-if ($colors != NULL){
-	$colors = explode(";", $color);
-	$colora= colors[0];
-	$colorb= colors[1];
-	$colorc= colors[2];
-	$colord= colors[3];
-	$colore= colors[4];
-	$colorf= colors[5];
+$color;
+$stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
+
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->bind_result($color);
+$stmt->fetch();
+$stmt->close();
+if ($color != NULL){
+	$color = explode(";", $color);
+	$colora= color[0];
+	$colorb= color[1];
+	$colorc= color[2];
+	$colord= color[3];
+	$colore= color[4];
+	$colorf= color[5];
 	
-	$colora2= colors[6];
-	$colorb2= colors[7];
-	$colorc2= colors[8];
-	$colord2= colors[9];
-	$colore2= colors[10];
-	$colorf2= colors[11];
+	$colora2= color[6];
+	$colorb2= color[7];
+	$colorc2= color[8];
+	$colord2= color[9];
+	$colore2= color[10];
+	$colorf2= color[11];
 	
-	$colora3= colors[12];
-	$colorb3= colors[13];
-	$colorc3= colors[14];
-	$colord3= colors[15];
-	$colore3= colors[16];
-	$colorf3= colors[17];
+	$colora3= color[12];
+	$colorb3= color[13];
+	$colorc3= color[14];
+	$colord3= color[15];
+	$colore3= color[16];
+	$colorf3= color[17];
 	
-	$colort = colors[18];
+	$colort = color[18];
 	$fontSize = [19];
 	
 }
 else{
-	$colora= #ababab";
+	$colora= "#ababab";
 $colorb= "#bcbcbc";
 $colorc= "#cdcdcd";
 $colord= "#dcdcdc";
@@ -87,7 +92,7 @@ $colorf3= "#f3f3f3";
 $colort = "#000000";
 $fontSize = "14";
 }
-*/
+
 ?>
 
 <nav class = "navtop">
@@ -96,15 +101,16 @@ $fontSize = "14";
 <h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a>
 <a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
+<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
 <a href="people.php"><i class="fas fa-user-circle"></i>People</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
-<a href="event.php"><i class="fas fa-user-circle"></i>Events</a></p><br>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
+<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></p>
 
 
 
