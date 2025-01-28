@@ -329,7 +329,7 @@ if(isset($_POST['submit'])){
 					<th>file</th>
 					<th>dt</th>
 									</tr>
-				$result = $postslist;
+				<?php $result = $postslist;?>
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
