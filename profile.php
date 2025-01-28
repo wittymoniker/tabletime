@@ -287,11 +287,12 @@ if(isset($_POST['submit'])){
 
 				<?php 
 				$result = $friendslist;
+				$row= $result;
 				if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 
 				<a href = "forum.php?index='<?php echo $row[$_POST['index']];?>'"><tr><?php echo $row['name']; ?></tr></a>
-					<tr><b><?php echo $postslist($row['username']); ?></b> </tr>
+					<tr><b><?php echo ($row['username']); ?></b> </tr>
 					<tr><b><?php echo $row['aboutcontent']; ?></b> </tr>
 							<tr><b><?php echo $row['tags']; ?></b></tr>
 							<tr><b><?php echo $row['posts']; ?></b> </tr>
@@ -329,7 +330,7 @@ if(isset($_POST['submit'])){
 					<th>file</th>
 					<th>dt</th>
 									</tr>
-				<?php $result = $postslist;?>
+				<?php $result = $postslist; $row = $result;?>
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
