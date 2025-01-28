@@ -133,7 +133,7 @@ $fontSize = "14";
 <?php
 if ($_POST['submit']){
 	$index = $_POST['index'];
-	$sql = 'SELECT * FROM accounts WHERE (* LIKE $index) BY votes DESC';
+	$sql = 'SELECT * FROM accounts WHERE (* LIKE $index) BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
@@ -163,7 +163,7 @@ $mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABA
 if ($mysqli->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$sql = 'SELECT * FROM accounts LIKE $indexprofile ORDER BY username DESC BY votes DESC';
+$sql = 'SELECT * FROM accounts LIKE $indexprofile ORDER BY username DESC BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
 $result = $mysqli->query($sql);
 
 
@@ -196,7 +196,7 @@ if ($result->num_rows > 0) {
 }
 $uname = $_SESSION['name'];
 $searchindex = $_POST['index'];
-$sql = 'SELECT posts WHERE name IN  $searchindex BY votes DESC';
+$sql = 'SELECT posts WHERE name IN  $searchindex BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
@@ -218,7 +218,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM $postslist BY votes DESC')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM $postslist BY dt DESC')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);

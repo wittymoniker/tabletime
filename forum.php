@@ -66,7 +66,7 @@ if (mysqli_connect_errno()) {
 $index = $_POST['index'];
 if($_POST['submit']){
 	$index = $_POST['index'];
-	$sql = 'SELECT * FROM posts WHERE (* LIKE $index) BY votes DESC';
+	$sql = 'SELECT * FROM posts WHERE (* LIKE $index) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
@@ -159,7 +159,7 @@ $uname = $_SESSION['name'];
 /////////
 ///////////
 
-$sql = 'SELECT tags FROM posts WHERE value LIKE $index BY votes DESC';
+$sql = 'SELECT tags FROM posts WHERE value LIKE $index BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 /////////////
 ///////////
 ///////////
@@ -183,7 +183,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT posts FROM forums WHERE forums(posts) LIKE $friendslist ORDER BY dt DESC BY votes DESC';
+$sql = 'SELECT posts FROM forums WHERE forums(posts) LIKE $friendslist ORDER BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
@@ -209,7 +209,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY dt DESC BY votes DESC')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY dt DESC BY ((array_sum(posts(votes))/(count(posts(votes))) DESC')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);

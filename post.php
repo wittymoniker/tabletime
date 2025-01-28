@@ -127,8 +127,9 @@ $fontSize = "14";
 	<?php
 $index = $_POST['index'];
 if($_POST['submit']){
+
 	$index = $_POST['index'];
-	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY votes DESC';
+	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
@@ -223,7 +224,7 @@ $uname = $_SESSION['name'];
 /////////
 ///////////
 
-$sql = 'SELECT * FROM posts WHERE accounts(posts(name)) LIKE accounts($uname) BY votes DESC';
+$sql = 'SELECT * FROM posts WHERE accounts(posts(name)) LIKE accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 /////////////
 ///////////
 ///////////
@@ -236,7 +237,7 @@ if ($mysqli->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $uname = $_SESSION['name'];
-$sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY votes DESC';
+$sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $result = $mysqli->query($sql);
 $friendslist;
 $postslist;
@@ -256,7 +257,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT posts FROM accounts LIKE  $friendslist BY votes DESC';
+$sql = 'SELECT posts FROM accounts LIKE  $friendslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $result = $mysqli->query($sql);
 
 
@@ -265,7 +266,7 @@ $result = $mysqli->query($sql);
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM  posts LIKE $friendslist || $postslist BY votes DESC')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM  posts LIKE $friendslist || $postslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
