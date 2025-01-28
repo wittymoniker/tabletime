@@ -340,8 +340,28 @@ if(isset($_POST['submit'])){
 		</div>
 
 
+<?php
+		include 'Calendar.php';
+		$searched=  $_POST['index'];
+		$sql = 'SELECT posts(dt, title)  FROM posts WHERE title LIKE $searched ';
+		$result = $mysqli->query($sql);
+$events = $result;
+
+$calendar = new Calendar(date('Y-m-d'));
+ foreach ($events as $event): ?>
+	
+	<a href="#">
+		
+	$calendar->add_event(<?php echo $event?>, date('Y-m-d'));
+
+	</a>
+	<?php endforeach; ?>
 
 
+
+<?=$calendar?>
+?>
+<br><br>
 </body>
 </head>
 </html>

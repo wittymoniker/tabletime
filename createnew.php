@@ -208,7 +208,7 @@ if ($posttype = "event"){
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
-    
+
     
       $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
