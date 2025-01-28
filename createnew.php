@@ -87,7 +87,7 @@ if ($posttype = "message"){
     $i=0;
     foreach  ($posttargets as &$posttarget){
        
-        $sql= "INSERT INTO accounts (username, messages, votes, files, friends, votes, friends) 
+        $sql= "CREATE accounts (username, messages, votes, files, friends, votes, friends) 
         VALUES ($posttarget,$postinfo, $postrecipients, $postmedia, $postauthor,$posttags, $postrecipients)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
@@ -96,7 +96,7 @@ if ($posttype = "message"){
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
-    $sql= "INSERT INTO accounts(messages)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
+    $sql= "CREATE accounts(messages)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
     
       if ($con->query($sql) === TRUE) {
           echo "New record created successfully";
@@ -113,7 +113,7 @@ if ($posttype = "media"){
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
        
-        $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
+        $sql= "CREATE forums (tag, about, groups, posts, events) 
         VALUES ($posttaglet, $posttags, $postrecipients, $postinfo, $postrecipients)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
@@ -123,7 +123,7 @@ if ($posttype = "media"){
           }
     }
     $i=0;
-    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+    $sql= "CREATE posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
     if ($con->query($sql) === TRUE) {
         echo "New record created successfully";
@@ -137,7 +137,7 @@ if ($posttype = "comment"){
   $i=0;
   foreach  ($posttargets as &$posttarget){
      
-      $sql= "INSERT INTO posts (comments) WHERE  posts(title, author) ==($posttitle, $posttarget) 
+      $sql= "CREATE posts (comments) WHERE  posts(title, author) ==($posttitle, $posttarget) 
       VALUES ($postinfo)";
    $i=$i+1;
       if ($con->query($sql) === TRUE) {
@@ -147,7 +147,7 @@ if ($posttype = "comment"){
         }
   }
   $i=0;
-  $sql= "INSERT INTO accounts(posts)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
+  $sql= "CREATE accounts(posts)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
     
       if ($con->query($sql) === TRUE) {
           echo "New record created successfully";
@@ -158,7 +158,7 @@ if ($posttype = "comment"){
     $con->close();
 }
 if ($posttype = "post"){
-    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+    $sql= "CREATE posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
     if ($con->query($sql) === TRUE) {
         echo "New record created successfully";
@@ -169,7 +169,7 @@ if ($posttype = "post"){
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
        
-        $sql= "INSERT INTO tags (posts, groups, events, forums) WHERE tags(value) == $posttaglet
+        $sql= "CREATE tags (posts, groups, events, forums) WHERE tags(value) == $posttaglet
         VALUES ($postinfo, $postrecipients, $postrecipients, $posttags)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
@@ -184,7 +184,7 @@ if ($posttype = "post"){
 } 
     if ($posttype = "profile"){
       
-      $sql= "INSERT INTO accounts (aboutcontent) 
+      $sql= "CREATE accounts (aboutcontent) 
           VALUE ($postinfo) WHERE  accounts(id, username) == ($id, $uname) ";
     
       if ($con->query($sql) === TRUE) {
@@ -200,7 +200,7 @@ if ($posttype = "post"){
       }
   
 if ($posttype = "event"){
-    $sql= "INSERT INTO events (title, type, about, groups, members, posts, tags) 
+    $sql= "CREATE events (title, type, about, groups, members, posts, tags) 
     VALUES ($posttitle, $posttype, $postcontent, $postrecipients, $postauthor, $postinfo, $posttags)";
 
     if ($con->query($sql) === TRUE) {
@@ -210,7 +210,7 @@ if ($posttype = "event"){
       }
 
     
-      $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+      $sql= "CREATE posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
       if ($con->query($sql) === TRUE) {
           echo "New record created successfully";
@@ -223,7 +223,7 @@ if ($posttype = "event"){
 
 }
 if ($posttype = "group"){
-    $sql= "INSERT INTO groups (title, about, members, posts, tags, forums, tags) 
+    $sql= "CREATE groups (title, about, members, posts, tags, forums, tags) 
     VALUES ($posttitle, $posttype, $postauthor, $postinfo, $postrecipients, $posttags, $posttags)";
 
     if ($con->query($sql) === TRUE) {
@@ -232,7 +232,7 @@ if ($posttype = "group"){
         echo "Error: " . $sql . "<br>" . $con->error;
       }
     
-      $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+      $sql= "CREATE posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
       if ($con->query($sql) === TRUE) {
           echo "New record created successfully";
@@ -248,7 +248,7 @@ if ($posttype = "forum"){
     $i=0;
     foreach ($posttaglets as &$posttaglet){
        
-        $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
+        $sql= "CREATE forums (tag, about, groups, posts, events) 
         VALUES ($posttaglets, $posttags, $postrecipients, $postinfo, $postrecipients)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
@@ -258,7 +258,7 @@ if ($posttype = "forum"){
           }
     }
     $i=0;
-    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+    $sql= "CREATE posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
     if ($con->query($sql) === TRUE) {
         echo "New record created successfully";
@@ -271,7 +271,7 @@ if ($posttype = "forum"){
     $con->close();
 }
 
-$sql= "INSERT INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, votes) 
+$sql= "CREATE accounts(groups, events, files, forums, friends,  messages, posts, tags, votes) 
 WHERE accounts(username, id) == ($postauthor, $authorid) 
 VALUES ($postinfo, $postinfo, $postmedia, $posttags, $postrecipients, $postinfo, $postinfo, $postinfo, $postinfo)";  ;
 
