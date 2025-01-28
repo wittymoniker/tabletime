@@ -1,5 +1,9 @@
 <?php
-$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+$DATABASE_HOST = 'localhost';
+$DATABASE_USER = 'root';
+$DATABASE_PASS = '';
+$DATABASE_NAME = 'tabletime';
+$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
 $total_pages = $mysqli->query('SELECT * FROM ($_GET 'table')')->num_rows;
 
