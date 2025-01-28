@@ -80,7 +80,7 @@ $con->close();
 
 
 
-
+usleep(5000000000000000000);
 header('Location: login.php');
 
                    exit();

@@ -287,8 +287,9 @@ if ($con->query($sql) === TRUE) {
 $stmt->close();
 $con->close();
 
-
-
+echo "Post created. Wait 10min for next post: ";
+echo "<a href='home.php'>Return to home</a>";
+sleep(6000);
 header('Location: home.php');
 
                    exit();
