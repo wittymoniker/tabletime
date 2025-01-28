@@ -174,7 +174,7 @@ $num_results_on_page = 16 ;
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-	$sql = 'INSERT INTO $postslist VALUES
+	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["username"]),
 	($row["aboutcontent"]),
 	($row["tags"]),
@@ -286,7 +286,7 @@ if(isset($_POST['submit'])){
 									
 
 				<?php 
-				$result = $postslist;
+				$result = $friendslist;
 				if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 
@@ -329,7 +329,7 @@ if(isset($_POST['submit'])){
 					<th>file</th>
 					<th>dt</th>
 									</tr>
-
+				$result = $postslist;
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
