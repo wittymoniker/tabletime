@@ -112,7 +112,7 @@ $fontSize = "14";
 	<h1>PROFILE INSPECTOR</h1>
 	<th><br>
 <br>
-<br><label name ="index">searcht: </label>"
+<br><label name ="index">search: </label>"
 <input method ="POST" type = "text" name="index" placeholder = "search terms...">"
 </th>
 <tr>
