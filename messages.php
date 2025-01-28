@@ -1,3 +1,20 @@
+<?php
+session_start();
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
+error_reporting(E_ERROR | E_PARSE);
+$DATABASE_HOST = 'localhost';
+$DATABASE_USER = 'root';
+$DATABASE_PASS = '';
+$DATABASE_NAME = 'tabletime';
+$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+if (mysqli_connect_errno()) {
+	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
+?>
 <?php 
 $id = $_SESSION['id'];
 $color;
@@ -73,14 +90,12 @@ $fontSize = "14";
 <nav class = "navtop">
 		<div class = "tabletime">		
 
-<h1><b><a href="home.php">TABLETIME</a></b></h1>
+        <h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
+<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
 <a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
 <a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="people.php"><i class="fas fa-user-circle"></i>People</a>
 <a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
 <a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
 <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>

@@ -92,20 +92,27 @@ $colorf3= "#f3f3f3";
 $colort = "#000000";
 $fontSize = "14";
 }
+$stmt = $con-> prepare('SELECT  aboutcontent FROM accounts WHERE id = ?');
+$prof;
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->bind_result($prof);
+$stmt->fetch();
+$stmt->close();
 
 ?>
 
 <nav class = "navtop">
 		<div class = "tabletime">		
 
-<h1><b><a href="home.php">TABLETIME</a></b></h1>
+		
+
+		<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
+<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
 <a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
 <a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="people.php"><i class="fas fa-user-circle"></i>People</a>
 <a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
 <a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
 <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
@@ -125,8 +132,8 @@ $fontSize = "14";
 
 
 			<div>
-			<h1>Friends</h1>
-			<p>relevant friends' content<br>
+			<h1>Feed</h1>
+			<p>relevant sorted' post content<br>
 
 
 <?php
@@ -137,65 +144,68 @@ if ($mysqli->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $uname = $_SESSION['name'];
-$sql = 'SELECT friends FROM accounts WHERE username = accounts($uname)';
+$sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname)';
 $result = $mysqli->query($sql);
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $friendslist VALUES
-	(($row["friends"]))';
+	(($row["friends"]),
+	($row["tags"]),
+	($row["media"]),
+	($row["posts"])),
+	($row["username"])';
 	$result = $mysqli->query($sql);
     }
-
+	$sql = 'INSERT INTO $friendslist VALUES
+	($row[$_POST["index"]])';
+	$result = $mysqli->query($sql);
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT posts FROM accounts WHERE username IN $friendslist ORDER BY dt DESC';
+$sql = 'SELECT posts FROM accounts LIKE  $friendslist ORDER BY dt DESC';
 $result = $mysqli->query($sql);
 
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-	$sql = 'INSERT INTO $postslist VALUES
-	(($row["name"]),
-	($row["title"]),
-	($row["content"]),
-	($row["dt"]))';
-	$result = $mysqli->query($sql);
-    }
 
-} else {
-    echo "0 posts";
-}
 
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM accounts || posts LIKE $friendslist || $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
 	
 }
+else {
+    echo "0 posts";
+}
+
+
 ?>
 			<meta charset="utf-8">
 					
 		<body>
 			<table class = "list">
 				<tr>
-					<th>name</th>
-					<th>post</th>
-					<th>dt</th>
+					<th>about</th>
+					<th>tags</th>
+					<th>media</th>
+					<th>posts</th>
+					<th>username</th>
 									</tr>
 
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
-					<td><?php echo $row['name']; ?></td>
-					<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
-					<td><?php echo $row['dt']; }}?></td>
+					<td><?php echo $row['friends'||'recipients']; ?></td>
+					<td><b><?php echo $row['tags']; ?></b> </td>
+					<td><b><?php echo $row['media' && ['content' || 'aboutcontent']]; ?></b> </td>
+					<td><?php echo $row['name'||'username']; ?></td>
+					<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; }}?></td></a>
 				</tr>
 
 			</table>
@@ -255,9 +265,9 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 
 
 <div>
-			<h1>Posts</h1>
-			<p>relevant posts<br>
-<a href="post.php"><i class="fas fa-user-circle"></i>Create New Post</a><br>
+			<h1>Friends</h1>
+			<p>relevant friend activity<br>
+<a href="create.php"><i class="fas fa-user-circle"></i>Create New Post</a><br>
 
 
 
@@ -274,32 +284,32 @@ if ($mysqli->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $uname = $_SESSION['name'];
-$sql = 'SELECT friends FROM accounts WHERE username = accounts($uname)';
+$sql = 'SELECT aboutcontent FROM accounts WHERE username = accounts($uname) OR tags  LIKE accounts($tags)';
 $result = $mysqli->query($sql);
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while($row = $result->fetch_assoc()&& $row<=9) {
 	$sql = 'INSERT INTO $friendslist VALUES
-	(($row["friends"]))';
+	(($row["info"]))';
 	$result = $mysqli->query($sql);
     }
+	$sql = 'INSERT INTO $friendslist VALUES
+	($row[$_POST["index"]])';
+	$result = $mysqli->query($sql);
 
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT posts FROM accounts WHERE username IN $friendslist ORDER BY dt DESC';
+$sql = 'SELECT posts FROM accounts WHERE username LIKE $friendslist';
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-	$sql = 'INSERT INTO $postslist VALUES
-	(($row["name"]),
-	($row["title"]),
-	($row["content"]),
-	($row["dt"]))';
-	$result = $mysqli->query($sql);
-    }
+	while($row = $result->fetch_assoc()&& $row<=9) {
+		$sql = 'INSERT INTO $postslist VALUES
+		(($row[":"]))';
+		$result = $mysqli->query($sql);
+		}
 
 } else {
     echo "0 posts";
@@ -309,7 +319,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM posts IF * IN $postslist ORDER BY dt DESC')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -322,17 +332,14 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 		<body>
 			<table class = "list">
 				<tr>
-					<th>name</th>
-					<th>post</th>
-					<th>dt</th>
+					<th>page</th>
+					
 									</tr>
 
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
-					<td><?php echo $row['name']; ?></td>
-					<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
-					<td><?php echo $row['dt']; }}?></td>
+				<a href = "people.php?index='<?php echo $row["`" . $friendslist . $postslist . "`"]?>'"><td><?php echo $row[':']; }}?></td></a>
 				</tr>
 
 			</table>
@@ -388,7 +395,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 <div>
 			<h1>Events</h1>
 			<p>relevant events<br>
-<a href="post.php"><i class="fas fa-user-circle"></i>Create New Event </a><br>
+<a href="create.php"><i class="fas fa-user-circle"></i>Create New Event </a><br>
 
 
 
@@ -419,20 +426,23 @@ if ($result->num_rows > 0) {
 	(($row["friends"]))';
 	$result = $mysqli->query($sql);
     }
+	$sql = 'INSERT INTO $friendslist VALUES
+	($row[$_POST["index"]])';
+	$result = $mysqli->query($sql);
 
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT posts FROM accounts WHERE username IN $friendslist ORDER BY dt DESC';
+$sql = 'SELECT * FROM events WHERE members LIKE $friendslist ORDER BY dt DESC';
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $postslist VALUES
-	(($row["name"]),
-	($row["title"]),
-	($row["content"]),
-	($row["dt"]))';
+	(($row["title"]),
+	($row["about"]),
+	($row["posts"]),
+	($row["members"]))';
 	$result = $mysqli->query($sql);
     }
 
@@ -444,7 +454,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM groups LIKE $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -457,17 +467,19 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 		<body>
 			<table class = "list">
 				<tr>
-					<th>name</th>
-					<th>post</th>
-					<th>dt</th>
+					<th>title</th>
+					<th>about</th>
+					<th>posts</th>
+					<th>members</th>
 									</tr>
 
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
-					<td><?php echo $row['name']; ?></td>
-					<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
-					<td><?php echo $row['dt']; }}?></td>
+				<a href = "group.php?index='<?php echo $row["`" . $friendslist . $postslist . "`"]?>'"><td><?php echo $row['title']; ?></td></a>
+					<td><?php echo $row['about']; ?></td>
+					<td><?php echo $row['posts']; ?></td>
+					<td><?php echo $row['members']; }}?></td>
 				</tr>
 
 			</table>
@@ -522,7 +534,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 <div>
 			<h1>Global</h1>
 			<p>relevant global events, forums posts<br>
-<a href="post.php"><i class="fas fa-user-circle"></i>Create New Forum Post </a><br>
+<a href="create.php"><i class="fas fa-user-circle"></i>Create New Forum Post </a><br>
 
 
 
@@ -541,30 +553,39 @@ if ($mysqli->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $uname = $_SESSION['name'];
-$sql = 'SELECT friends FROM accounts WHERE username = accounts($uname)';
+$sql = 'SELECT tags FROM accounts WHERE username = accounts($id) && username = accounts($id) OR contains(accounts(friends), $uname)';
 $result = $mysqli->query($sql);
-$friendslist;
+$tagslist;
 $postslist;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-	$sql = 'INSERT INTO $friendslist VALUES
-	(($row["friends"]))';
+	$sql = 'INSERT INTO $tagslist VALUES
+	(($row["tags"])),
+	(($row["forums"])),
+	(($row["friends"])),
+	(($row["events"])),
+	(($row["groups"])),
+	(($row["posts"])),
+	(($row["aboutcontent"]))';
 	$result = $mysqli->query($sql);
     }
+	$sql = 'INSERT INTO $friendslist VALUES
+	($row[$_POST["index"]])';
+	$result = $mysqli->query($sql);
 
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT posts FROM accounts WHERE username IN $friendslist ORDER BY dt DESC';
+$sql = 'SELECT * IN forums LIKE ORDER BY tags DESC';
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $postslist VALUES
-	(($row["name"]),
-	($row["title"]),
+	(($row["groups"]),
+	($row["events"]),
 	($row["content"]),
-	($row["dt"]))';
+	($row["tag"]))';
 	$result = $mysqli->query($sql);
     }
 
@@ -576,7 +597,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -590,16 +611,18 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 			<table class = "list">
 				<tr>
 					<th>name</th>
+					<th>title</th>
 					<th>post</th>
-					<th>dt</th>
+					<th>tags</th>
 									</tr>
 
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
-					<td><?php echo $row['name']; ?></td>
-					<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
-					<td><?php echo $row['dt']; }}?></td>
+				<a href = "forum.php?index='<?php echo $row["`" . $friendslist . $postslist . "`"]?>'"><td><?php echo $row['name']; ?></td></a>
+					<td><b><?php echo $row['title']; ?></b> </td>
+					<td><b><?php echo $row['content']; ?></b> </td>
+							<td><?php echo $row['dt']; }}?></td>
 				</tr>
 
 			</table>
@@ -643,6 +666,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 
 
 
+
 </p>
 		</div>
 
@@ -661,7 +685,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 <br>
 <br>
 <br>
-<p align = "center">
+<p text-align = "center">
 <a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
 				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
 </p>

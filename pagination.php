@@ -14,4 +14,5 @@ if ($stmt = $mysqli->prepare('SELECT * FROM ($_GET 'table') ORDER BY name LIMIT 
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
 	$result = $stmt->get_result();
+}
 ?>

@@ -26,14 +26,12 @@ if (mysqli_connect_errno()) {
 <nav class = "navtop">
 		<div class = "tabletime">		
 
-<h1><b><a href="home.php">TABLETIME</a></b></h1>
+		<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
+<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
 <a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
 <a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="people.php"><i class="fas fa-user-circle"></i>People</a>
 <a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
 <a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
 <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
@@ -49,9 +47,8 @@ if (mysqli_connect_errno()) {
 <div>
 	<table>
 <form method ="POST">
-	<h1>INSPECTOR- click or search</h1>
-	<th><br><label name ="range">private/public/global range: </label>"
-<input method ="POST" type = "range" id = "view" name = "private/public/global" min = "-256" max = "256">
+	<h1>FORUM INSPECTOR</h1>
+	<th><br>
 <br>
 <br><label name ="index">post search prompt: </label>"
 <input method ="POST" type = "text" name="index" placeholder = "search terms...">"
@@ -68,7 +65,7 @@ if (mysqli_connect_errno()) {
 $index = $_POST['index'];
 if($_POST['submit']){
 	$index = $_POST['index'];
-	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)';
+	$sql = 'SELECT * FROM posts WHERE (* LIKE $index) BY votes DESC';
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
@@ -83,7 +80,8 @@ if($_POST['submit']){
 		($row["recipients"]),
 		($row["comments"]),
 		($row["scope"])),
-		($row["type"]))';
+		($row["type"])),
+		($row["id"]))';
 		$result = $mysqli->query($sql);
 		}
 	
@@ -124,11 +122,29 @@ if($_POST['submit']){
 <form method ="POST">
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
-</form><br><br><br>
-<div>
-			<h1>all posts</h1>
-			<p>
+</form><?php
+if(isset($_POST['submit'])){
+    $votetarget = $_POST['index'];
+    $id = $_SESSION['id'];
+    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+    if(isset($_POST['perspective'])){
+        $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
+        $result = $mysqli->query($sql);
 
+    }
+}
+if(isset($_POST['submit'])){
+    $votetarget = $_POST['index'];
+    $id = $_SESSION['id'];
+    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+    if(isset($_POST['perspective'])){
+        $sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
+        $result = $mysqli->query($sql);
+
+    }
+}
+?><br><br><br>
+<div>
 
 <?php
 $mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
@@ -142,7 +158,7 @@ $uname = $_SESSION['name'];
 /////////
 ///////////
 
-$sql = 'SELECT id FROM posts WHERE accounts(posts(name)) LIKE accounts($uname)';
+$sql = 'SELECT tags FROM posts WHERE value LIKE $index BY votes DESC';
 /////////////
 ///////////
 ///////////
@@ -154,14 +170,19 @@ $postslist;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $friendslist VALUES
-	(($row["friends"]))';
+	(($row["tags"]))';
+	$result = $mysqli->query($sql);
+	$sql = 'INSERT INTO $friendslist VALUES
+	($row[$_POST["index"]])';
 	$result = $mysqli->query($sql);
     }
+	
+	
 
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT posts FROM accounts WHERE username IN $friendslist ORDER BY dt DESC';
+$sql = 'SELECT posts FROM forums WHERE forums(posts) LIKE $friendslist ORDER BY dt DESC BY votes DESC';
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
@@ -170,10 +191,14 @@ if ($result->num_rows > 0) {
 	(($row["name"]),
 	($row["title"]),
 	($row["content"]),
-	($row["dt"])),
+	($row["tags"])),
 	($row["file"])';
 	$result = $mysqli->query($sql);
     }
+	$sql = 'INSERT INTO $postsslist VALUES
+	($row[$_POST["index"]])';
+	$result = $mysqli->query($sql);
+
 
 } else {
     echo "0 posts";
@@ -183,7 +208,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY dt DESC BY votes DESC')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -200,17 +225,17 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 					<th>topic</th>
 					<th>content</th>
 					<th>file</th>
-					<th>dt</th>
+					<th>tags</th>
 									</tr>
 
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
-					<td><?php echo $row['name']; ?></td>
-					<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
-					<td><?php echo $row['content']; }}?></td>
+				<a href = "profile.php?index='<?php echo $row["name"]?>'"><td><?php echo $row['name']; ?></td>
+				<td><b><?php echo $row['title']; ?></b> <br> </td></a>
+				<a href = "posts.php?index='<?php echo $row["content"]?>'"><td><?php echo $row['content']; }}?></td></a>
 					<td><?php echo $row['file']; ?></td>
-					<td><b><?php echo $row['dt']; echo $row['post']; ?></b> <br> </td>
+					<td><b><?php echo $row['tags']; echo $row['post']; ?></b> <br> </td>
 				</tr>
 
 			</table>
@@ -247,6 +272,11 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 			</ul>
 			<?php endif; ?>
 		</body>
+
+		<div>
+		
+
+
 
 
 

@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {    // Uplo
 
 $posttargets = explode(";", $_POST['recipients']);
 $posttaglets = explode(";", $_POST['tags']);
-$postinfo = implode(" : ", [$postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients]);
+$postinfo = implode(" : ", [$posttitle, $postcontent, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients]);
 $tags = explode(";", $_POST['tags']);
 /*<option value ="message">message</option>
 <option value ="media">media</option>
@@ -96,7 +96,18 @@ if ($posttype = "message"){
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
+    $sql= "INSERT INTO accounts(messages)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
+    
+      if ($con->query($sql) === TRUE) {
+          echo "New record created successfully";
+        } else {
+          echo "Error: " . $sql . "<br>" . $con->error;
+        }
+        $stmt->close();
+    $con->close();
     $i=0;
+    $stmt->close();
+    $con->close();
 }
 if ($posttype = "media"){
     $i=0;
@@ -119,12 +130,14 @@ if ($posttype = "media"){
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
+      $stmt->close();
+    $con->close();
 }
 if ($posttype = "comment"){
   $i=0;
   foreach  ($posttargets as &$posttarget){
      
-      $sql= "INSERT INTO posts (comments) WHERE  posts(title, author) = posts($posttitle, $posttarget) 
+      $sql= "INSERT INTO posts (comments) WHERE  posts(title, author) ==($posttitle, $posttarget) 
       VALUES ($postinfo)";
    $i=$i+1;
       if ($con->query($sql) === TRUE) {
@@ -134,13 +147,15 @@ if ($posttype = "comment"){
         }
   }
   $i=0;
-  $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
-
-  if ($con->query($sql) === TRUE) {
-      echo "New record created successfully";
-    } else {
-      echo "Error: " . $sql . "<br>" . $con->error;
-    }
+  $sql= "INSERT INTO accounts(posts)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
+    
+      if ($con->query($sql) === TRUE) {
+          echo "New record created successfully";
+        } else {
+          echo "Error: " . $sql . "<br>" . $con->error;
+        }
+        $stmt->close();
+    $con->close();
 }
 if ($posttype = "post"){
     $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
@@ -154,7 +169,7 @@ if ($posttype = "post"){
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
        
-        $sql= "INSERT INTO tags (posts, groups, events, forums) WHERE (tags(value) == $posttaglet)
+        $sql= "INSERT INTO tags (posts, groups, events, forums) WHERE tags(value) == $posttaglet
         VALUES ($postinfo, $postrecipients, $postrecipients, $posttags)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
@@ -164,16 +179,26 @@ if ($posttype = "post"){
           }
     }
     $i=0;
-    
-    
-    
     $stmt->close();
     $con->close();
+} 
+    if ($posttype = "profile"){
+      
+      $sql= "INSERT INTO accounts (aboutcontent) 
+          VALUE ($postinfo) WHERE  accounts(id, username) == ($id, $uname) ";
     
-    
-    $stmt->close();
+      if ($con->query($sql) === TRUE) {
+          echo "New record created successfully";
+        } else {
+          echo "Error: " . $sql . "<br>" . $con->error;
+        }
+        $stmt->close();
     $con->close();
-}
+
+
+
+      }
+  
 if ($posttype = "event"){
     $sql= "INSERT INTO events (title, type, about, groups, members, posts, tags) 
     VALUES ($posttitle, $posttype, $postcontent, $postrecipients, $postauthor, $postinfo, $posttags)";
@@ -277,7 +302,7 @@ header('Location: home.php');
                                 </font>
                             </p>";
                 }
-             }
+}
 
 ?>
 

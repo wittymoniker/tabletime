@@ -88,14 +88,12 @@ $fontSize = "14";
 <nav class = "navtop">
 		<div class = "tabletime">		
 
-<h1><b><a href="home.php">TABLETIME</a></b></h1>
+		<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
+<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
 <a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
 <a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="people.php"><i class="fas fa-user-circle"></i>People</a>
 <a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
 <a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
 <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
@@ -111,9 +109,8 @@ $fontSize = "14";
 <div>
 	<table>
 <form method ="POST">
-	<h1>INSPECTOR- click or search</h1>
-	<th><br><label name ="range">private/public/global range: </label>"
-<input method ="POST" type = "range" id = "view" name = "private/public/global" min = "-256" max = "256">
+	<h1>POST INSPECTOR</h1>
+	<th><br>
 <br>
 <br><label name ="index">post search prompt: </label>"
 <input method ="POST" type = "text" name="index" placeholder = "search terms...">"
@@ -130,7 +127,7 @@ $fontSize = "14";
 $index = $_POST['index'];
 if($_POST['submit']){
 	$index = $_POST['index'];
-	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)';
+	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY votes DESC';
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
@@ -186,10 +183,31 @@ if($_POST['submit']){
 <form method ="POST">
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
-</form><br><br><br>
+</form><?php
+if(isset($_POST['submit'])){
+    $uname = $_POST['index'];
+    $id = $_SESSION['id'];
+    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+    if(isset($_POST['perspective'])){
+        $sql = "UPDATE accounts ADD $vote TO votes WHERE username = $uname";
+        $result = $mysqli->query($sql);
+
+    }
+}
+
+if(isset($_POST['submit'])){
+    $votetarget = $_POST['index'];
+    $id = $_SESSION['id'];
+    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+    if(isset($_POST['perspective'])){
+        $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
+        $result = $mysqli->query($sql);
+
+    }
+}
+?>
+<br><br><br>
 <div>
-			<h1>all posts</h1>
-			<p>
 
 
 <?php
@@ -204,7 +222,7 @@ $uname = $_SESSION['name'];
 /////////
 ///////////
 
-$sql = 'SELECT id FROM posts WHERE accounts(posts(name)) LIKE accounts($uname)';
+$sql = 'SELECT * FROM posts WHERE accounts(posts(name)) LIKE accounts($uname) BY votes DESC';
 /////////////
 ///////////
 ///////////
@@ -213,66 +231,72 @@ $sql = 'SELECT id FROM posts WHERE accounts(posts(name)) LIKE accounts($uname)';
 $result = $mysqli->query($sql);
 $friendslist;
 $postslist;
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$uname = $_SESSION['name'];
+$sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY votes DESC';
+$result = $mysqli->query($sql);
+$friendslist;
+$postslist;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $friendslist VALUES
-	(($row["friends"]))';
+	(($row["friends"]),
+	($row["tags"]),
+	($row["media"]),
+	($row["posts"])),
+	($row["username"])';
 	$result = $mysqli->query($sql);
     }
-
+	$sql = 'INSERT INTO $friendslist VALUES
+	($row[$_POST["index"]])';
+	$result = $mysqli->query($sql);
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT posts FROM accounts WHERE username IN $friendslist ORDER BY dt DESC';
+$sql = 'SELECT posts FROM accounts LIKE  $friendslist BY votes DESC';
 $result = $mysqli->query($sql);
 
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-	$sql = 'INSERT INTO $postslist VALUES
-	(($row["name"]),
-	($row["title"]),
-	($row["content"]),
-	($row["dt"])),
-	($row["file"])';
-	$result = $mysqli->query($sql);
-    }
 
-} else {
-    echo "0 posts";
-}
 
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM  posts LIKE $friendslist || $postslist BY votes DESC')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
 	
 }
+else {
+    echo "0 posts";
+}
+
+
 ?>
 			<meta charset="utf-8">
 					
 		<body>
 			<table class = "list">
 				<tr>
-					<th>name</th>
-					<th>topic</th>
-					<th>content</th>
-					<th>file</th>
-					<th>dt</th>
+					<th>about</th>
+					<th>tags</th>
+					<th>media</th>
+					<th>posts</th>
+					<th>username</th>
 									</tr>
 
 				<?php if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
-					<td><?php echo $row['name']; ?></td>
-					<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
-					<td><?php echo $row['content']; }}?></td>
-					<td><?php echo $row['file']; ?></td>
-					<td><b><?php echo $row['dt']; echo $row['post']; ?></b> <br> </td>
+					<td><?php echo $row['friends'||'recipients']; ?></td>
+					<td><b><?php echo $row['tags']; ?></b> </td>
+					<td><b><?php echo $row['media' && ['content' || 'aboutcontent']]; ?></b> </td>
+					<td><?php echo $row['name'||'username']; ?></td>
+					<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; }}?></td></a>
 				</tr>
 
 			</table>
@@ -312,6 +336,10 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist')) {
 
 
 
+
+
+		<br><br>
+<br>
 
 
 

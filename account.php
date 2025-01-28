@@ -214,13 +214,37 @@ $fontSize = "14";
 			</table>
 
 <p>
-<a href="bio.php"><i class="fas fa-user-circle"></i>Edit Bio</a>
-<a href="pfp.php"><i class="fas fa-user-circle"></i>Upload Profile Photo</a>
 <a href="colorpick.php"><i class="fas fa-user-circle"></i>Edit Color Formatting</a><br>
 <a href="export.php"><i class="fas fa-user-circle"></i>Export account data</a>
 <a href="usrchange.php"><i class="fas fa-user-circle"></i>Change user/pass/msg</a>
 <a href="import.php"><i class="fas fa-user-circle"></i>Import Account Data</a><br>
 <a href="support.php"><i class="fas fa-user-circle"></i>Delete Account</a>
+<form method="POST" <br> IP Tables Mode:<br>
+client <- host -> admin host: 
+<input type = "range" name = "hostmode" min = "0" max = "3"default = "<?php echo $clientmode;?>">
+<br>
+<input type = "range" name = "hostmode" min = "0" max = "3"default = "<?php echo $clientmode;?>">
+
+<input type = "text" name = "IP" default = "<?php echo $ipa;?>">
+<br><input type = "submit" value = "submit">
+</form>
+
+<?php if(isset($_POST["submit"])){
+//$id = $_SESSION['id'];
+$clientmode = round($_POST['hostmode']);
+$stmt = $con->prepare('REPLACE hostmode FROM accounts WHERE id = $id TO ?');
+$stmt->bind_param('i', $clientmode);
+$stmt->execute();
+$stmt->close();
+
+$ipa = ($_POST['IP']);
+$stmt = $con->prepare('REPLACE ip FROM accounts WHERE id = $id TO ?');
+$stmt->bind_param('i', $ipa);
+$stmt->execute();
+$stmt->close();
+}?>
+
+
 </p>
 </tr>	
 		</div>

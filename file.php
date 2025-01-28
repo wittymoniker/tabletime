@@ -114,7 +114,8 @@ $results = glob(str_replace(['[',']',"\f[","\f]"], ["\f[","\f]",'[[]','[]]'], ($
 // If true, directories will appear first in the populated file list
 $directory_first = true; 
 // Sort files
-$initial_directory = 'files/';
+$initial_directory = '/files/';
+$current_directory = $initial_directory;
 // Sort files
 if ($directory_first) {
     usort($results, function($a, $b){
@@ -177,15 +178,14 @@ function get_filetype_icon($filetype) {
 
     <nav class = "navtop">
 		<div class = "tabletime">		
+		
 
-<h1><b><a href="home.php">TABLETIME</a></b></h1>
+		<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="post.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="friend.php"><i class="fas fa-user-circle"></i>Friends</a><br>
+<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
 <a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
 <a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="people.php"><i class="fas fa-user-circle"></i>People</a>
 <a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
 <a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
 <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>

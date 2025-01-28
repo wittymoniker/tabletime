@@ -24,7 +24,7 @@ if (isset($_GET['file'])) {
 		<meta charset="utf-8">
         <meta name="viewport" content="width=device-width,minimum-scale=1">
 		<title>File Management System</title>
-		<link href="style.css" rel="stylesheet" type="text/css">
+		<link href="style.php" rel="stylesheet" type="text/css">
 	</head>
 	<body>
         <div class="tabletime">
