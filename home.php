@@ -546,7 +546,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM groups LIKE $postslist')) {
 
 	
 <?php
-$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+
 
 
 if ($mysqli->connect_error) {
