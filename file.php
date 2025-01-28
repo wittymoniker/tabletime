@@ -91,10 +91,39 @@ $fontSize = "14";
 
 
 
+
+
+
+
 <?php
+session_start();
+
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: index.html');
+	exit;
+}
+
+
+$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+if (mysqli_connect_errno()) {
+	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
 
 
 
+
+
+$stmt = $con->prepare('SELECT username FROM accounts WHERE id = ?');
+$stmt->bind_param('i', $_SESSION['id']);
+$stmt->execute();
+$stmt->bind_result($username);
+$stmt->fetch();
+$stmt->close();
+
+
+$initial_directory = 'files/';
+// The current directory path
+$current_directory = $initial_directory;
 if (isset($_GET['file'])) {
     // If the file is a directory
     if (is_dir($_GET['file'])) {
@@ -114,9 +143,6 @@ $results = glob(str_replace(['[',']',"\f[","\f]"], ["\f[","\f]",'[[]','[]]'], ($
 // If true, directories will appear first in the populated file list
 $directory_first = true; 
 // Sort files
-$initial_directory = '/files/';
-$current_directory = $initial_directory;
-// Sort files
 if ($directory_first) {
     usort($results, function($a, $b){
         $a_is_dir = is_dir($a);
@@ -130,12 +156,6 @@ if ($directory_first) {
         }
     });
 }
-
-
-
-
-
-
 function convert_filesize($bytes, $precision = 2) {
     $units = ['Bytes', 'KB', 'MB', 'GB', 'TB']; 
     $bytes = max($bytes, 0); 
@@ -144,10 +164,7 @@ function convert_filesize($bytes, $precision = 2) {
     $bytes /= pow(1024, $pow);
     return round($bytes, $precision) . ' ' . $units[$pow]; 
 }
-
-
-
-
+// Determine the file type icon
 function get_filetype_icon($filetype) {
     if (is_dir($filetype)) {
         return '<i class="fa-solid fa-folder"></i>';
@@ -162,7 +179,32 @@ function get_filetype_icon($filetype) {
     }
     return '<i class="fa-solid fa-file"></i>';
 }
+
+
+
+
+
 ?>
+
+
+
+<html class = "tabletime">
+<link href="style.php" rel="stylesheet" type="text/css">
+<head class = "html">
+		<meta charset="utf-8">
+		<title>TABLETIME</title>
+
+<body class = "content">  
+<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,minimum-scale=1">
+		<title>File Management System</title>
+		<body class = "content">  
+
+
+
+
+
+
 
 <html class = "tabletime">
 		<link href="style.php" rel="stylesheet" type="text/css">
@@ -203,11 +245,25 @@ function get_filetype_icon($filetype) {
 
 
 
+<form method ="POST">
+<label name ="fileindex"> <br>file: </label><br>
+<input method = "POST" type = "text" id = "filei" default = "file/: index key"><br>
+<input type = "submit" value = "submit">
+<br>
+</form><?php
+if(isset($_POST['submit'])){
+    $fileID = $_POST['filei'];
+    $id = $_SESSION['id'];
 
+
+}
+
+$current_directory = 'files/' . (string)($fileID);
+?>
 
 
 <div class = "html">
-                <a href="createUI.php?directory=<?=$current_directory?>"><i class="fa-solid fa-plus"></i></a>
+                <a href="createUI.php?directory=<?=$fileID?>"><i class="fa-solid fa-plus"></i></a>
 
 
             <table class="tabletime">
