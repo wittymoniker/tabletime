@@ -157,7 +157,7 @@ $postslist;
 $indexprofile = $_POST['userindex'];
 
 
-$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
 
 if ($mysqli->connect_error) {

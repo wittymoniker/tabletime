@@ -137,7 +137,7 @@ $stmt->close();
 
 
 <?php
-$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
 
 if ($mysqli->connect_error) {
@@ -277,7 +277,7 @@ else {
 
 	
 <?php
-$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+
 
 
 if ($mysqli->connect_error) {
@@ -409,7 +409,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts IF * IN $postslist ORDER BY dt
 
 	
 <?php
-$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+
 
 
 if ($mysqli->connect_error) {
