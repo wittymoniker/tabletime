@@ -1,10 +1,11 @@
  <?php
+ $number1;
+ $number2;
            if(isset($_REQUEST["submit"]))
             {
                 $test=$_REQUEST["test"];
-                $number1=$_REQUEST["no1"];
-               $number2=$_REQUEST["no2"];
-                $total=$number1+$number2;
+                
+                $total=$_REQUEST["no1"]+$_REQUEST["no2"];
                 if ($total==$test)
                {
      
