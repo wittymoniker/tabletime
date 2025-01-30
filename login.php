@@ -15,44 +15,10 @@
 <div>
 <table><th>	
 			<h1>tabletime</h1>
-<?php include 'authenticate.php';
-
+<?php include 'authenticate.php';?>
+<?php include 'style.php';
 $color;
-$stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$stmt->bind_result($color);
-$stmt->fetch();
-$stmt->close();
-if ($color != NULL){
-	$color = explode(";", $color);
-	$colora= color[0];
-	$colorb= color[1];
-	$colorc= color[2];
-	$colord= color[3];
-	$colore= color[4];
-	$colorf= color[5];
-	
-	$colora2= color[6];
-	$colorb2= color[7];
-	$colorc2= color[8];
-	$colord2= color[9];
-	$colore2= color[10];
-	$colorf2= color[11];
-	
-	$colora3= color[12];
-	$colorb3= color[13];
-	$colorc3= color[14];
-	$colord3= color[15];
-	$colore3= color[16];
-	$colorf3= color[17];
-	
-	$colort = color[18];
-	$fontSize = [19];
-	
-}
-else{
 	$colora= "#ababab";
 $colorb= "#bcbcbc";
 $colorc= "#cdcdcd";
@@ -78,7 +44,7 @@ $colorf3= "#f3f3f3";
 
 $colort = "#000000";
 $fontSize = "14";
-} ?>
+?>
 
 
 <p>enter your name and code<br> and solve the puzzle to access your timetable</p>
