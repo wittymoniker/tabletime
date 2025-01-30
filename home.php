@@ -133,8 +133,8 @@ $stmt->fetch();
 $stmt->close();
 ?>
 <p>
-<br><br><h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable on timedelay shift (between posts) <?php echo (string)(6.0 +6.0- 6.0*(-1.0+(1.0+count(explode(";",$votelist))/(1.0+array_sum(explode(";",$votelist))))));?> minutes.</h1><br><br>
-
+<br><br><h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable </h1>on timedelay shift (between posts) <?php echo (string)(6.0 - 6.0*(-1.0+(1.0+count(explode(";",$votelist))/(1.0+array_sum(explode(";",$votelist))))));?> minutes.<br><br>
+</p>
 
 
 

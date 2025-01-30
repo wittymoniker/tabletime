@@ -288,7 +288,7 @@ if ($con->query($sql) === TRUE) {
 echo "Post created. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a>";
 header('Location: home.php');
-sleep(6000 * ((array_sum(($votelist))/(count(($votelist))))));
+sleep(6000 + 6000 * ((array_sum(explode(";",$votelist))/(count(explode(";",$votelist))))));
 
 
                    exit();
