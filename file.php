@@ -266,7 +266,7 @@ $current_directory = 'files/' . (string)($fileID);
                 <a href="createUI.php?directory=<?=$fileID?>"><i class="fa-solid fa-plus"></i></a>
 
 
-            <table class="tabletime">
+            <table >
                 <th>
                     <tr>
                         <td class="selected-column">Name<i class="fa-solid fa-arrow-down-long fa-xs"></i></td>
@@ -278,7 +278,7 @@ $current_directory = 'files/' . (string)($fileID);
                 <tbody>
                     <?php if (isset($_GET['file']) && realpath($current_directory) != realpath($initial_directory)): ?>
                     <tr>
-                        <td colspan="10" class="name"><i class="fa-solid fa-folder"></i><a href="?file=<?=urlencode($_GET['file']) . '/..'?>">...</a></td>
+                        <td colspan="10" class="name"><i class="fa-solid fa-folder"></i><a href="?file=<?=urlencode($_GET['filei']) . '/..'?>">...</a></td>
                     </tr>
                     <?php endif; ?>
                     <?php foreach ($results as $result): ?>

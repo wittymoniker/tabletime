@@ -6,6 +6,7 @@
 
 
 <link href="style.php" rel="stylesheet" type="text/css">
+<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <a href = "register.php"><h2>Register</h2></a>
 		<title>tabletime</title>
 

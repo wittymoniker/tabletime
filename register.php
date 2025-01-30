@@ -1,4 +1,29 @@
 <?php
+
+///*
+
+error_reporting(E_ERROR | E_PARSE);
+$DATABASE_HOST = 'localhost';
+$DATABASE_USER = 'root';
+$DATABASE_PASS = '';
+$DATABASE_NAME = 'tabletime';
+$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+if (mysqli_connect_errno()) {
+	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
+$id = $_SESSION['id'];
+$color;
+$stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
+
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->bind_result($color);
+$stmt->fetch();
+$stmt->close();
+
+//*/
+
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -57,6 +82,7 @@ $fontSize = "14";
 <html class = "tabletime">
 	<head class = "html">
 		<link href="style.php" rel="stylesheet" type="text/css">
+		<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <a href = "login.php"><h2>Login</h2></a>
 		<title>tabletime</title>
 	

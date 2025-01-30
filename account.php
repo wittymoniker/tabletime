@@ -193,7 +193,7 @@ $fontSize = "14";
 								<table><th><h2 align = "center">Your account details are below:</h1></th>
 <tr>
 						<td>pic:</td>
-						<td><?=htmlspecialchars($_SESSION['name'], ENT_QUOTES)?></td>
+						<td><?=htmlspecialchars($_SESSION['files'], ENT_QUOTES)?></td>
 					</tr>
 
 					<tr>
@@ -212,16 +212,15 @@ $fontSize = "14";
 
 <p>
 <a href="colorpick.php"><i class="fas fa-user-circle"></i>Edit Color Formatting</a><br>
-<a href="export.php"><i class="fas fa-user-circle"></i>Export account data</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Export account data</a>
 <a href="usrchange.php"><i class="fas fa-user-circle"></i>Change user/pass/msg</a>
-<a href="import.php"><i class="fas fa-user-circle"></i>Import Account Data</a><br>
-<a href="support.php"><i class="fas fa-user-circle"></i>Delete Account</a>
+<a href="create.php"><i class="fas fa-user-circle"></i>Import Account Data</a><br>
 <form method="POST" <br> IP Tables Mode:<br>
 client <- host -> admin host: 
+<label><br>mode<br></label>
 <input type = "range" name = "hostmode" min = "0" max = "3"default = "<?php echo $clientmode;?>">
 <br>
-<input type = "range" name = "hostmode" min = "0" max = "3"default = "<?php echo $clientmode;?>">
-
+<label><br>IP<br></label>
 <input type = "text" name = "IP" default = "<?php echo $ipa;?>">
 <br><input type = "submit" value = "submit">
 </form>

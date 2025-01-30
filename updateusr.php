@@ -19,6 +19,7 @@ if ( mysqli_connect_errno() ) {
 
 
 
+
 if(isset($_POST["submit"]))
             {
                 $test=$_POST["test"];
@@ -27,6 +28,7 @@ if(isset($_POST["submit"]))
                 $total=$number1+$number2;
                 if ($total==$test)
                 {
+
 
 
 
@@ -50,40 +52,38 @@ if ($stmt->num_rows > 0) {
 		$_SESSION['loggedin'] = TRUE;
 		$_SESSION['name'] = $_POST['username'];
 		$_SESSION['id'] = $id;
-		header('Location: home.php');
-	} else {
+		//header('Location: account.php');
+
+
+        }
+    if (!isset($_POST['username2'], $_POST['password2'], $_POST['email2'])) {
+            exit('Please complete the registration form!');
+    }
+    if (empty($_POST['username2']) || empty($_POST['password2']) || empty($_POST['email2'])) {
+            exit('Please complete the registration form');
+    }
+    
+        if ($stmt = $con->prepare('SELECT username, password, email FROM accounts WHERE id = ?')) {
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+        $stmt->store_result();
+            if ($stmt->num_rows > 0) {
+                    
+                    if ($stmt = $con->prepare('REPLACE INTO accounts (username, password, email) VALUES (?, ?, ?) WHERE (username, password, email) = ($name, $pass, $email))')) {
+                        $password = password_hash($_POST['password2'], PASSWORD_DEFAULT);
+                    $stmt->bind_param('sss', $_POST['username2'], $password, $_POST['email2']);
+            $stmt->execute();
+            $stmt->close();
+            header('Location: account.php');
+        }  else {
 		echo 'Incorrect username and/or password!';
 	}
-} else {
-	echo 'Incorrect username and/or password!';
 }
 
-	$stmt->close();
+exit(); 
+} 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-		
-exit();
-               }
-                else {
-                    echo "<p>
-                                <font color=red 
-                                    font face='arial' 
-                                    size='5pt'>
-                                Invalid captcha entered !
-                                </font>
-                            </p>";
-                     }
-            }
-           
+}
+}
+}    
 ?>
