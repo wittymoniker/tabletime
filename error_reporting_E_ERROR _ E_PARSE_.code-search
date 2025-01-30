@@ -1,0 +1,54 @@
+# Query: error_reporting(E_ERROR | E_PARSE);
+# ContextLines: 1
+
+10 results - 10 files
+
+event.php:
+  6  }
+  7: echo tabletime;
+  8  $DATABASE_HOST = 'localhost';
+
+file.php:
+  16  }
+  17: echo tabletime;
+  18  
+
+forum.php:
+  6  }
+  7: echo tabletime;
+  8  $DATABASE_HOST = 'localhost';
+
+group.php:
+  6  }
+  7: echo tabletime;
+  8  $DATABASE_HOST = 'localhost';
+
+home.php:
+  6  }
+  7: //echo tabletime;
+  8  $DATABASE_HOST = 'localhost';
+
+messages.php:
+  3  
+  4: echo tabletime;
+  5  $DATABASE_HOST = 'localhost';
+
+post.php:
+  6  }
+  7: echo tabletime;
+  8  $DATABASE_HOST = 'localhost';
+
+profile.php:
+  6  }
+  7: echo tabletime;
+  8  $DATABASE_HOST = 'localhost';
+
+register.php:
+  4  
+  5: echo tabletime;
+  6  $DATABASE_HOST = 'localhost';
+
+statsmap.php:
+  6  }
+  7: echo tabletime;
+  8  $DATABASE_HOST = 'localhost';

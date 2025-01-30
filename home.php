@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-error_reporting(E_ERROR | E_PARSE);
+//error_reporting(E_ERROR | E_PARSE);
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -16,7 +16,7 @@ if (mysqli_connect_errno()) {
 ?>
 
 
-<!DOCTYPE html>
+
 <html class = "tabletime">
 <link href="style.php" rel="stylesheet" type="text/css">
 <head class = "html">
