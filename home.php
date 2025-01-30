@@ -106,6 +106,7 @@ $stmt->close();
 
 		
 
+		<img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
 		<h1><br><br>
 		<b><a href="home.php">TABLETIME</a></b></h1>
 <p>

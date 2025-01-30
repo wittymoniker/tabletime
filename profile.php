@@ -88,7 +88,7 @@ $fontSize = "14";
 <nav class = "navtop">
 		<div class = "tabletime">		
 
-		<		<h1><b><a href="home.php">TABLETIME</a></b></h1>
+				<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
@@ -111,6 +111,23 @@ $fontSize = "14";
 <form method ="POST">
 	<h1>PROFILE INSPECTOR</h1>
 	<th><br>
+<br>
+<br><br>
+
+<br><label name ="index">username: </label>"
+<input type = "text" name="userindex" placeholder = "username">"
+</th>
+<tr>
+<br>
+<input type = "submit" value = "submit">
+</tr>
+
+</table>
+</div>
+<div>
+<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
+<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
+
 <br>
 <br><label name ="index">search: </label>"
 <input method ="POST" type = "text" name="index" placeholder = "search terms...">"
@@ -293,26 +310,11 @@ if ($result->num_rows > 0) {
 	</div>
 
 
-	<br><label name ="index">username: </label>"
-<input type = "text" name="userindex" placeholder = "username">"
-</th>
-<tr>
-<br>
-<input type = "submit" value = "submit">
-</tr>
-</form>
-</table>
-</div>
-<div>
 
 
 
-<br><br>
-<form method ="POST">
-<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
-<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
-</form>
-<br>
+
+
 
 
 
