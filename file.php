@@ -14,7 +14,7 @@ $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
-echo tabletime;
+echo "tabletime";
 
 $stmt = $con->prepare('SELECT username, files FROM accounts WHERE id = ?');
 
