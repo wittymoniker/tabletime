@@ -14,15 +14,6 @@ if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 ?>
-
-
-
-<html class = "tabletime">
-<link href="style.php" rel="stylesheet" type="text/css">
-<head class = "html">
-		<meta charset="utf-8">
-		<title>TABLETIME</title>
-<body class = "content">  
 <?php include 'pagination.php';?>
 <?php
 
@@ -101,11 +92,24 @@ $stmt->close();
 
 ?>
 
+<html class = "tabletime">
+<body class = "content">
+
+<head class = "html">
+
+
+
+<link href="style.php" rel="stylesheet" type="text/css">
+
+		<meta charset="utf-8">
+		<title>TABLETIME</title>
+
+
+
 <nav class = "navtop">
 		<div class = "tabletime">		
 
 		
-
 		<img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
 		<h1><br><br>
 		<b><a href="home.php">TABLETIME</a></b></h1>
@@ -136,6 +140,7 @@ $stmt->close();
 <p>
 <br><br><h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable </h1>on timedelay shift (between posts) <?php echo (string)(6.0 - 6.0*(-1.0+(1.0+count(explode(";",$votelist))/(1.0+array_sum(explode(";",$votelist))))));?> minutes.<br><br>
 </p>
+
 
 
 
@@ -719,7 +724,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 
 
 				</p>
-	</body>
+
 
 
 <br>
@@ -732,6 +737,6 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 <a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
 				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a></table>
 </head>
+</body>
 
 </html>
-
