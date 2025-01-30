@@ -282,6 +282,40 @@ if ($result->num_rows > 0) {
 
 		</table>
 		
+
+					
+
+
+
+
+		
+</p>
+	</div>
+
+
+	<br><label name ="index">username: </label>"
+<input type = "text" name="userindex" placeholder = "username">"
+</th>
+<tr>
+<br>
+<input type = "submit" value = "submit">
+</tr>
+</form>
+</table>
+</div>
+<div>
+
+
+
+<br><br>
+<form method ="POST">
+<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
+<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
+</form>
+<br>
+
+
+
 <?php
 		
 		
@@ -328,40 +362,6 @@ if(isset($_POST['submit'])){
 }
 }}}
 ?>
-					
-<br><label name ="index">username: </label>"
-<input type = "text" name="userindex" placeholder = "username">"
-</th>
-<tr>
-<br>
-<input type = "submit" value = "submit">
-</tr>
-</form>
-</table>
-</div>
-<div>
-
-
-
-<br><br>
-<form method ="POST">
-<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
-<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
-</form>
-<br>
-
-
-
-		
-</p>
-	</div>
-
-
-
-
-
-
-
 
 
 

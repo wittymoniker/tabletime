@@ -40,7 +40,7 @@ CREATE TABLE `accounts` (
   `tags` text NOT NULL,
   `messages` text NOT NULL,
   `colors` text NOT NULL,
-  `votes` tinytext NOT NULL,
+  `votes` text NOT NULL,
   `files` text NOT NULL,
   `hostips` text NOT NULL,
   `hostmode` int(11) NOT NULL,

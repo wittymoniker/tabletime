@@ -19,11 +19,11 @@ if (mysqli_connect_errno()) {
 
 
 
-$stmt = $con->prepare('SELECT password, email, username FROM accounts WHERE id = ?');
+$stmt = $con->prepare('SELECT password, email, username, votes FROM accounts WHERE id = ?');
 
 $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
-$stmt->bind_result($password, $email, $username);
+$stmt->bind_result($password, $email, $username, $votelist);
 $stmt->fetch();
 $stmt->close();
 
@@ -284,19 +284,11 @@ if ($con->query($sql) === TRUE) {
 
 
 
-$stmt->close();
-$con->close();
-$color;
-$stmt = $con->prepare('SELECT votes FROM accounts WHERE id =?');
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$stmt->bind_result($votes);
-$stmt->fetch();
-$stmt->close();
+
 echo "Post created. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a>";
 header('Location: home.php');
-sleep(6000 * );
+sleep(6000 * ((array_sum(($votelist))/(count(($votelist))))));
 
 
                    exit();

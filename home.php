@@ -123,10 +123,17 @@ $stmt->close();
 
 
 			</div>
-</nav>
+</nav><?php
+$stmt = $con->prepare('SELECT password, email, username, votes FROM accounts WHERE id = ?');
 
+$stmt->bind_param('i', $_SESSION['id']);
+$stmt->execute();
+$stmt->bind_result($password, $email, $username, $votelist);
+$stmt->fetch();
+$stmt->close();
+?>
 <p>
-<br><br><h1><?=htmlspecialchars($_SESSION['name'], ENT_QUOTES)?>'s timetable</h1><br><br>
+<br><br><h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable on timedelay (between posts) <?php echo (string)(6.0 - 6.0*(-1.0+(1.0+count(explode(";",$votelist))/(1.0+array_sum(explode(";",$votelist))))));?> minutes.</h1><br><br>
 
 
 
