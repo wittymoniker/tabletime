@@ -2,7 +2,6 @@
 
 ///*
 
-error_reporting(E_ERROR | E_PARSE);
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
