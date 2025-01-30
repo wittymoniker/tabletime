@@ -286,11 +286,17 @@ if ($con->query($sql) === TRUE) {
 
 $stmt->close();
 $con->close();
-
+$color;
+$stmt = $con->prepare('SELECT votes FROM accounts WHERE id =?');
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->bind_result($votes);
+$stmt->fetch();
+$stmt->close();
 echo "Post created. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a>";
 header('Location: home.php');
-sleep(6000);
+sleep(6000 * );
 
 
                    exit();

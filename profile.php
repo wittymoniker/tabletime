@@ -135,6 +135,7 @@ if ($_POST['submit']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts WHERE (* LIKE $index) BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
 	$result = $mysqli->query($sql);
+	$table = $result;
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -188,7 +189,55 @@ if ($result->num_rows > 0) {
 	(($row["files"]),
 	($row["delay"]),
 	($row["ip"]),	';
-	$result = $mysqli->query($sql);
+	$result = $mysqli->query($sql);?>
+	
+	<meta charset="utf-8">
+					
+	<br>
+		<table class = "list">
+			<tc>
+				<tr>username</tr>
+				<tr>aboutcontent</tr>
+				<tr>tags</tr>
+				<tr>posts</tr>
+				<tr>events</tr>
+				<tr>groups</tr>
+				<tr>forums</tr>
+				<tr>votes</tr>
+				<tr>comments</tr>
+				<tr>friends</tr>
+				<tr>files</tr>
+				<tr>delay</tr>
+				<tr>ip</tr>
+				</tc>
+				<tc>
+								
+
+			<?php 
+			$result = $friendslist;
+			$row= $result;
+			if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()){ ?>
+
+			<a href = "forum.php?index='<?php echo $row[$_POST['index']];?>'"><tr><?php echo $row['name']; ?></tr></a>
+				<tr><b><?php echo ($row['username']); ?></b> </tr>
+				<tr><b><?php echo $row['aboutcontent']; ?></b> </tr>
+						<tr><b><?php echo $row['tags']; ?></b></tr>
+						<tr><b><?php echo $row['posts']; ?></b> </tr>
+				<tr><b><?php echo $row['events']; ?></b> </tr>
+				<tr><b><?php echo $row['groups']; ?></b></tr>
+						<tr><b><?php echo $row['forums']; ?></b> </tr>
+				<tr><b><?php echo $row['votes']; ?></b> </tr>
+				<tr><b><?php echo $row['comments']; ?></b></tr>
+						<tr><b><?php echo $row['friends']; ?></b> </tr>
+				<tr><b><?php echo $row['files']; ?></b> </tr>
+				<tr><b><?php echo $row['delay']; ?></b></tr>
+						<tr><?php echo $row['ip']; ?></tr>
+			</tc>
+
+		</table>
+<?php
+				
     }
 
 } else {
@@ -207,7 +256,38 @@ if ($result->num_rows > 0) {
 	($row["content"]),
 	($row["file"])),
 	($row["dt"])';
-	$result = $mysqli->query($sql);
+	$result = $mysqli->query($sql);?>
+	<meta charset="utf-8">
+					
+	<body>
+		<table class = "list">
+			<tr>
+				<th>name</th>
+				<th>topic</th>
+				<th>content</th>
+				<th>file</th>
+				<th>dt</th>
+								</tr>
+			<?php $result = $postslist;?><?php
+			$row = $result;?>
+			<?php if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()){ ?>
+			<tr>
+				<td><?php echo $row['name']; ?></td>
+				<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
+				<td><?php echo $row['content']; }}?></td>
+				<td><?php echo $row['file']; ?></td>
+				<td><b><?php echo $row['dt']; echo $row['post']; ?></b> <br> </td>
+			</tr>
+
+		</table>
+		
+<?php
+		
+		
+
+	
+
     }
 	
 
@@ -246,7 +326,7 @@ if(isset($_POST['submit'])){
 		}
 	}
 }
-}
+}}}
 ?>
 					
 <br><label name ="index">username: </label>"
@@ -263,53 +343,6 @@ if(isset($_POST['submit'])){
 
 
 
-			<meta charset="utf-8">
-					
-		<br>
-			<table class = "list">
-				<tc>
-					<tr>username</tr>
-					<tr>aboutcontent</tr>
-					<tr>tags</tr>
-					<tr>posts</tr>
-					<tr>events</tr>
-					<tr>groups</tr>
-					<tr>forums</tr>
-					<tr>votes</tr>
-					<tr>comments</tr>
-					<tr>friends</tr>
-					<tr>files</tr>
-					<tr>delay</tr>
-					<tr>ip</tr>
-					</tc>
-					<tc>
-									
-
-				<?php 
-				$result = $friendslist;
-				$row= $result;
-				if ($result->num_rows > 0) {
-					while ($row = $result->fetch_assoc()){ ?>
-
-				<a href = "forum.php?index='<?php echo $row[$_POST['index']];?>'"><tr><?php echo $row['name']; ?></tr></a>
-					<tr><b><?php echo ($row['username']); ?></b> </tr>
-					<tr><b><?php echo $row['aboutcontent']; ?></b> </tr>
-							<tr><b><?php echo $row['tags']; ?></b></tr>
-							<tr><b><?php echo $row['posts']; ?></b> </tr>
-					<tr><b><?php echo $row['events']; ?></b> </tr>
-					<tr><b><?php echo $row['groups']; ?></b></tr>
-							<tr><b><?php echo $row['forums']; ?></b> </tr>
-					<tr><b><?php echo $row['votes']; ?></b> </tr>
-					<tr><b><?php echo $row['comments']; ?></b></tr>
-							<tr><b><?php echo $row['friends']; ?></b> </tr>
-					<tr><b><?php echo $row['files']; ?></b> </tr>
-					<tr><b><?php echo $row['delay']; ?></b></tr>
-							<tr><?php echo $row['ip']; }}?></tr>
-				</tc>
-
-			</table>
-
-					?>
 <br><br>
 <form method ="POST">
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
@@ -319,65 +352,7 @@ if(isset($_POST['submit'])){
 
 
 
-			<meta charset="utf-8">
-					
-		<body>
-			<table class = "list">
-				<tr>
-					<th>name</th>
-					<th>topic</th>
-					<th>content</th>
-					<th>file</th>
-					<th>dt</th>
-									</tr>
-				<?php $result = $postslist; $row = $result;?>
-				<?php if ($result->num_rows > 0) {
-					while ($row = $result->fetch_assoc()){ ?>
-				<tr>
-					<td><?php echo $row['name']; ?></td>
-					<td><b><?php echo $row['title']; echo $row['post']; ?></b> <br> </td>
-					<td><?php echo $row['content']; }}?></td>
-					<td><?php echo $row['file']; ?></td>
-					<td><b><?php echo $row['dt']; echo $row['post']; ?></b> <br> </td>
-				</tr>
-
-			</table>
-			
-
-			
-			<?php if (ceil($total_pages / ($num_results_on_page)) > 0): ?>
-			<ul class="pagination">
-				<?php if ($page > 1): ?>
-				<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
-				<?php endif; ?>
-
-				<?php if ($page > 3): ?>
-				<li class="start"><a href="pagination.php?page=1">1</a></li>
-				<li class="dots">...</li>
-				<?php endif; ?>
-
-				<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
-				<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
-
-				<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
-
-				<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
-				<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
-
-				<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
-				<li class="dots">...</li>
-				<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
-				<?php endif; ?>
-
-				<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
-				<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
-				<?php endif; ?>
-			</ul>
-			<?php endif; ?>
-		</body>
-	
 		
-
 </p>
 	</div>
 

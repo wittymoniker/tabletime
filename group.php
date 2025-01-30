@@ -9,6 +9,7 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
+
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
@@ -122,7 +123,8 @@ $fontSize = "14";
 </form><br>
 </table>
 </div>
-<table>
+<table><?php include 'pagination.php';?>
+
 	<?php
 $index = $_POST['index'];
 if($_POST['submit']){
@@ -145,13 +147,8 @@ if($_POST['submit']){
 		($row["type"])),
 		($row["id"]))';
 		$result = $mysqli->query($sql);
-		}
-	
-	} else {
-		echo "0 posts";
-	}
-}
-?>
+
+		?>
 	<th>name</th>
 					<th>topic</th>
 					<th>content</th>
@@ -187,7 +184,42 @@ if($_POST['submit']){
 
 
 			<?php
-$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+		}
+		if (ceil($total_pages / $num_results_on_page) > 0): ?>
+			<ul class="pagination">
+				<?php if ($page > 1): ?>
+				<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
+				<?php endif; ?>
+
+				<?php if ($page > 3): ?>
+				<li class="start"><a href="pagination.php?page=1">1</a></li>
+				<li class="dots">...</li>
+				<?php endif; ?>
+
+				<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
+				<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
+
+				<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+
+				<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+				<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+
+				<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+				<li class="dots">...</li>
+				<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
+				<?php endif; ?>
+
+				<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+				<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
+				<?php endif; ?>
+			</ul>
+			<?php endif; ?><?php
+	} else {
+		echo "0 posts";
+	}
+}
+
+$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
 
 if ($mysqli->connect_error) {
@@ -222,24 +254,8 @@ if ($result->num_rows > 0) {
 	($row["posts"]),
 	($row["members"]))';
 	$result = $mysqli->query($sql);
-    }
-
-} else {
-    echo "0 posts";
-}
-
-
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
-$num_results_on_page = 16 ;
-
-if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
-
-	$calc_page = ($page - 1) * $num_results_on_page;
-	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
-	$stmt->execute(); 
 	
-}
-?>
+	?>
 			<meta charset="utf-8">
 					
 		<body>
@@ -264,35 +280,53 @@ if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
 			
 
 			
-			<?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
-			<ul class="pagination">
-				<?php if ($page > 1): ?>
-				<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
-				<?php endif; ?>
-
-				<?php if ($page > 3): ?>
-				<li class="start"><a href="pagination.php?page=1">1</a></li>
-				<li class="dots">...</li>
-				<?php endif; ?>
-
-				<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
-				<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
-
-				<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
-
-				<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
-				<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
-
-				<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
-				<li class="dots">...</li>
-				<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
-				<?php endif; ?>
-
-				<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
-				<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
-				<?php endif; ?>
-			</ul>
+			<?php
+    }
+	if (ceil($total_pages / $num_results_on_page) > 0): ?>
+		<ul class="pagination">
+			<?php if ($page > 1): ?>
+			<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
 			<?php endif; ?>
+
+			<?php if ($page > 3): ?>
+			<li class="start"><a href="pagination.php?page=1">1</a></li>
+			<li class="dots">...</li>
+			<?php endif; ?>
+
+			<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
+			<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
+
+			<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+
+			<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+			<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+
+			<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+			<li class="dots">...</li>
+			<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
+			<?php endif; ?>
+
+			<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+			<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
+			<?php endif; ?>
+		</ul>
+		<?php endif; ?><?php
+} else {
+    echo "0 posts";
+}
+
+
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+$num_results_on_page = 16 ;
+
+if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
+
+	$calc_page = ($page - 1) * $num_results_on_page;
+	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
+	$stmt->execute(); 
+	
+}
+?>
 		</body>
 
 
@@ -312,7 +346,16 @@ if(isset($_POST['submit'])){
 
     }
 }
-?><br>
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+$num_results_on_page = 16 ;
+
+if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
+
+	$calc_page = ($page - 1) * $num_results_on_page;
+	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
+	$stmt->execute(); 
+	
+}?><br>
 </p>
 		</div>
 

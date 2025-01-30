@@ -301,7 +301,31 @@ $current_directory = 'files/' . (string)($fileID);
         </div>
         </div>  
                 
-                                 
+        <form>
+<label name ="rate"> <br>leave rating (-/+) karma/moksha (type username or tag into index bar): </label>"
+<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
+</form><?php
+if(isset($_POST['submit'])){
+    $votetarget = $_POST['filei'];
+    $id = $_SESSION['id'];
+    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+    if(isset($_POST['perspective'])){
+        $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
+        $result = $mysqli->query($sql);
+
+    }
+}
+if(isset($_POST['submit'])){
+    $votetarget = $_POST['filei'];
+    $id = $_SESSION['id'];
+    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+    if(isset($_POST['perspective'])){
+        $sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
+        $result = $mysqli->query($sql);
+
+    }
+}
+?>          
                                        
 </body>
 </head>

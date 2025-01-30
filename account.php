@@ -93,6 +93,16 @@ $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
 $stmt->close();
+
+
+$fileslist;
+$stmt = $con->prepare('SELECT files FROM accounts WHERE id =?');
+
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->bind_result($fileslist);
+$stmt->fetch();
+$stmt->close();
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -193,7 +203,7 @@ $fontSize = "14";
 								<table><th><h2 align = "center">Your account details are below:</h1></th>
 <tr>
 						<td>pic:</td>
-						<td><?=htmlspecialchars($_SESSION['files'], ENT_QUOTES)?></td>
+						<td><?php echo htmlspecialchars($fileslist, ENT_QUOTES)?></td>
 					</tr>
 
 					<tr>

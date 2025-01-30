@@ -14,7 +14,7 @@ if (mysqli_connect_errno()) {
 
 
 
-$colora= #ababab";
+$colora= "#ababab";
 $colorb= "#bcbcbc";
 $colorc= "#cdcdcd";
 $colord= "#dcdcdc";

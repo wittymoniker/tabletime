@@ -119,93 +119,393 @@ $fontSize = "14";
 <tr>
 <br>
 <input method ="POST" type = "submit" value = "submit">
+<th><br><label name ="range">private/public/global range: </label>"
+<?php 
+$viewselect = (float)($_POST['view'] / 256.0)+0.0; 
+$viewtag="public";
+if ($viewselect <=-0.5){
+$viewtag="private";
+}else{
+	if ($viewselect >=0.5){
+		$viewtag="global";
+	}else{
+		$viewtag="public";
+	}
+		//	$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag ';
+
+}?>
 </tr>
 </form><br>
 </table>
 </div>
-<table>
-	<?php
-$index = $_POST['index'];
-if($_POST['submit']){
-
-	$index = $_POST['index'];
-	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
-	$result = $mysqli->query($sql);
-	$feature;
-	if ($result->num_rows > 0) {
-		while($row = $result->fetch_assoc()) {
-		$sql = 'INSERT INTO $feature VALUES
-		(($row["name"]),
-		($row["title"]),
-		($row["content"]),
-		($row["dt"])),
-		($row["file"]);
-		(($row["tags"]),
-		($row["recipients"]),
-		($row["comments"]),
-		($row["scope"])),
-		($row["type"]))';
-		$result = $mysqli->query($sql);
-		}
+<form method ="POST">
+	<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
+	<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
+	</form><?php
+	if(isset($_POST['submit'])){
+		$uname = $_POST['index'];
+		$id = $_SESSION['id'];
+		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+		if(isset($_POST['perspective'])){
+			$sql = "UPDATE accounts ADD $vote TO votes WHERE username = $uname";
+			$result = $mysqli->query($sql);
 	
-	} else {
-		echo "0 posts";
+		}
 	}
-}
-?>
-	<th>name</th>
-					<th>topic</th>
+	
+	if(isset($_POST['submit'])){
+		$votetarget = $_POST['index'];
+		$id = $_SESSION['id'];
+		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+		if(isset($_POST['perspective'])){
+			$sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
+			$result = $mysqli->query($sql);
+	
+		}
+	}
+	?>
+	<br><br><br>
+	<div>
+<table><th>topic</th>
 					<th>content</th>
 					<th>file</th>
 					<th>dt</th>
 					<th>dt</th>
+	<?php
+$index = $_POST['index'];
+if($viewtag!="public"){
+if($viewtag ="private"){
+	if($_POST['submit']){
+
+		$index = $_POST['index'];
+		$sql = 'SELECT * FROM posts WHERE (* LIKE $index) WHERE type = "private" BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+		$result = $mysqli->query($sql);
+		$feature;
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+			$sql = 'INSERT INTO $feature VALUES
+			(($row["name"]),
+			($row["title"]),
+			($row["content"]),
+			($row["dt"])),
+			($row["file"]);
+			(($row["tags"]),
+			($row["recipients"]),
+			($row["comments"]),
+			($row["scope"])),
+			($row["type"]))';
+			$result = $mysqli->query($sql);?>
+			<th>name</th>
+						
+						<tr>
+						<td><?php echo $feature[0];?>
+		</td>
+						<td><b><?php echo $feature[1];?></b> <br> </td>
+						<td><?php echo $feature[2];?></td>
+						<td><?php echo $feature[3];?></td>
+						<td><b><?php echo $feature[4];?></b> <br> </td>
+					</tr>
+					<th>tags</th>
+					<th>recipients</th>
+					<th>comments</th>
+					<th>scope</th>
+					<th>type</th>
 					<tr>
-					<td><?php echo $feature[0];?>
-	</td>
-					<td><b><?php echo $feature[1];?></b> <br> </td>
-					<td><?php echo $feature[2];?></td>
-					<td><?php echo $feature[3];?></td>
-					<td><b><?php echo $feature[4];?></b> <br> </td>
-				</tr>
-				<th>tags</th>
-				<th>recipients</th>
-				<th>comments</th>
-				<th>scope</th>
-				<th>type</th>
+						<td><?php echo $feature[5];?></td>
+						<td><b><?php echo $feature[6];?></b> <br> </td>
+						<td><?php echo $feature[7];?></td>
+						<td><?php echo $feature[8];?></td>
+						<td><b><?php echo $feature[9];?></b> <br> </td>
+					</tr><?php
+			}
+			if (ceil($total_pages / $num_results_on_page) > 0): ?>
+				<ul class="pagination">
+					<?php if ($page > 1): ?>
+					<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
+					<?php endif; ?>
+	
+					<?php if ($page > 3): ?>
+					<li class="start"><a href="pagination.php?page=1">1</a></li>
+					<li class="dots">...</li>
+					<?php endif; ?>
+	
+					<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
+					<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
+	
+					<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+	
+					<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+					<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+	
+					<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+					<li class="dots">...</li>
+					<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
+					<?php endif; ?>
+	
+					<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+					<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
+					<?php endif; ?>
+				</ul>
+				<?php endif; ?>
+			</body><?php
+		} else {
+			echo "0 posts";
+		}
+	}
+	?>
+		
+		 
+	
+
+	
+	
+	<?php
+	$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+	
+	
+	if ($mysqli->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$uname = $_SESSION['name'];
+	/////////
+	/////////
+	///////////
+	
+	$sql = 'SELECT * FROM posts WHERE accounts(posts(name)) LIKE accounts($uname) WHERE type = "private" BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+	/////////////
+	///////////
+	///////////
+	//////////
+	
+	$result = $mysqli->query($sql);
+	$friendslist;
+	$postslist;
+	if ($mysqli->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$uname = $_SESSION['name'];
+	$sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+	$result = $mysqli->query($sql);
+	$friendslist;
+	$postslist;
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+		$sql = 'INSERT INTO $friendslist VALUES
+		(($row["friends"]),
+		($row["tags"]),
+		($row["media"]),
+		($row["posts"])),
+		($row["username"])';
+		
+		$result = $mysqli->query($sql);?>
+		
+	?>
+	<meta charset="utf-8">
+			
+<body>
+	<table class = "list">
+		<tr>
+			<th>about</th>
+			<th>tags</th>
+			<th>media</th>
+			<th>posts</th>
+			<th>username</th>
+							</tr>
+
+		<?php if ($result->num_rows > 0) {
+			while ($row = $result->fetch_assoc()){ ?>
+		<tr>
+			<td><?php echo $row['friends'||'recipients']; ?></td>
+			<td><b><?php echo $row['tags']; ?></b> </td>
+			<td><b><?php echo $row['media' && ['content' || 'aboutcontent']]; ?></b> </td>
+			<td><?php echo $row['name'||'username']; ?></td>
+			<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; }}?></td></a>
+		</tr><?php
+		}?>
+		</table>
+				
+	
+				
+				<?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
+				<ul class="pagination">
+					<?php if ($page > 1): ?>
+					<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
+					<?php endif; ?>
+	
+					<?php if ($page > 3): ?>
+					<li class="start"><a href="pagination.php?page=1">1</a></li>
+					<li class="dots">...</li>
+					<?php endif; ?>
+	
+					<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
+					<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
+	
+					<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+	
+					<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+					<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+	
+					<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+					<li class="dots">...</li>
+					<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
+					<?php endif; ?>
+	
+					<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+					<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
+					<?php endif; ?>
+				</ul>
+				<?php endif; ?>
+			</body>
+	<?php
+		$result = $mysqli->query($sql);
+	} else {
+		echo "0 friends";
+	}
+	$sql = 'SELECT posts FROM accounts LIKE  $friendslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+	$result = $mysqli->query($sql);
+	
+	
+	
+	
+	$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+	$num_results_on_page = 16 ;
+	
+	if ($stmt = $mysqli->prepare('SELECT * FROM  posts LIKE $friendslist || $postslist WHERE type = "private" BY ((array_sum(posts(votes))/(count(posts(votes))) DESC')) {
+	
+		$calc_page = ($page - 1) * $num_results_on_page;
+		$stmt->bind_param('ii', $calc_page, $num_results_on_page);
+		$stmt->execute(); 
+		
+	}
+	else {
+		echo "0 posts";
+	}?>
+	
+	
+	
+				
+	
+	
+	
+	
+			<br><br>
+	<br>
+	
+	
+	
+	
+	
+	</p>
+			</div>
+			<?php
+}
+if($viewtag= "global"){
+	if($_POST['submit']){
+
+$index = $_POST['index'];
+$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  WHERE type = "global" BY ((array_sum(posts(votes))/(count(posts(votes)))  DESC';
+$result = $mysqli->query($sql);
+$feature;
+if ($result->num_rows > 0) {
+	while($row = $result->fetch_assoc()) {
+	$sql = 'INSERT INTO $feature VALUES
+	(($row["name"]),
+	($row["title"]),
+	($row["content"]),
+	($row["dt"])),
+	($row["file"]);
+	(($row["tags"]),
+	($row["recipients"]),
+	($row["comments"]),
+	($row["scope"])),
+	($row["type"]))';
+	$result = $mysqli->query($sql);?>
+	<th>name</th>
+				
 				<tr>
-					<td><?php echo $feature[5];?></td>
-					<td><b><?php echo $feature[6];?></b> <br> </td>
-					<td><?php echo $feature[7];?></td>
-					<td><?php echo $feature[8];?></td>
-					<td><b><?php echo $feature[9];?></b> <br> </td>
-				</tr>
-</table><br><br><br>
-	 
+				<td><?php echo $feature[0];?>
+</td>
+				<td><b><?php echo $feature[1];?></b> <br> </td>
+				<td><?php echo $feature[2];?></td>
+				<td><?php echo $feature[3];?></td>
+				<td><b><?php echo $feature[4];?></b> <br> </td>
+			</tr>
+			<th>tags</th>
+			<th>recipients</th>
+			<th>comments</th>
+			<th>scope</th>
+			<th>type</th>
+			<tr>
+				<td><?php echo $feature[5];?></td>
+				<td><b><?php echo $feature[6];?></b> <br> </td>
+				<td><?php echo $feature[7];?></td>
+				<td><?php echo $feature[8];?></td>
+				<td><b><?php echo $feature[9];?></b> <br> </td>
+			</tr>
+			<?php
+	}
+	 if (ceil($total_pages / $num_results_on_page) > 0): ?>
+		<ul class="pagination">
+			<?php if ($page > 1): ?>
+			<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
+			<?php endif; ?>
+
+			<?php if ($page > 3): ?>
+			<li class="start"><a href="pagination.php?page=1">1</a></li>
+			<li class="dots">...</li>
+			<?php endif; ?>
+
+			<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
+			<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
+
+			<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+
+			<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+			<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+
+			<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+			<li class="dots">...</li>
+			<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
+			<?php endif; ?>
+
+			<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+			<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
+			<?php endif; ?>
+		</ul>
+		<?php endif; ?>
+<php?
+} else {
+	echo "0 posts";
+}
+}
+?>
+
+ 
 
 <form method ="POST">
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
 if(isset($_POST['submit'])){
-    $uname = $_POST['index'];
-    $id = $_SESSION['id'];
-    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
-    if(isset($_POST['perspective'])){
-        $sql = "UPDATE accounts ADD $vote TO votes WHERE username = $uname";
-        $result = $mysqli->query($sql);
+$uname = $_POST['index'];
+$id = $_SESSION['id'];
+$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+if(isset($_POST['perspective'])){
+	$sql = "UPDATE accounts ADD $vote TO votes WHERE username = $uname";
+	$result = $mysqli->query($sql);
 
-    }
+}
 }
 
 if(isset($_POST['submit'])){
-    $votetarget = $_POST['index'];
-    $id = $_SESSION['id'];
-    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
-    if(isset($_POST['perspective'])){
-        $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
-        $result = $mysqli->query($sql);
+$votetarget = $_POST['index'];
+$id = $_SESSION['id'];
+$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+if(isset($_POST['perspective'])){
+	$sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
+	$result = $mysqli->query($sql);
 
-    }
+}
 }
 ?>
 <br><br><br>
@@ -217,14 +517,14 @@ $mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
 
 
 if ($mysqli->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+die("Connection failed: " . $conn->connect_error);
 }
 $uname = $_SESSION['name'];
 /////////
 /////////
 ///////////
 
-$sql = 'SELECT * FROM posts WHERE accounts(posts(name)) LIKE accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+$sql = 'SELECT * FROM posts WHERE accounts(posts(name)) LIKE accounts($uname) WHERE type = "global" BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 /////////////
 ///////////
 ///////////
@@ -234,7 +534,7 @@ $result = $mysqli->query($sql);
 $friendslist;
 $postslist;
 if ($mysqli->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+die("Connection failed: " . $conn->connect_error);
 }
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
@@ -242,20 +542,20 @@ $result = $mysqli->query($sql);
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-	$sql = 'INSERT INTO $friendslist VALUES
-	(($row["friends"]),
-	($row["tags"]),
-	($row["media"]),
-	($row["posts"])),
-	($row["username"])';
-	$result = $mysqli->query($sql);
-    }
-	$sql = 'INSERT INTO $friendslist VALUES
-	($row[$_POST["index"]])';
-	$result = $mysqli->query($sql);
+while($row = $result->fetch_assoc()) {
+$sql = 'INSERT INTO $friendslist VALUES
+(($row["friends"]),
+($row["tags"]),
+($row["media"]),
+($row["posts"])),
+($row["username"])';
+$result = $mysqli->query($sql);
+}
+$sql = 'INSERT INTO $friendslist VALUES
+($row[$_POST["index"]])';
+$result = $mysqli->query($sql);
 } else {
-    echo "0 friends";
+echo "0 friends";
 }
 $sql = 'SELECT posts FROM accounts LIKE  $friendslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $result = $mysqli->query($sql);
@@ -266,81 +566,81 @@ $result = $mysqli->query($sql);
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM  posts LIKE $friendslist || $postslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM  posts LIKE $friendslist || $postslist WHERE type = "global" BY ((array_sum(posts(votes))/(count(posts(votes))) DESC')) {
 
-	$calc_page = ($page - 1) * $num_results_on_page;
-	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
-	$stmt->execute(); 
-	
+$calc_page = ($page - 1) * $num_results_on_page;
+$stmt->bind_param('ii', $calc_page, $num_results_on_page);
+$stmt->execute(); 
+
 }
 else {
-    echo "0 posts";
+echo "0 posts";
 }
 
 
 ?>
-			<meta charset="utf-8">
-					
-		<body>
-			<table class = "list">
-				<tr>
-					<th>about</th>
-					<th>tags</th>
-					<th>media</th>
-					<th>posts</th>
-					<th>username</th>
-									</tr>
+		<meta charset="utf-8">
+				
+	<body>
+		<table class = "list">
+			<tr>
+				<th>about</th>
+				<th>tags</th>
+				<th>media</th>
+				<th>posts</th>
+				<th>username</th>
+								</tr>
 
-				<?php if ($result->num_rows > 0) {
-					while ($row = $result->fetch_assoc()){ ?>
-				<tr>
-					<td><?php echo $row['friends'||'recipients']; ?></td>
-					<td><b><?php echo $row['tags']; ?></b> </td>
-					<td><b><?php echo $row['media' && ['content' || 'aboutcontent']]; ?></b> </td>
-					<td><?php echo $row['name'||'username']; ?></td>
-					<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; }}?></td></a>
-				</tr>
+			<?php if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()){ ?>
+			<tr>
+				<td><?php echo $row['friends'||'recipients']; ?></td>
+				<td><b><?php echo $row['tags']; ?></b> </td>
+				<td><b><?php echo $row['media' && ['content' || 'aboutcontent']]; ?></b> </td>
+				<td><?php echo $row['name'||'username']; ?></td>
+				<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; }}?></td></a>
+			</tr>
 
-			</table>
-			
-
-			
-			<?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
-			<ul class="pagination">
-				<?php if ($page > 1): ?>
-				<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
-				<?php endif; ?>
-
-				<?php if ($page > 3): ?>
-				<li class="start"><a href="pagination.php?page=1">1</a></li>
-				<li class="dots">...</li>
-				<?php endif; ?>
-
-				<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
-				<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
-
-				<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
-
-				<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
-				<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
-
-				<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
-				<li class="dots">...</li>
-				<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
-				<?php endif; ?>
-
-				<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
-				<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
-				<?php endif; ?>
-			</ul>
+		</table>
+		
+		<?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
+		<ul class="pagination">
+			<?php if ($page > 1): ?>
+			<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
 			<?php endif; ?>
-		</body>
+
+			<?php if ($page > 3): ?>
+			<li class="start"><a href="pagination.php?page=1">1</a></li>
+			<li class="dots">...</li>
+			<?php endif; ?>
+
+			<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
+			<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
+
+			<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+
+			<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+			<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+
+			<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+			<li class="dots">...</li>
+			<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
+			<?php endif; ?>
+
+			<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+			<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
+			<?php endif; ?>
+		</ul>
+		<?php endif; ?>
+		
+		
+	</body>
 
 
 
 
 
-		<br><br>
+	<br><br>
 <br>
 
 
@@ -348,7 +648,231 @@ else {
 
 
 </p>
-		</div>
+	</div>
+	<?php		
+}
+}else{
+
+	if($_POST['submit']){
+
+		$index = $_POST['index'];
+		$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+		$result = $mysqli->query($sql);
+		$feature;
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+			$sql = 'INSERT INTO $feature VALUES
+			(($row["name"]),
+			($row["title"]),
+			($row["content"]),
+			($row["dt"])),
+			($row["file"]);
+			(($row["tags"]),
+			($row["recipients"]),
+			($row["comments"]),
+			($row["scope"])),
+			($row["type"]))';
+			$result = $mysqli->query($sql);?>
+			<th>name</th>
+						
+						<tr>
+						<td><?php echo $feature[0];?>
+		</td>
+						<td><b><?php echo $feature[1];?></b> <br> </td>
+						<td><?php echo $feature[2];?></td>
+						<td><?php echo $feature[3];?></td>
+						<td><b><?php echo $feature[4];?></b> <br> </td>
+					</tr>
+					<th>tags</th>
+					<th>recipients</th>
+					<th>comments</th>
+					<th>scope</th>
+					<th>type</th>
+					<tr>
+						<td><?php echo $feature[5];?></td>
+						<td><b><?php echo $feature[6];?></b> <br> </td>
+						<td><?php echo $feature[7];?></td>
+						<td><?php echo $feature[8];?></td>
+						<td><b><?php echo $feature[9];?></b> <br> </td>
+					</tr><?php
+			}
+		
+		} else {
+			echo "0 posts";
+		}
+	}
+	?>
+	
+	<form method ="POST">
+	<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
+	<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
+	</form><?php
+	if(isset($_POST['submit'])){
+		$uname = $_POST['index'];
+		$id = $_SESSION['id'];
+		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+		if(isset($_POST['perspective'])){
+			$sql = "UPDATE accounts ADD $vote TO votes WHERE username = $uname";
+			$result = $mysqli->query($sql);
+	
+		}
+	}
+	
+	if(isset($_POST['submit'])){
+		$votetarget = $_POST['index'];
+		$id = $_SESSION['id'];
+		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+		if(isset($_POST['perspective'])){
+			$sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
+			$result = $mysqli->query($sql);
+	
+		}
+	}
+	?>
+	<br><br><br>
+	<div>
+	
+	
+	<?php
+	$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
+	
+	
+	if ($mysqli->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$uname = $_SESSION['name'];
+	/////////
+	/////////
+	///////////
+	
+	$sql = 'SELECT * FROM posts WHERE accounts(posts(name)) LIKE accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+	/////////////
+	///////////
+	///////////
+	//////////
+	
+	$result = $mysqli->query($sql);
+	$friendslist;
+	$postslist;
+	if ($mysqli->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$uname = $_SESSION['name'];
+	$sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+	$result = $mysqli->query($sql);
+	$friendslist;
+	$postslist;
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+		$sql = 'INSERT INTO $friendslist VALUES
+		(($row["friends"]),
+		($row["tags"]),
+		($row["media"]),
+		($row["posts"])),
+		($row["username"])';
+		$result = $mysqli->query($sql);
+		}
+		$sql = 'INSERT INTO $friendslist VALUES
+		($row[$_POST["index"]])';
+		$result = $mysqli->query($sql);
+	} else {
+		echo "0 friends";
+	}
+	$sql = 'SELECT posts FROM accounts LIKE  $friendslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+	$result = $mysqli->query($sql);
+	
+	
+	
+	
+	$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+	$num_results_on_page = 16 ;
+	
+	if ($stmt = $mysqli->prepare('SELECT * FROM  posts LIKE $friendslist || $postslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC')) {
+	
+		$calc_page = ($page - 1) * $num_results_on_page;
+		$stmt->bind_param('ii', $calc_page, $num_results_on_page);
+		$stmt->execute(); 
+		
+	}
+	else {
+		echo "0 posts";
+	}
+	
+	
+	?>
+				<meta charset="utf-8">
+						
+			<body>
+				<table class = "list">
+					<tr>
+						<th>about</th>
+						<th>tags</th>
+						<th>media</th>
+						<th>posts</th>
+						<th>username</th>
+										</tr>
+	
+					<?php if ($result->num_rows > 0) {
+						while ($row = $result->fetch_assoc()){ ?>
+					<tr>
+						<td><?php echo $row['friends'||'recipients']; ?></td>
+						<td><b><?php echo $row['tags']; ?></b> </td>
+						<td><b><?php echo $row['media' && ['content' || 'aboutcontent']]; ?></b> </td>
+						<td><?php echo $row['name'||'username']; ?></td>
+						<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; }}?></td></a>
+					</tr>
+	
+				</table>
+				
+	
+				
+				<?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
+				<ul class="pagination">
+					<?php if ($page > 1): ?>
+					<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
+					<?php endif; ?>
+	
+					<?php if ($page > 3): ?>
+					<li class="start"><a href="pagination.php?page=1">1</a></li>
+					<li class="dots">...</li>
+					<?php endif; ?>
+	
+					<?php if ($page-2 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
+					<?php if ($page-1 > 0): ?><li class="page"><a href="pagination.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
+	
+					<li class="currentpage"><a href="pagination.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+	
+					<?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
+					<?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="pagination.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+	
+					<?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+					<li class="dots">...</li>
+					<li class="end"><a href="pagination.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
+					<?php endif; ?>
+	
+					<?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+					<li class="next"><a href="pagination.php?page=<?php echo $page+1 ?>">Next</a></li>
+					<?php endif; ?>
+				</ul>
+				<?php endif; }}}?>
+			</body>
+	
+	
+	
+	
+	
+			<br><br>
+	<br>
+	
+	
+	
+	
+	
+	</p>
+			</div>
+	
+	
+
 
 
 
