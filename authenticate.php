@@ -38,12 +38,12 @@ if(isset($_POST["submit"]))
 if ( !isset($_POST['username'], $_POST['password']) ) {
 		exit('Please fill both the username and password fields!');
 }     				
-if ($stmt = $con->prepare('SELECT username, password, email, id FROM accounts WHERE username = ?')) {
+if ($stmt = $con->prepare('SELECT username, password, email, id, friends, posts, groups, events, colors, votes, forums, tags, aboutcontent, files  FROM accounts WHERE username = ?')) {
 	$stmt->bind_param('s', $_POST['username']);
 	$stmt->execute();
 	$stmt->store_result();
 if ($stmt->num_rows > 0) {
-	$stmt->bind_result($name, $pass, $email, $id);
+	$stmt->bind_result($name, $pass, $email, $id, $friends, $posts, $groups, $events, $colors, $votes, $forums, $tags, $aboutcontent, $files );
 	$stmt->fetch();
 		if (password_verify($_POST['password'], $pass)) {
 		session_regenerate_id();
