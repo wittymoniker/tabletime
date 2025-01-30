@@ -10,6 +10,10 @@
  
 <?php
 session_start();
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
 $min  = 1;
 $max  = 500;
 $num1 = rand( $min, $max );

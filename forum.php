@@ -57,6 +57,20 @@ if (mysqli_connect_errno()) {
 <tr>
 <br>
 <input method ="POST" type = "submit" value = "submit">
+<th><br><label name ="range">private/public/global range: </label>"
+<input method ="POST" type = "range" id = "view" name = "view" min = "-256" max = "256" default = "<?php echo $viewselect * 256.0;?>">
+<?php $viewselect =($_POST['view'] / 256.0); 
+if (viewselect <=-0.5){
+$viewtag="private";
+}else{
+	if (viewselect >=0.5){
+		$viewtag="global";
+	}else{
+		$viewtag="public";
+	}
+		//	$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag ';
+
+}?>
 </tr>
 </form><br>
 </table>
@@ -66,7 +80,7 @@ if (mysqli_connect_errno()) {
 $index = $_POST['index'];
 if($_POST['submit']){
 	$index = $_POST['index'];
-	$sql = 'SELECT * FROM posts WHERE (* LIKE $index) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  AND (type LIKE $viewtag) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {

@@ -50,8 +50,18 @@ if (mysqli_connect_errno()) {
 <form method ="POST">
 	<h1>INSPECTOR- click or search</h1>
 	<th><br><label name ="range">private/public/global range: </label>"
-<input method ="POST" type = "range" id = "view" name = "private/public/global" min = "-256" max = "256">
-<br>
+<input method ="POST" type = "range" id = "view" name = "view" min = "-256" max = "256" default = "<?php echo $viewselect * 256.0;?>">
+<?php $viewselect =($_POST['view'] / 256.0); 
+if (viewselect <=-0.5){
+$viewtag="private";
+}else{
+	if (viewselect >=0.5){
+		$viewtag="global";
+	}else{
+		$viewtag="public";
+	}
+}
+?><br>
 <br><label name ="index">post search prompt: </label>"
 <input method ="POST" type = "text" name="index" placeholder = "search terms...">"
 </th>
@@ -66,9 +76,23 @@ if (mysqli_connect_errno()) {
 	<h1>POSTS</h1>
 	<?php
 $index = $_POST['index'];
+/*<th><br><label name ="range">private/public/global range: </label>"
+<input method ="POST" type = "range" id = "view" name = "view" min = "-256" max = "256" default = "<?php echo $viewselect * 256.0;?>">
+<?php $viewselect =($_POST['view'] / 256.0); 
+if (viewselect <=-0.5){
+$viewtag="private";
+}else{
+	if (viewselect >=0.5){
+		$viewtag="global";
+	}else{
+		$viewtag="public";
+	}
+		//	$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag ';
+
+}*/
 if($_POST['submit']){
 	$index = $_POST['index'];
-	$sql = 'SELECT * FROM posts WHERE (* LIKE $index) ';
+	$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes)))';
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
@@ -152,7 +176,7 @@ if(isset($_POST['submit'])){
 $index = $_POST['index'];
 if($_POST['submit']){
 	$index = $_POST['index'];
-	$sql = 'SELECT * FROM accounts  WHERE (* LIKE $index) ';
+	$sql = 'SELECT * FROM accounts  WHERE (* LIKE $index) BY ((array_sum(posts(votes))/(count(posts(votes))) ';
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {

@@ -16,7 +16,7 @@
 <table><th>	
 			<h1>tabletime</h1>
 <?php include 'authenticate.php';
-$id = $_SESSION['id'];
+
 $color;
 $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 

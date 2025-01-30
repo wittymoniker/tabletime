@@ -106,7 +106,8 @@ $stmt->close();
 
 		
 
-		<h1><b><a href="home.php">TABLETIME</a></b></h1>
+		<h1><br><br>
+		<b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
