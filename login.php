@@ -15,8 +15,8 @@
 <div>
 <table><th>	
 			<h1>tabletime</h1>
-<?php include 'authenticate.php';?>
-<?php include 'style.php';
+<?php include 'authenticate.php';
+
 $color;
 
 	$colora= "#ababab";
