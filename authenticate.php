@@ -46,7 +46,9 @@ if ($stmt->num_rows > 0) {
 	$stmt->bind_result($name, $pass, $email, $id, $friends, $posts, $groups, $events, $colors, $votes, $forums, $tags, $aboutcontent, $files );
 	$stmt->fetch();
 		if (password_verify($_POST['password'], $pass)) {
+        
 		session_regenerate_id();
+        $loggedin=true;
 		$_SESSION['loggedin'] = TRUE;
 		$_SESSION['name'] = $_POST['username'];
 		$_SESSION['id'] = $id;
