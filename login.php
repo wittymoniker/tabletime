@@ -48,7 +48,7 @@ $fontSize = "14";
 
 
 <p>enter your name and code<br> and solve the puzzle to access your timetable</p>
-			<form method="post" action = "authenticate.php" autocomplete="off">
+			<form method="POST" action = "authenticate.php" autocomplete="off">
 				<label for="username">
 				</label>
 				<input type="text" name="username" placeholder="name" id="username" required>
