@@ -313,7 +313,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER
 				<td><b><?php echo $row['title']; ?></b> <br> </td></a>
 				<a href = "posts.php?index='<?php echo $row["content"]?>'"><td><?php echo $row['content']; ?></td></a>
 					<td><?php echo $row['file']; ?></td>
-					<td><b><?php echo $row['tags']; echo $row['post']; }}?></b> <br> </td>
+					<td><b><?php echo $row['tags']; echo $row['post']; }?></b> <br> </td>
 				</tr>
 
 			</table>
