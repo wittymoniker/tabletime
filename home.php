@@ -87,19 +87,19 @@ $fontSize = "14";
 
 
 
-<html class = "tabletime">
+<html >
 
 <link href="style.php" rel="stylesheet" type="text/css">
 
 
 
 
-<head class = "html">
-
+<head class = "content">
+<body class = "tabletime">
 
 
 		<meta charset="utf-8">
-		<title>TABLETIME</title>
+		<br><br><title>TABLETIME</title>
 
 
 
@@ -110,18 +110,18 @@ $fontSize = "14";
 		<br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
 		<h1><br><br>
 		<b><a href="home.php">TABLETIME</a></b></h1>
-
+		<br><br>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
 <a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br><br><br>
 <a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a><br><br><br><br>
 <a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
 <a href="create.php"><i class="fas fa-user-circle"></i>Create</a></div></nav>
 
-<body class = "content">
+
 
 <?php
 $stmt = $con-> prepare('SELECT  aboutcontent FROM accounts WHERE id = ?');

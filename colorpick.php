@@ -84,7 +84,33 @@ $colorf3= "#f3f3f3";
 $colort = "#000000";
 $fontSize = "14";
 }
+$colorp = ["#ababab",  "#bcbcbc",  "#cdcdcd",  "#dcdcdc",  "#ededed",   
+"#dfdfdf",    "#0a0a0a", "#1b1b1b", "#2c2c2c","#3d3d3d","#4e4e4e", 
+"#5f5f5f",    "#a3a3a3",  "#b2b2b2",  "#c1c1c1","#d1d1d1", "#e2e2e2", 
+"#f3f3f3","#000000", "14"];
 
+
+$color = $colorp;
+$color[0] = (string)$_POST['style1a'];
+$color[1] = (string)$_POST['style1b'];
+$color[2] = (string)$_POST['style1c'];
+$color[3] = (string)$_POST['style2a'];
+$color[4] = (string)$_POST['style2b'];
+$color[5] = (string)$_POST['style2c'];
+$color[6] = (string)$_POST['style3a'];
+$color[7] = (string)$_POST['style3b'];
+$color[8] = (string)$_POST['style3c'];
+$color[9] = (string)$_POST['style4a'];
+$color[10] =(string) $_POST['style4b'];
+$color[11] =(string) $_POST['style4c'];
+$color[12] = (string)$_POST['style5a'];
+$color[13] =(string) $_POST['style5b'];
+$color[14] = (string)$_POST['style5c'];
+$color[15] = (string)$_POST['style6a'];
+$color[16] = (string)$_POST['style6b'];
+$color[17] = (string)$_POST['style6c'];
+$color[18] = (string)$_POST['styletext'];
+$color[19] = (string)$_POST['stylesize'];
 ?>
 
 
@@ -160,16 +186,18 @@ font size:
 
 
 </p>
-
+</form>
 <?php
 if ($_POST["submit"]) {
     // Retrieve the selected values from the form
-    $colorp = ["#ababab;",  "#bcbcbc;",  "#cdcdcd;",  "#dcdcdc;",  "#ededed;",   "#dfdfdf;",    "#0a0a0a;", "#1b1b1b;", "#2c2c2c;","#3d3d3d;","#4e4e4e;", "#5f5f5f;",    "#a3a3a3;",  "#b2b2b2;",  "#c1c1c1;","#d1d1d1;", "#e2e2e2;", "#f3f3f3;","#000000;", "14;"];
-
+$colorp = ["#ababab",  "#bcbcbc",  "#cdcdcd",  "#dcdcdc",  "#ededed",   
+"#dfdfdf",    "#0a0a0a", "#1b1b1b", "#2c2c2c","#3d3d3d","#4e4e4e", 
+"#5f5f5f",    "#a3a3a3",  "#b2b2b2",  "#c1c1c1","#d1d1d1", "#e2e2e2", 
+"#f3f3f3","#000000", "14"];
     $id = $_SESSION['id'];
     $sql = "UPDATE accounts SET colors = ? WHERE id = accounts($id)";  
 
-    $color[20] = $colorp;
+    $color = $colorp;
     $color[0] = (string)$_POST['style1a'];
     $color[1] = (string)$_POST['style1b'];
     $color[2] = (string)$_POST['style1c'];
@@ -193,9 +221,9 @@ if ($_POST["submit"]) {
     
 
 
-if(isset($_POST['submit'])){
+if(($_POST['submit'])){
     $id = $_SESSION['id'];
-    if(isset($_POST['reset'])){
+    if(($_POST['reset'])){
         $color = $colorp;
         $sql = "UPDATE accounts SET account(colors) TO $send WHERE accounts(id) = accounts($id)";
         $result = $mysqli->query($sql);
@@ -207,14 +235,14 @@ if(isset($_POST['submit'])){
 
     $send = [implode(";", $color)];
     $sql = "UPDATE accounts SET colors TO $send WHERE id = accounts($id)";
-
+    $result = $mysqli->query($sql);
 
 }
    
 
 ?>
 
-</form>
+
 </div>
 <div>
 <p>
