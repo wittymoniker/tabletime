@@ -118,7 +118,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 </tr>
 </form><br>
 </table>
@@ -345,26 +345,7 @@ if(isset($_POST['submit'])){
         $result = $mysqli->query($sql);
 
     }
-}
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
-$num_results_on_page = 16 ;
-
-if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
-
-	$calc_page = ($page - 1) * $num_results_on_page;
-	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
-	$stmt->execute(); 
-	
-}?><br>
-</p>
-		</div>
-
-
-<br>
-<?php
-
-
-
+    
 
 include 'functions.php';
 // Connect to MySQL
@@ -377,9 +358,8 @@ $index = $_POST['index'];
 		while($row = $result->fetch_assoc()) {
 		$sql = 'INSERT INTO $feature VALUES (($row["file"])';
 		$result = $mysqli->query($sql);
-		}
-	}?>
-<?=template_header('Gallery')?>
+		}?>
+		<?=template_header('Gallery')?>
 
 <div class="content home">
 
@@ -429,6 +409,26 @@ image_popup.onclick = e => {
 </script>
 </div>
 <?=template_footer()?>
+<?php	}?>
+
+
+<?php 
+}
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+$num_results_on_page = 16 ;
+
+if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
+
+	$calc_page = ($page - 1) * $num_results_on_page;
+	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
+	$stmt->execute(); 
+	
+}?><br>
+</p>
+		</div>
+
+
+<br>
 
 
 

@@ -2,7 +2,7 @@
 class Calendar {
 
 private $active_year, $active_month, $active_day;
-static public $events = [];
+ public $events = [];
 
 public function __construct($date = null) {
     $this->active_year = $date != null ? date('Y', strtotime($date)) : date('Y');

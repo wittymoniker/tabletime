@@ -118,7 +118,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 <th><br><label name ="range">private/public/global range: </label>"
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
@@ -872,7 +872,7 @@ echo "0 posts";
 			</div>
 	
 	
-
+			<?php include 'pagination.php';?>
 
 
 

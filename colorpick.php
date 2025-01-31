@@ -156,13 +156,13 @@ $fontSize = "14";
 text: <input type="color" name="styletext"><br>
 font size: 
 <input type = "range" name = "stylesize" min = "3" max = "36">
-<input type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 
 
 </p>
 
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_POST["submit"]) {
     // Retrieve the selected values from the form
     $colorp = ["#ababab;",  "#bcbcbc;",  "#cdcdcd;",  "#dcdcdc;",  "#ededed;",   "#dfdfdf;",    "#0a0a0a;", "#1b1b1b;", "#2c2c2c;","#3d3d3d;","#4e4e4e;", "#5f5f5f;",    "#a3a3a3;",  "#b2b2b2;",  "#c1c1c1;","#d1d1d1;", "#e2e2e2;", "#f3f3f3;","#000000;", "14;"];
 

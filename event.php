@@ -119,7 +119,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 </tr>
 </form><br>
 </table>
@@ -363,21 +363,10 @@ if(isset($_POST['submit'])){
         $result = $mysqli->query($sql);
 
     }
-}
-?><br>
-
-
-
-
-
-</p>
-		</div>
-
-
-<?php
+	
 		include 'Calendar.php';
 		$searched=  $_POST['index'];
-		$sql = 'SELECT posts(title, dt)  FROM posts WHERE title LIKE $searched ';
+		$sql = 'SELECT * FROM posts  FROM posts WHERE title LIKE $searched BY DT DESC';
 		$result = $mysqli->query($sql);
 $events = $result;
 
@@ -386,14 +375,26 @@ $calendar = new Calendar(date('Y-m-d'));
 	
 	<a href="#">
 		
-	<?php $calendar->add_event($event['title'], $event['dt']);?>
+	<?php $calendar->add_event($events['title'][$event['title']], $events['dt'][$event['dt']]);?>
 
 	</a>
 	<?php endforeach; ?>
 
 
 
+<?php
+}
+?><br>
+
 <?=$calendar?>
+
+
+
+</p>
+		</div>
+
+
+
 
 <br><br>
 </body>

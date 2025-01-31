@@ -207,7 +207,8 @@ post type:			</label>
 <br><br><br>
 
 
-<input type="submit" name= "submit" id = "submit" value="SUBMIT"> <br>
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
+ <br>
 
 
 	</form>

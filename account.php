@@ -199,7 +199,7 @@ $fontSize = "14";
 		
 <br>
 		<div class = "html">
-			<h2>Account Details Page</h1>
+		<a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>	<h2>Account Details Page</h1>
 								<table><th><h2 align = "center">Your account details are below:</h1></th>
 <tr>
 						<td>pic:</td>
@@ -232,7 +232,7 @@ client <- host -> admin host:
 <br>
 <label><br>IP<br></label>
 <input type = "text" name = "IP" default = "<?php echo $ipa;?>">
-<br><input type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 </form>
 
 <?php if(isset($_POST["submit"])){

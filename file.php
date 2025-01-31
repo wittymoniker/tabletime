@@ -14,7 +14,7 @@ $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
-echo "tabletime";
+
 
 $stmt = $con->prepare('SELECT username, files FROM accounts WHERE id = ?');
 
@@ -96,12 +96,6 @@ $fontSize = "14";
 
 
 <?php
-session_start();
-
-if (!isset($_SESSION['loggedin'])) {
-	header('Location: index.html');
-	exit;
-}
 
 
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
@@ -188,35 +182,21 @@ function get_filetype_icon($filetype) {
 
 
 
-<html class = "tabletime">
-<link href="style.php" rel="stylesheet" type="text/css">
-<head class = "html">
-		<meta charset="utf-8">
-		<title>TABLETIME</title>
-
-<body class = "content">  
-<meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,minimum-scale=1">
-		<title>File Management System</title>
-		<body class = "content">  
-
-
-
-
-
 
 
 <html class = "tabletime">
 		<link href="style.php" rel="stylesheet" type="text/css">
-	<head class = "html">
+	
 		<meta charset="utf-8">
 		<title>tabletime</title>
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+		<title>File Management System</title>
 
 
 
 		
 	<body class="content">
-
+<head class = "html">
 
     <nav class = "navtop">
 		<div class = "tabletime">		
@@ -248,7 +228,7 @@ function get_filetype_icon($filetype) {
 <form method ="POST">
 <label name ="fileindex"> <br>file: </label><br>
 <input method = "POST" type = "text" id = "filei" default = "file/: index key"><br>
-<input type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 <br>
 </form><?php
 $fileID="";
@@ -272,7 +252,7 @@ if(isset($_POST['submit'])){
             <table >
                 <th>
                     <tr>
-                        <td class="selected-column">Name<i class="fa-solid fa-arrow-down-long fa-xs"></i></td>
+                        <td >Name<i ></i></td>
                         <td>Size</td>
                         <td>Modified</td>
                         <td>Actions</td>
@@ -281,19 +261,17 @@ if(isset($_POST['submit'])){
                 <tbody>
                     <?php if (isset($_GET['file']) && realpath($current_directory) != realpath($initial_directory)): ?>
                     <tr>
-                        <td colspan="10" class="name"><i class="fa-solid fa-folder"></i><a href="?file=<?=urlencode($_GET['filei']) . '/..'?>">...</a></td>
+                        <td colspan="10" ><i ></i><a href="?file=<?=urlencode($_GET['filei']) . '/..'?>">...</a></td>
                     </tr>
                     <?php endif; ?>
                     <?php foreach ($results as $result): ?>
-                    <tr class="file">
-                        <td class="name"><?=get_filetype_icon($result)?><a class="view-file" href="?file=<?=urlencode($result)?>"><?=basename($result)?></a></td>
+                    <tr >
+                        <td ><?=get_filetype_icon($result)?><a href="?file=<?=urlencode($result)?>" <?=(string)($result)?></a></td>
                         <td><?=is_dir($result) ? 'Folder' : convert_filesize(filesize($result))?></td>
-                        <td class="date"><?=str_replace(date('F j, Y'), 'Today,', date('F j, Y H:ia', filemtime($result)))?></td>
-                        <td class="actions">
-                            <a href="rename.php?file=<?=urlencode($result)?>" class="btn"><i class="fa-solid fa-pen fa-xs"></i></a>
-                            <a href="delete.php?file=<?=urlencode($result)?>" class="btn red" onclick="return confirm('Are you sure you want to delete <?=basename($result)?>?')"><i class="fa-solid fa-trash fa-xs"></i></a>
+                        <td><?=str_replace(date('F j, Y'), 'Today,', date('F j, Y H:ia', filemtime($result)))?></td>
+                        <td >
                             <?php if (!is_dir($result)): ?>
-                            <a href="?file=<?=urlencode($result)?>" class="btn green"><i class="fa-solid fa-download fa-xs"></i></a>
+                            <a href="?file=<?=urlencode($result)?>" ><i c></i></a>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -328,8 +306,8 @@ if(isset($_POST['submit'])){
 
     }
 }
-?>          
+?>    </head>      
                                        
 </body>
-</head>
+
 </html>

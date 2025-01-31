@@ -9,7 +9,7 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-
+$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
@@ -19,11 +19,11 @@ if (mysqli_connect_errno()) {
 
 <html class = "tabletime">
 <link href="style.php" rel="stylesheet" type="text/css">
-<head class = "html">
+
 		<meta charset="utf-8">
 		<title>TABLETIME</title>
 <body class = "content">  
-
+<head class = "html">
 <nav class = "navtop">
 		<div class = "tabletime">		
 
@@ -55,7 +55,7 @@ if (mysqli_connect_errno()) {
 </th>
 <tr>
 <br>
-<input method ="POST" type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 <th><br><label name ="range">private/public/global range: </label>"
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
@@ -166,7 +166,7 @@ if($viewtag ="private"){
 					<?php endif; ?>
 				</ul>
 				<?php endif; ?>
-			</body>
+			</body><?php
 		} else {
 			echo "0 posts";
 		}
@@ -203,7 +203,7 @@ if($viewtag ="private"){
 	<div>
 	
 	<?php
-	$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+
 	
 	
 	if ($mysqli->connect_error) {
@@ -506,7 +506,7 @@ if($_POST['submit']){
 
 
 <?php
-$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+
 
 
 if ($mysqli->connect_error) {
@@ -608,7 +608,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER
 					<div>
 					
 					<?php
-					$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+		
 
 					
 					
@@ -714,8 +714,6 @@ if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER
 
 
 	<?php		
-}
-}else{
 
 	if($_POST['submit']){
 
@@ -797,7 +795,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER
 			echo "0 posts";
 		}
 	}
-}
+
 
 	?>
 
@@ -835,10 +833,10 @@ if(isset($_POST['submit'])){
 
 </p>
 		</div>
+<?php include 'pagination.php';?>
 
 
-
-
-</body>
 </head>
+</body>
+
 </html>

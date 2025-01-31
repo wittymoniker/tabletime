@@ -9,12 +9,13 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
+$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 ?>
-<?php include 'pagination.php';?>
+
 <?php
 
 
@@ -28,7 +29,7 @@ $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
 $stmt->close();
-if ($color != NULL){
+if ($color != ''){
 	$color = explode(";", $color);
 	$colora= color[0];
 	$colorb= color[1];
@@ -81,24 +82,21 @@ $colorf3= "#f3f3f3";
 
 $colort = "#000000";
 $fontSize = "14";
-}
-$stmt = $con-> prepare('SELECT  aboutcontent FROM accounts WHERE id = ?');
-$prof;
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$stmt->bind_result($prof);
-$stmt->fetch();
-$stmt->close();
+}?>
 
-?>
+
+
+
 <html class = "tabletime">
+
+<link href="style.php" rel="stylesheet" type="text/css">
+
+
 
 
 <head class = "html">
 
-<body class = "content">
 
-<link href="style.php" rel="stylesheet" type="text/css">
 
 		<meta charset="utf-8">
 		<title>TABLETIME</title>
@@ -109,10 +107,10 @@ $stmt->close();
 		<div class = "tabletime">		
 
 		
-		<img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
+		<br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
 		<h1><br><br>
 		<b><a href="home.php">TABLETIME</a></b></h1>
-<p>
+
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
 <a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
@@ -121,13 +119,21 @@ $stmt->close();
 <a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
 <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
 <a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></p>
+<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></div></nav>
 
+<body class = "content">
 
+<?php
+$stmt = $con-> prepare('SELECT  aboutcontent FROM accounts WHERE id = ?');
+$prof;
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->bind_result($prof);
+$stmt->fetch();
+$stmt->close();?>
 
-
-			</div>
-</nav><?php
+			
+<?php
 $stmt = $con->prepare('SELECT password, email, username, votes FROM accounts WHERE id = ?');
 
 $stmt->bind_param('i', $_SESSION['id']);
@@ -136,25 +142,21 @@ $stmt->bind_result($password, $email, $username, $votelist);
 $stmt->fetch();
 $stmt->close();
 ?>
-<p>
-<br><br><h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable </h1>on timedelay shift (between posts) <?php echo (string)(6.0 - 6.0*(-1.0+(1.0+count(explode(";",$votelist))/(1.0+array_sum(explode(";",$votelist))))));?> minutes.<br><br>
-</p>
+<h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable </h1><br>...on timedelay shift (between posts) <?php echo (string)(6.0 - 6.0*(-1.0+(1.0+count(explode(";",$votelist))/(1.0+array_sum(explode(";",$votelist))))));?> minutes.<br> <a href="account.php"><i class="fas fa-user-circle"></i>Account </a>
+				 <br> DEFAULT DELAY: 10min<br><br>
 
 
 
+<div>
 
-			<div>
+		
 			<h1>Feed</h1>
-			<p>relevant sorted' post content<br>
-
+		relevant sorted' post content<br>
+<br>
 
 <?php
-$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 
 
@@ -187,11 +189,11 @@ else {
 }
 
 
-?>
-			<meta charset="utf-8">
+?><br>
+			
 					
 
-			<table class = "list">
+			<table >
 				<tr>
 					<th>about</th>
 					<th>tags</th>
@@ -212,16 +214,18 @@ else {
 	($row["posts"])),
 	($row["username"])';
 	$result = $mysqli->query($sql);
-	?><td><?php echo $row['friends'||'recipients']; ?></td>
+	
+    }
+if ($result->num_rows > 0) {?>
+	<td><?php echo $row['friends'||'recipients']; ?></td>
 	<td><b><?php echo $row['tags']; ?></b> </td>
 	<td><b><?php echo $row['media' && ['content' || 'aboutcontent']]; ?></b> </td>
 	<td><?php echo $row['name'||'username']; ?></td>
 	<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; }}?></td></a><?php
-    }
 	?>
-					
+		<?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
+	
 				</tr>
-				<?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
 			<ul class="pagination">
 				<?php if ($page > 1): ?>
 				<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
@@ -251,10 +255,8 @@ else {
 			</ul>
 			<?php endif; ?><?php
 	$result = $mysqli->query($sql);
-} else {
-    echo "0 friends";
-}?>
-
+} }?>
+<br>
 
 			</table>
 			
@@ -269,11 +271,11 @@ else {
 
 
 
+<br>
 
-</p>
 		
 			<h1>Friends</h1>
-			<p>relevant friend activity<br>
+			relevant friend activity<br>
 
 
 
@@ -285,10 +287,6 @@ else {
 <?php
 
 
-
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 
 
@@ -368,10 +366,10 @@ else {
 
 ?>
 
-			<meta charset="utf-8">
+			
 					
 
-			<table class = "list">
+			<table>
 				<tr>
 					<th>about</th>
 					<th>tags</th>
@@ -380,27 +378,32 @@ else {
 					<th>username</th>
 									</tr>
 
-				<?php if ($result->num_rows > 0) {
-					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
-				<?php if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+<?php if ($result->num_rows > 0) {
+while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["friends"]),
 	($row["tags"]),
 	($row["media"]),
 	($row["posts"])),
 	($row["username"])';
-	$result = $mysqli->query($sql);
-	?><a href = "people.php?index='<?php echo $row["`" . $friendslist . $postslist . "`"]?>'"><td><?php echo $row[':']; }}?></td></a>
+	$result = $mysqli->query($sql);?>
+	
+	<?php	
+}
+if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()){ ?>
+			<tr>
+			<a href = "people.php?index='<?php echo $row["`" . $friendslist . $postslist . "`"]?>'"><td><?php echo $row[':']; }}?></td></a>
 	<td><?php echo $row['friends'||'recipients']; ?></td>
 	<td><b><?php echo $row['tags']; ?></b> </td>
 	<td><b><?php echo $row['media' && ['content' || 'aboutcontent']]; ?></b> </td>
 	<td><?php echo $row['name'||'username']; ?></td>
-	<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; ?></td></a><?php
-
-}
-if (ceil($total_pages / $num_results_on_page) > 0): ?> 
+	<a href = "profile.php?index='<?php echo $row["username"]?>'"><td><?php echo $row['username']; ?></td></a><?php?> 
+			</tr>
+			<?php
+if (ceil($total_pages / $num_results_on_page) > 0): 
+	?>
 <ul class="pagination">
 	<?php if ($page > 1): ?>
 	<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
@@ -430,24 +433,18 @@ if (ceil($total_pages / $num_results_on_page) > 0): ?>
 </ul>
 <?php endif; ?>
 <?php
-} else {
-    echo "0 friends";
-}?>
+} ?>
 				
 
 			
-			
-		</body>
+<br>
+</table>
 
 
 
-
-
-
-</p>
-	
+	<br>
 			<h1>Events</h1>
-			<p>relevant events<br>
+			relevant events<br>
 
 
 
@@ -464,9 +461,7 @@ if (ceil($total_pages / $num_results_on_page) > 0): ?>
 
 
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends FROM accounts WHERE username = accounts($uname)';
 $result = $mysqli->query($sql);
@@ -496,19 +491,20 @@ if ($result->num_rows > 0) {
 	($row["posts"]),
 	($row["members"]))';
 	$result = $mysqli->query($sql);
-	?>
-			<meta charset="utf-8">
-					
-		<body>
-			<table class = "list">
+	
+
+	
+}
+
+ if ($result->num_rows > 0) {?>
+	<table >
 				<tr>
 					<th>title</th>
 					<th>about</th>
 					<th>posts</th>
 					<th>members</th>
 									</tr>
-
-				<?php if ($result->num_rows > 0) {
+<?php
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
 				<a href = "group.php?index='<?php echo $row["`" . $friendslist . $postslist . "`"]?>'"><td><?php echo $row['title']; ?></td></a>
@@ -517,9 +513,8 @@ if ($result->num_rows > 0) {
 					<td><?php echo $row['members']; }}?></td>
 				</tr>
 				
-   <?php
-}
-if (ceil($total_pages / $num_results_on_page) > 0): ?> 
+	<?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
+
 <ul class="pagination">
 	<?php if ($page > 1): ?>
 	<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
@@ -549,12 +544,10 @@ if (ceil($total_pages / $num_results_on_page) > 0): ?>
 </ul>
 <?php endif; ?>
 
-
+<br>
 </table>
 <?php
-} else {
-    echo "0 posts";
-}
+} 
 
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -570,13 +563,13 @@ if ($stmt = $mysqli->prepare('SELECT * FROM groups LIKE $postslist')) {
 ?>
 
 
+<br>
 
 
 
-</p>
 		
 			<h1>Global</h1>
-			<p>relevant global events, forums posts<br>
+		relevant global events, forums posts<br>
 
 
 
@@ -591,9 +584,6 @@ if ($stmt = $mysqli->prepare('SELECT * FROM groups LIKE $postslist')) {
 
 
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 $uname = $_SESSION['name'];
 $sql = 'SELECT tags FROM accounts WHERE username = accounts($id) && username = accounts($id) OR contains(accounts(friends), $uname)';
 $result = $mysqli->query($sql);
@@ -629,11 +619,9 @@ if ($result->num_rows > 0) {
 	($row["content"]),
 	($row["tag"]))';
 	$result = $mysqli->query($sql);
-	?>
-			<meta charset="utf-8">
-					
-		<body>
-			<table class = "list">
+	?><br>
+			
+			<table >
 				<tr>
 					<th>name</th>
 					<th>title</th>
@@ -641,7 +629,9 @@ if ($result->num_rows > 0) {
 					<th>tags</th>
 									</tr>
 
-				<?php if ($result->num_rows > 0) {
+			<?php	
+    }
+	 if ($result->num_rows > 0) {
 					while ($row = $result->fetch_assoc()){ ?>
 				<tr>
 				<a href = "forum.php?index='<?php echo $row["`" . $friendslist . $postslist . "`"]?>'"><td><?php echo $row['name']; ?></td></a>
@@ -650,7 +640,6 @@ if ($result->num_rows > 0) {
 							<td><?php echo $row['dt']; }}?></td>
 				</tr>
 				<?php
-    }
 	if (ceil($total_pages / $num_results_on_page) > 0): ?>
 		<ul class="pagination">
 			<?php if ($page > 1): ?>
@@ -682,10 +671,8 @@ if ($result->num_rows > 0) {
 		<?php endif; ?>
 
 
-		</table><?php
-} else {
-    echo "0 posts";
-}
+		<br></table><br><?php
+} 
 
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -704,14 +691,14 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 			
 			
 			
-		</body>
+
 
 
 
 
 
 		
-</p>
+
 		</div>
 
 
@@ -722,21 +709,22 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 
 
 
-				</p>
 
 
 
 <br>
 <br>
 <br>
-
+<?php include 'pagination.php';?>
 <br>
 <br>
-<br><br><table><br>
+<br><br><br>
 
+<a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
+				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
 
 </body>
-<a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
-				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a></table>
 </head>
+
+
 </html>

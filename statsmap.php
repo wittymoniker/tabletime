@@ -81,7 +81,7 @@ $viewtag="private";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 </tr>
 </form><br>
 </table>
@@ -190,7 +190,7 @@ if(isset($_POST['submit'])){
 <h1>ACCOUNTS</h1>
 	<?php
 $index = $_POST['index'];
-if($_POST['submit']){
+if(isset($_POST['submit'])){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts  WHERE (* LIKE $index) BY ((array_sum(posts(votes))/(count(posts(votes))) ';
 	$result = $mysqli->query($sql);

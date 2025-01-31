@@ -119,7 +119,6 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input type = "submit" value = "submit">
 </tr>
 
 </table>
@@ -134,7 +133,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "submit" value = "submit">
+<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
 </tr>
 </form><br>
 </table>
@@ -366,7 +365,7 @@ if(isset($_POST['submit'])){
 }}}
 ?>
 
-
+<?php include 'pagination.php';?>
 
 
 </p>
