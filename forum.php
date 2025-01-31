@@ -55,8 +55,7 @@ if (mysqli_connect_errno()) {
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
-<th><br><label name ="range">private/public/global range: </label>"
+<input method ="POST" type = "button" name= "enter" ><th><br><label name ="range">private/public/global range: </label>"
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
 $viewtag="public";
@@ -90,7 +89,7 @@ $index = $_POST['index'];
 if($viewtag!="public"){
 if($viewtag ="private"){
 	$index = $_POST['index'];
-	if($_POST['submit']){
+	if($_POST['enter']){
 		$index = $_POST['index'];
 		$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  WHERE type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 		$result = $mysqli->query($sql);
@@ -179,7 +178,7 @@ if($viewtag ="private"){
 	<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 	<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 	</form><?php
-	if(isset($_POST['submit'])){
+	if(isset($_POST['enter'])){
 		$votetarget = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -189,7 +188,7 @@ if($viewtag ="private"){
 	
 		}
 	}
-	if(isset($_POST['submit'])){
+	if(isset($_POST['enter'])){
 		$votetarget = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -288,7 +287,7 @@ if($viewtag ="private"){
 										</tr>
 	
 					<?php if ($result->num_rows > 0) {
-						if(isset($_POST['submit'])){
+						if(isset($_POST['enter'])){
 							$votetarget = $_POST['index'];
 							$id = $_SESSION['id'];
 							$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -416,7 +415,7 @@ if($viewtag ="private"){
 }
 if($viewtag= "global"){
 	$index = $_POST['index'];
-if($_POST['submit']){
+if($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	$result = $mysqli->query($sql);
@@ -588,7 +587,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER
 									</tr>
 
 				<?php if ($result->num_rows > 0) {
-					if(isset($_POST['submit'])){
+					if(isset($_POST['enter'])){
 						$votetarget = $_POST['index'];
 						$id = $_SESSION['id'];
 						$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -715,7 +714,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER
 
 	<?php		
 
-	if($_POST['submit']){
+	if($_POST['enter']){
 
 		$index = $_POST['index'];
 		$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
@@ -806,7 +805,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
     $votetarget = $_POST['index'];
     $id = $_SESSION['id'];
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -816,7 +815,7 @@ if(isset($_POST['submit'])){
 
     }
 }
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
     $votetarget = $_POST['index'];
     $id = $_SESSION['id'];
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );

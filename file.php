@@ -228,7 +228,7 @@ function get_filetype_icon($filetype) {
 <form method ="POST">
 <label name ="fileindex"> <br>file: </label><br>
 <input method = "POST" type = "text" id = "filei" default = "file/: index key"><br>
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
+<input method ="POST" type = "button" name= "enter" >
 <br>
 </form><?php
 $fileID="";

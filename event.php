@@ -119,15 +119,14 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
-</tr>
+<input method ="POST" type = "button" name= "enter" ></tr>
 </form><br>
 </table>
 </div>
 <table>
 	<?php
 $index = $_POST['index'];
-if($_POST['submit']){
+if($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM posts WHERE posts(type) == "event" && (* LIKE $index)  ';
 	$result = $mysqli->query($sql);
@@ -354,7 +353,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
     $votetarget = $_POST['index'];
     $id = $_SESSION['id'];
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );

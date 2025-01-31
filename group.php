@@ -9,7 +9,7 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-
+$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
@@ -118,8 +118,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
-</tr>
+<input method ="POST" type = "button" name= "enter" ></tr>
 </form><br>
 </table>
 </div>
@@ -127,7 +126,7 @@ $fontSize = "14";
 
 	<?php
 $index = $_POST['index'];
-if($_POST['submit']){
+if($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  ';
 	$result = $mysqli->query($sql);
@@ -219,7 +218,6 @@ if($_POST['submit']){
 	}
 }
 
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
 
 if ($mysqli->connect_error) {
@@ -336,7 +334,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
     $votetarget = $_POST['index'];
     $id = $_SESSION['id'];
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );

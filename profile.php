@@ -9,6 +9,7 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
+$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
@@ -133,8 +134,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
-</tr>
+<input method ="POST" type = "button" name= "enter" ></tr>
 </form><br>
 </table>
 </div>
@@ -147,7 +147,7 @@ $fontSize = "14";
 	<table>
 <form method ="POST">
 <?php
-if ($_POST['submit']){
+if ($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts WHERE (* LIKE $index) BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
 	$result = $mysqli->query($sql);
@@ -158,7 +158,6 @@ if ($_POST['submit']){
 			$feature = $row;
 		}
 	}
-	$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
 
 
@@ -175,7 +174,6 @@ $postslist;
 $indexprofile = $_POST['userindex'];
 
 
-$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
 
 if ($mysqli->connect_error) {
@@ -342,7 +340,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM $postslist BY dt DESC')) {
 	
 }
 
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
     $usrname = $_POST['index'];
     $id = $_SESSION['id'];
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -351,7 +349,7 @@ if(isset($_POST['submit'])){
         $result = $mysqli->query($sql);
 
     }
-	if(isset($_POST['submit'])){
+	if(isset($_POST['enter'])){
 		$votetarget = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );

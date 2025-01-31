@@ -1,0 +1,44 @@
+
+
+
+
+# Enable URL rewriting
+RewriteEngine On
+
+# Redirect all requests to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ ?/$1 [L]
+
+# Set custom error pages
+ErrorDocument 404 /home.php
+ErrorDocument 500 /home.php
+ErrorDocument 403 /home.php
+ErrorDocument 504 /home.php
+ErrorDocument 405 /home.php
+ErrorDocument 503 /home.php
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Disable directory browsing
+Options All -Indexes
+
+# Protect .htaccess file
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Set PHP settings
+php_value upload_max_filesize 20M
+php_value post_max_size 30M
+php_value max_execution_time 30000
+php_value max_input_time 30000
+
+# Enable CORS for API
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods " *"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>

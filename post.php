@@ -118,8 +118,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
-<th><br><label name ="range">private/public/global range: </label>"
+<input method ="POST" type = "button" name= "enter" ><th><br><label name ="range">private/public/global range: </label>"
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
 $viewtag="public";
@@ -142,7 +141,7 @@ $viewtag="private";
 	<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 	<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 	</form><?php
-	if(isset($_POST['submit'])){
+	if(isset($_POST['enter'])){
 		$uname = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -153,7 +152,7 @@ $viewtag="private";
 		}
 	}
 	
-	if(isset($_POST['submit'])){
+	if(isset($_POST['enter'])){
 		$votetarget = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -175,7 +174,7 @@ $viewtag="private";
 $index = $_POST['index'];
 if($viewtag!="public"){
 if($viewtag ="private"){
-	if($_POST['submit']){
+	if($_POST['enter']){
 
 		$index = $_POST['index'];
 		$sql = 'SELECT * FROM posts WHERE (* LIKE $index) WHERE type = "private" BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
@@ -400,7 +399,7 @@ if($viewtag ="private"){
 			<?php
 }
 if($viewtag= "global"){
-	if($_POST['submit']){
+	if($_POST['enter']){
 
 $index = $_POST['index'];
 $sql = 'SELECT * FROM posts WHERE (* LIKE $index)  WHERE type = "global" BY ((array_sum(posts(votes))/(count(posts(votes)))  DESC';
@@ -486,7 +485,7 @@ if ($result->num_rows > 0) {
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
 $uname = $_POST['index'];
 $id = $_SESSION['id'];
 $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -497,7 +496,7 @@ if(isset($_POST['perspective'])){
 }
 }
 
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
 $votetarget = $_POST['index'];
 $id = $_SESSION['id'];
 $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -653,7 +652,7 @@ echo "0 posts";
 }
 }else{
 
-	if($_POST['submit']){
+	if($_POST['enter']){
 
 		$index = $_POST['index'];
 		$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
@@ -707,7 +706,7 @@ echo "0 posts";
 	<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 	<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 	</form><?php
-	if(isset($_POST['submit'])){
+	if(isset($_POST['enter'])){
 		$uname = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -718,7 +717,7 @@ echo "0 posts";
 		}
 	}
 	
-	if(isset($_POST['submit'])){
+	if(isset($_POST['enter'])){
 		$votetarget = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );

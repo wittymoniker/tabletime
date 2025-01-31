@@ -51,7 +51,7 @@ if (mysqli_connect_errno()) {
 	<form method ="POST">
 	<?php
 	
-	if(isset($_POST['submit'])){
+	if(isset($_POST['enter'])){
 		$votetarget = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -81,8 +81,7 @@ $viewtag="private";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
-</tr>
+<input method ="POST" type = "button" name= "enter" ></tr>
 </form><br>
 </table>
 </div>
@@ -104,7 +103,7 @@ $viewtag="private";
 		//	$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag ';
 
 }*/
-if($_POST['submit']){
+if($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes)))';
 	$result = $mysqli->query($sql);
@@ -166,7 +165,7 @@ if($_POST['submit']){
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
     $votetarget = $_POST['index'];
     $id = $_SESSION['id'];
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -176,7 +175,7 @@ if(isset($_POST['submit'])){
 
     }
 }
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
     $votetarget = $_POST['index'];
     $id = $_SESSION['id'];
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
@@ -190,7 +189,7 @@ if(isset($_POST['submit'])){
 <h1>ACCOUNTS</h1>
 	<?php
 $index = $_POST['index'];
-if(isset($_POST['submit'])){
+if(isset($_POST['enter'])){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts  WHERE (* LIKE $index) BY ((array_sum(posts(votes))/(count(posts(votes))) ';
 	$result = $mysqli->query($sql);

@@ -94,7 +94,7 @@ $fontSize = "14";
 <head class = "html">
 		<meta charset="utf-8">
 		<title>tabletime</title>
-<?php include 'createnew.php'; ?>
+
 
 <body class = "content">  
 <nav class = "navtop">
@@ -119,7 +119,7 @@ $fontSize = "14";
 
 			</div>
 </nav>
-
+<?php include 'createnew.php'; ?>
 
 <p> <?php echo $username; ?>'s post. </p><br>
         
@@ -145,12 +145,12 @@ post type:			</label>
 </select>
 <label for="file">
 			file:			</label>
-<input type="file" name="file"  placeholder="file directory..." id="file" required> <br>
+<input method ="POST" type="file" name="file"  placeholder="file directory..." id="file" required> <br>
 
 	<label for="title">
 			title:
 			</label>     
-<input type="text" name="title" placeholder="title (required)" id="title" required> <br>
+<input method ="POST" type="text" name="title" placeholder="title (required)" id="title" required> <br>
 
 
 
@@ -164,12 +164,12 @@ post type:			</label>
 	<label for="tags">
 			tags:
 			</label>
-<input type="text" name="tags" placeholder="tags (separate by semicolon;)" id="tags" required>
+<input method ="POST" type="text" name="tags" placeholder="tags (separate by semicolon;)" id="tags" required>
 
  <br><label for="recipients">
 			send to:
 			</label>
-<input type="text" name="recipients" placeholder="recipients (separate by semicolon;)" id="recipients" required>
+<input method ="POST" type="text" name="recipients" placeholder="recipients (separate by semicolon;)" id="recipients" required>
 
  <br>
 
@@ -186,13 +186,13 @@ post type:			</label>
                                 <?php echo $num1 . '+' . $num2; ?>
                             </label>
                             <div>
-                                <input type="hidden" 
+                                <input method ="POST" type="hidden" 
                                        name="no1" 
                                        value="<?php echo $num1 ?>">
-                                <input type="hidden"
+                                <input method ="POST" type="hidden"
                                        name="no2" 
                                        value="<?php echo $num2 ?>">
-                                <input type="text" 
+                                <input method ="POST" type="text" 
                                        name="test"
                                        class="form-control quiz-control" 
                                        autocomplete="off"
@@ -207,7 +207,7 @@ post type:			</label>
 <br><br><br>
 
 
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
+<input method ="POST" type = "button" name= "enter" >
  <br>
 
 
@@ -218,7 +218,3 @@ post type:			</label>
 </body>
 </head>
 </html>
-
-
-
-
