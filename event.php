@@ -147,7 +147,7 @@ if($_POST['submit']){
 		($row["type"])),
 		($row["id"]))';
 		$result = $mysqli->query($sql);
-		$table = $result;
+	
 		?>
 	<th>name</th>
 					<th>topic</th>
@@ -386,7 +386,7 @@ $calendar = new Calendar(date('Y-m-d'));
 	
 	<a href="#">
 		
-	$calendar->add_event(<?php echo $event?>, date('Y-m-d'));
+	<?php $calendar->add_event(echo $event, date('Y-m-d'));?>
 
 	</a>
 	<?php endforeach; ?>

@@ -91,13 +91,12 @@ $stmt->fetch();
 $stmt->close();
 
 ?>
-
 <html class = "tabletime">
-<body class = "content">
+
 
 <head class = "html">
 
-
+<body class = "content">
 
 <link href="style.php" rel="stylesheet" type="text/css">
 
@@ -734,9 +733,10 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 <br>
 <br>
 <br><br><table><br>
+
+
+</body>
 <a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
 				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a></table>
 </head>
-</body>
-
 </html>
