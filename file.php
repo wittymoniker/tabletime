@@ -251,14 +251,17 @@ function get_filetype_icon($filetype) {
 <input type = "submit" value = "submit">
 <br>
 </form><?php
+$fileID="";
+$current_directory = 'files/' . (string)($fileID);
 if(isset($_POST['submit'])){
     $fileID = $_POST['filei'];
     $id = $_SESSION['id'];
+    $current_directory = 'files/' . (string)($fileID);
 
 
 }
 
-$current_directory = 'files/' . (string)($fileID);
+
 ?>
 
 
