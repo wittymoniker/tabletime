@@ -1,8 +1,5 @@
 <?php
-$min  = 1;
-$max  = 500;
-$num1 = rand( $min, $max );
-$num2 = rand( $min, $max );
+
 
     
 // Change this to your connection info.
