@@ -78,7 +78,6 @@ $colort = "#000000";
 $fontSize = "14";
 }
 ?>
-<?php include 'pagination.php';?>
 <html class = "tabletime">
 <link href="style.php" rel="stylesheet" type="text/css">
 <head class = "html">
@@ -120,8 +119,8 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "enter" ></tr>
-</form><br>
+<input method ="POST" type = "submit" name= "enter" value = "enter" ></tr>
+<br>
 </table>
 </div>
 <table>
@@ -348,7 +347,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
 
 
 		<br><br>
-		<form method ="POST">
+	
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
@@ -391,6 +390,7 @@ $calendar = new Calendar(date('Y-m-d'));
 </p>
 		</div>
 
+		<?php include 'pagination.php';?>
 
 
 

@@ -118,7 +118,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "enter" ><th><br><label name ="range">private/public/global range: </label>"
+<input method ="POST" type = "submit" name= "enter" value = "enter" ><th><br><label name ="range">private/public/global range: </label>"
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
 $viewtag="public";

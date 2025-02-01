@@ -118,7 +118,7 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "enter" ></tr>
+<input method ="POST" type = "submit" name= "enter" value = "enter" ></tr>
 </form><br>
 </table>
 </div>

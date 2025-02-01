@@ -1,8 +1,5 @@
 <?php
-$min  = 1;
-$max  = 500;
-$num1 = rand( $min, $max );
-$num2 = rand( $min, $max );
+
 session_start();
 
 if (!isset($_SESSION['loggedin'])) {
@@ -210,7 +207,7 @@ post type:			</label>
 <br><br><br>
 
 
-<input method ="POST" type = "button" name= "enter" >
+<input method ="POST" type = "submit" name= "enter" value = "enter" >
  <br>
 
 

@@ -50,8 +50,20 @@ if ($stmt->num_rows > 0) {
 		session_regenerate_id();
         $loggedin=true;
 		$_SESSION['loggedin'] = TRUE;
-		$_SESSION['name'] = $_POST['username'];
+		$_SESSION['name'] = $name;
 		$_SESSION['id'] = $id;
+        $_SESSION['pass'] = $pass;
+		$_SESSION['friends'] = $friends;
+        $_SESSION['posts'] = $posts;
+		$_SESSION['groups'] = $id;
+        $_SESSION['events'] = $events;
+		$_SESSION['colors'] = $colors;
+        $_SESSION['votes'] = $votes;
+		$_SESSION['forums'] = $forums;
+        $_SESSION['tags'] = $tags;
+		$_SESSION['files'] = $files;
+        $_SESSION['aboutcontent'] = $aboutcontent;
+
 		header('Location: home.php');
 	} else {
 		echo 'Incorrect username and/or password!';

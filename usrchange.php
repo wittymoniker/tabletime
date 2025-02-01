@@ -240,7 +240,8 @@ $fontSize = "14";
                 </div>
             </div>
 
-				<input type="button" name= "enter" >
+				
+			<input method ="POST" type = "submit" name= "enter" value = "enter" >
 
 	</form><br>
 		

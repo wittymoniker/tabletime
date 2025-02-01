@@ -50,12 +50,14 @@ if (mysqli_connect_errno()) {
 	<h1>FORUM INSPECTOR</h1>
 	<th><br>
 <br>
+<form method = "POST">
 <br><label name ="index">post search prompt: </label>"
 <input method ="POST" type = "text" name="index" placeholder = "search terms...">"
 </th>
 <tr>
 <br>
-<input method ="POST" type = "button" name= "enter" ><th><br><label name ="range">private/public/global range: </label>"
+
+<input method ="POST" type = "submit" name= "enter" value = "enter"><th><br><label name ="range">private/public/global range: </label>"
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
 $viewtag="public";
@@ -174,7 +176,7 @@ if($viewtag ="private"){
 	
 		 
 	
-	<form>
+
 	<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 	<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 	</form><?php

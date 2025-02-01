@@ -20,7 +20,7 @@ if ( mysqli_connect_errno() ) {
 
 
 
-if(isset($_POST["submit"]))
+if(isset($_POST["enter"]))
             {
                 $test=$_POST["test"];
                 $number1=$_POST["no1"];

@@ -1,5 +1,8 @@
 <?php
-
+$min  = 1;
+$max  = 500;
+$num1 = rand( $min, $max );
+$num2 = rand( $min, $max );
 
     
 // Change this to your connection info.
@@ -54,11 +57,13 @@ $file = $baseDir. $_FILES['file']['name'];
         
         // Move temporary files to new specified location
         move_uploaded_file($_FILES['file']['tmp_name'], $file);
-    }
-    // Output response
 
 
 
+
+
+
+        
 				$postcontent = $_POST['content'];
 				$posttitle = $_POST['title'];
 				$posttags = $_POST['tags'];
@@ -84,19 +89,19 @@ if ($posttype = "message"){
     $i=0;
     foreach  ($posttargets as &$posttarget){
        
-        $sql= "CREATE INTO accounts (username, messages, votes, files, friends, votes, friends) 
+        $sql= "INSERT INTO accounts (username, messages, votes, files, friends, votes, friends) 
         VALUES ($posttarget,$postinfo, $postrecipients, $postmedia, $postauthor,$posttags, $postrecipients)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
-            echo "New record CREATE INTOd successfully";
+            echo "New record INSERT INTOd successfully";
           } else {
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
-    $sql= "CREATE INTO accounts(messages)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
+    $sql= "INSERT INTO accounts(messages)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
     
       if ($con->query($sql) === TRUE) {
-          echo "New record CREATE INTOd successfully";
+          echo "New record INSERT INTOd successfully";
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
@@ -110,20 +115,20 @@ if ($posttype = "media"){
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
        
-        $sql= "CREATE INTO forums (tag, about, groups, posts, events) 
+        $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
         VALUES ($posttaglet, $posttags, $postrecipients, $postinfo, $postrecipients)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
-            echo "New record CREATE INTOd successfully";
+            echo "New record INSERT INTOd successfully";
           } else {
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
     $i=0;
-    $sql= "CREATE INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
     if ($con->query($sql) === TRUE) {
-        echo "New record CREATE INTOd successfully";
+        echo "New record INSERT INTOd successfully";
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
@@ -134,20 +139,20 @@ if ($posttype = "comment"){
   $i=0;
   foreach  ($posttargets as &$posttarget){
      
-      $sql= "CREATE INTO posts (comments) WHERE  posts(title, author) ==($posttitle, $posttarget) 
+      $sql= "INSERT INTO posts (comments) WHERE  posts(title, author) ==($posttitle, $posttarget) 
       VALUES ($postinfo)";
    $i=$i+1;
       if ($con->query($sql) === TRUE) {
-          echo "New record CREATE INTOd successfully";
+          echo "New record INSERT INTOd successfully";
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
   }
   $i=0;
-  $sql= "CREATE INTO accounts(posts)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
+  $sql= "INSERT INTO accounts(posts)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
     
       if ($con->query($sql) === TRUE) {
-          echo "New record CREATE INTOd successfully";
+          echo "New record INSERT INTOd successfully";
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
@@ -155,10 +160,10 @@ if ($posttype = "comment"){
     $con->close();
 }
 if ($posttype = "post"){
-    $sql= "CREATE INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
     if ($con->query($sql) === TRUE) {
-        echo "New record CREATE INTOd successfully";
+        echo "New record INSERT INTOd successfully";
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
@@ -166,11 +171,11 @@ if ($posttype = "post"){
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
        
-        $sql= "CREATE INTO tags (posts, groups, events, forums) WHERE tags(value) == $posttaglet
+        $sql= "INSERT INTO tags (posts, groups, events, forums) WHERE tags(value) == $posttaglet
         VALUES ($postinfo, $postrecipients, $postrecipients, $posttags)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
-            echo "New record CREATE INTOd successfully";
+            echo "New record INSERT INTOd successfully";
           } else {
             echo "Error: " . $sql . "<br>" . $con->error;
           }
@@ -181,11 +186,11 @@ if ($posttype = "post"){
 } 
     if ($posttype = "profile"){
       
-      $sql= "CREATE INTO accounts (aboutcontent) 
+      $sql= "INSERT INTO accounts (aboutcontent) 
           VALUE ($postinfo) WHERE  accounts(id, username) == ($id, $uname) ";
     
       if ($con->query($sql) === TRUE) {
-          echo "New record CREATE INTOd successfully";
+          echo "New record INSERT INTOd successfully";
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
@@ -197,20 +202,20 @@ if ($posttype = "post"){
       }
   
 if ($posttype = "event"){
-    $sql= "CREATE INTO events (title, type, about, groups, members, posts, tags) 
+    $sql= "INSERT INTO events (title, type, about, groups, members, posts, tags) 
     VALUES ($posttitle, $posttype, $postcontent, $postrecipients, $postauthor, $postinfo, $posttags)";
 
     if ($con->query($sql) === TRUE) {
-        echo "New record CREATE INTOd successfully";
+        echo "New record INSERT INTOd successfully";
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
 
     
-      $sql= "CREATE INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+      $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
       if ($con->query($sql) === TRUE) {
-          echo "New record CREATE INTOd successfully";
+          echo "New record INSERT INTOd successfully";
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
@@ -220,19 +225,19 @@ if ($posttype = "event"){
 
 }
 if ($posttype = "group"){
-    $sql= "CREATE INTO groups (title, about, members, posts, tags, forums, tags) 
+    $sql= "INSERT INTO groups (title, about, members, posts, tags, forums, tags) 
     VALUES ($posttitle, $posttype, $postauthor, $postinfo, $postrecipients, $posttags, $posttags)";
 
     if ($con->query($sql) === TRUE) {
-        echo "New record CREATE INTOd successfully";
+        echo "New record INSERT INTOd successfully";
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
     
-      $sql= "CREATE INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+      $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
       if ($con->query($sql) === TRUE) {
-          echo "New record CREATE INTOd successfully";
+          echo "New record INSERT INTOd successfully";
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
@@ -245,20 +250,20 @@ if ($posttype = "forum"){
     $i=0;
     foreach ($posttaglets as &$posttaglet){
        
-        $sql= "CREATE INTO forums (tag, about, groups, posts, events) 
+        $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
         VALUES ($posttaglets, $posttags, $postrecipients, $postinfo, $postrecipients)";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
-            echo "New record CREATE INTOd successfully";
+            echo "New record INSERT INTOd successfully";
           } else {
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
     $i=0;
-    $sql= "CREATE INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
+    $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
     if ($con->query($sql) === TRUE) {
-        echo "New record CREATE INTOd successfully";
+        echo "New record INSERT INTOd successfully";
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
@@ -268,12 +273,12 @@ if ($posttype = "forum"){
     $con->close();
 }
 
-$sql= "CREATE INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, votes) 
+$sql= "INSERT INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, votes) 
 WHERE accounts(username, id) == ($postauthor, $authorid) 
 VALUES ($postinfo, $postinfo, $postmedia, $posttags, $postrecipients, $postinfo, $postinfo, $postinfo, $postinfo)";  ;
 
 if ($con->query($sql) === TRUE) {
-    echo "New record CREATE INTOd successfully";
+    echo "New record INSERT INTOd successfully";
   } else {
     echo "Error: " . $sql . "<br>" . $con->error;
   }
@@ -282,7 +287,7 @@ if ($con->query($sql) === TRUE) {
 
 
 
-echo "Post created. Wait 10min for next post: ";
+echo "Post INSERTd. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a>";
 header('Location: home.php');
 sleep(6000 + 6000 * ((array_sum(explode(";",$votelist))/(count(explode(";",$votelist))))));
@@ -300,7 +305,9 @@ sleep(6000 + 6000 * ((array_sum(explode(";",$votelist))/(count(explode(";",$vote
                             </p>";
                 }
               }
-
+            }
 ?>
+
+
 
 
