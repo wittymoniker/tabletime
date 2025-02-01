@@ -8,7 +8,6 @@ RewriteEngine On
 # Redirect all requests to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ ?/$1 [L]
 
 # Set custom error pages
 ErrorDocument 404 /home.php
@@ -18,11 +17,7 @@ ErrorDocument 504 /home.php
 ErrorDocument 405 /home.php
 ErrorDocument 503 /home.php
 
-# Set default charset
-AddDefaultCharset UTF-8
 
-# Disable directory browsing
-Options All -Indexes
 
 # Protect .htaccess file
 <Files .htaccess>
