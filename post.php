@@ -9,8 +9,8 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -118,7 +118,8 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "submit" name= "enter" value = "enter" ><th><br><label name ="range">private/public/global range: </label>"
+<input method ="POST" type = "submit" name= "enter" value = "enter" >
+<th><br><label name ="range">private/public/global range: </label>"
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
 $viewtag="public";
@@ -259,12 +260,9 @@ if($viewtag ="private"){
 	
 	
 	<?php
-	$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
 	
 	
-	if ($mysqli->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
+	
 	$uname = $_SESSION['name'];
 	/////////
 	/////////
@@ -472,12 +470,7 @@ if ($result->num_rows > 0) {
 			<?php endif; ?>
 		</ul>
 		<?php endif; ?>
-<php?
-} else {
-	echo "0 posts";
-}
-}
-?>
+
 
  
 
@@ -512,12 +505,8 @@ if(isset($_POST['perspective'])){
 
 
 <?php
-$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
 
 
-if ($mysqli->connect_error) {
-die("Connection failed: " . $conn->connect_error);
-}
 $uname = $_SESSION['name'];
 /////////
 /////////
@@ -733,12 +722,9 @@ echo "0 posts";
 	
 	
 	<?php
-	$mysqli = mysqli_connect('localhost', 'root', '', 'tabletime');
 	
 	
-	if ($mysqli->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
+
 	$uname = $_SESSION['name'];
 	/////////
 	/////////

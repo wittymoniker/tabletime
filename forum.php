@@ -9,8 +9,8 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -50,14 +50,13 @@ if (mysqli_connect_errno()) {
 	<h1>FORUM INSPECTOR</h1>
 	<th><br>
 <br>
-<form method = "POST">
 <br><label name ="index">post search prompt: </label>"
 <input method ="POST" type = "text" name="index" placeholder = "search terms...">"
 </th>
 <tr>
 <br>
-
-<input method ="POST" type = "submit" name= "enter" value = "enter"><th><br><label name ="range">private/public/global range: </label>"
+<input method ="POST" type = "submit" name= "enter" value = "enter" >
+<th><br><label name ="range">private/public/global range: </label>"
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
 $viewtag="public";
@@ -176,7 +175,7 @@ if($viewtag ="private"){
 	
 		 
 	
-
+	<form>
 	<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 	<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 	</form><?php
@@ -309,7 +308,6 @@ if($viewtag ="private"){
 						<div>
 						
 						<?php
-						$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 	
 						
 						

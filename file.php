@@ -10,7 +10,7 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -98,7 +98,6 @@ $fontSize = "14";
 <?php
 
 
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -228,7 +227,7 @@ function get_filetype_icon($filetype) {
 <form method ="POST">
 <label name ="fileindex"> <br>file: </label><br>
 <input method = "POST" type = "text" id = "filei" default = "file/: index key"><br>
-<input method ="POST" type = "button" name= "enter" >
+<input method ="POST" type = "submit" name= "enter" value = "enter" >
 <br>
 </form><?php
 $fileID="";

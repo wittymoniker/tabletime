@@ -89,8 +89,17 @@ if ($posttype = "message"){
     $i=0;
     foreach  ($posttargets as &$posttarget){
        
+
+
+
+
+
+      if ($stmt = $con->prepare('SELECT id  FROM accounts WHERE username = $posttarget')) {
+
+
+
         $sql= "INSERT INTO accounts (username, messages, votes, files, friends, votes, friends) 
-        VALUES ($posttarget,$postinfo, $postrecipients, $postmedia, $postauthor,$posttags, $postrecipients)";
+        VALUES ($posttarget,$postinfo, $postrecipients, $postmedia, $postauthor,$posttags, $postrecipients) BY username";
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
             echo "New record INSERT INTOd successfully";
@@ -98,6 +107,11 @@ if ($posttype = "message"){
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
+    $stmt->close();
+    $con->close();
+  }
+  }
+  if ($stmt = $con->prepare('SELECT id  FROM accounts WHERE username = $uname')) {
     $sql= "INSERT INTO accounts(messages)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
     
       if ($con->query($sql) === TRUE) {
@@ -106,15 +120,18 @@ if ($posttype = "message"){
           echo "Error: " . $sql . "<br>" . $con->error;
         }
         $stmt->close();
+
+      }
     $con->close();
     $i=0;
     $stmt->close();
     $con->close();
+     
 }
 if ($posttype = "media"){
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
-       
+      if ($stmt = $con->prepare('SELECT id  FROM forums WHERE tag = $posttaglet')) {
         $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
         VALUES ($posttaglet, $posttags, $postrecipients, $postinfo, $postrecipients)";
      $i=$i+1;
@@ -124,6 +141,10 @@ if ($posttype = "media"){
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
+    $stmt->close();
+    $con->close();
+  }
+  if ($stmt = $con->prepare('SELECT id  FROM posts WHERE title = $posttitle, posts(file) = $postmedia')) {
     $i=0;
     $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
@@ -132,14 +153,15 @@ if ($posttype = "media"){
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
+    }
       $stmt->close();
     $con->close();
 }
 if ($posttype = "comment"){
   $i=0;
   foreach  ($posttargets as &$posttarget){
-     
-      $sql= "INSERT INTO posts (comments) WHERE  posts(title, author) ==($posttitle, $posttarget) 
+    if ($stmt = $con->prepare('SELECT id  FROM posts WHERE name LIKE $posttarget OR WHERE id LIKE $posttarget')) {
+      $sql= "INSERT INTO posts (comments) WHERE  posts(title, name) ==($posttitle, $posttarget) 
       VALUES ($postinfo)";
    $i=$i+1;
       if ($con->query($sql) === TRUE) {
@@ -148,6 +170,9 @@ if ($posttype = "comment"){
           echo "Error: " . $sql . "<br>" . $con->error;
         }
   }
+  $stmt->close();
+    $con->close();
+  if ($stmt = $con->prepare('SELECT id  FROM accounts WHERE (username, id) = ($uname, $id)')) {
   $i=0;
   $sql= "INSERT INTO accounts(posts)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
     
@@ -156,10 +181,13 @@ if ($posttype = "comment"){
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
+      }
         $stmt->close();
     $con->close();
 }
 if ($posttype = "post"){
+  if ($stmt = $con->prepare('SELECT id  FROM posts WHERE (name, file) = ($uname, $postfile)')) {
+
     $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
     if ($con->query($sql) === TRUE) {
@@ -167,10 +195,13 @@ if ($posttype = "post"){
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
-    
+  }
+  $stmt->close();
+    $con->close();
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
-       
+      if ($stmt = $con->prepare('SELECT id  FROM tags WHERE (value) = ($posttaglet)')) {
+
         $sql= "INSERT INTO tags (posts, groups, events, forums) WHERE tags(value) == $posttaglet
         VALUES ($postinfo, $postrecipients, $postrecipients, $posttags)";
      $i=$i+1;
@@ -180,12 +211,14 @@ if ($posttype = "post"){
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
+  }
     $i=0;
     $stmt->close();
     $con->close();
 } 
     if ($posttype = "profile"){
-      
+      if ($stmt = $con->prepare('SELECT id  FROM accounts WHERE (username, id) = ($uname, $id)')) {
+
       $sql= "INSERT INTO accounts (aboutcontent) 
           VALUE ($postinfo) WHERE  accounts(id, username) == ($id, $uname) ";
     
@@ -194,6 +227,7 @@ if ($posttype = "post"){
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
+      }
         $stmt->close();
     $con->close();
 
@@ -202,6 +236,9 @@ if ($posttype = "post"){
       }
   
 if ($posttype = "event"){
+
+  if ($stmt = $con->prepare('SELECT id  FROM events WHERE (title) = ($posttitle)')) {
+
     $sql= "INSERT INTO events (title, type, about, groups, members, posts, tags) 
     VALUES ($posttitle, $posttype, $postcontent, $postrecipients, $postauthor, $postinfo, $posttags)";
 
@@ -211,7 +248,11 @@ if ($posttype = "event"){
         echo "Error: " . $sql . "<br>" . $con->error;
       }
 
-    
+  }
+  $stmt->close();
+    $con->close();
+  if ($stmt = $con->prepare('SELECT id  FROM posts WHERE (name, id, file) = ($uname, $id, $postmedia)')) {
+
       $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
       if ($con->query($sql) === TRUE) {
@@ -219,12 +260,15 @@ if ($posttype = "event"){
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
-    
+      }
     $stmt->close();
     $con->close();
 
 }
 if ($posttype = "group"){
+  if ($stmt = $con->prepare('SELECT id  FROM groups WHERE (title) = ($posttitle)')) {
+
+
     $sql= "INSERT INTO groups (title, about, members, posts, tags, forums, tags) 
     VALUES ($posttitle, $posttype, $postauthor, $postinfo, $postrecipients, $posttags, $posttags)";
 
@@ -233,7 +277,11 @@ if ($posttype = "group"){
       } else {
         echo "Error: " . $sql . "<br>" . $con->error;
       }
-    
+    }
+    $stmt->close();
+    $con->close();
+    if ($stmt = $con->prepare('SELECT id  FROM posts WHERE (name, id) = ($uname, $id)')) {
+
       $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
       if ($con->query($sql) === TRUE) {
@@ -241,7 +289,7 @@ if ($posttype = "group"){
         } else {
           echo "Error: " . $sql . "<br>" . $con->error;
         }
-    
+      }
     
     $stmt->close();
     $con->close();
@@ -249,7 +297,7 @@ if ($posttype = "group"){
 if ($posttype = "forum"){
     $i=0;
     foreach ($posttaglets as &$posttaglet){
-       
+      if ($stmt = $con->prepare('SELECT id  FROM forums WHERE (tag) = ($posttaglet)')) {
         $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
         VALUES ($posttaglets, $posttags, $postrecipients, $postinfo, $postrecipients)";
      $i=$i+1;
@@ -259,7 +307,12 @@ if ($posttype = "forum"){
             echo "Error: " . $sql . "<br>" . $con->error;
           }
     }
+  }
+  $stmt->close();
+    $con->close();
     $i=0;
+
+    if ($stmt = $con->prepare('SELECT id  FROM posts WHERE (name, id, file) = ($uname, $id, $postmedia)')) {
     $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
 
     if ($con->query($sql) === TRUE) {
@@ -268,10 +321,12 @@ if ($posttype = "forum"){
         echo "Error: " . $sql . "<br>" . $con->error;
       }
     
-    
+    }
+
     $stmt->close();
     $con->close();
 }
+if ($stmt = $con->prepare('SELECT id  FROM accounts WHERE (username, id) = ($uname, $id)')) {
 
 $sql= "INSERT INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, votes) 
 WHERE accounts(username, id) == ($postauthor, $authorid) 
@@ -284,8 +339,9 @@ if ($con->query($sql) === TRUE) {
   }
 
 
-
-
+}
+$stmt->close();
+    $con->close();
 
 echo "Post INSERTd. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a>";
@@ -306,6 +362,7 @@ sleep(6000 + 6000 * ((array_sum(explode(";",$votelist))/(count(explode(";",$vote
                 }
               }
             }
+      
 ?>
 
 

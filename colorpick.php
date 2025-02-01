@@ -10,7 +10,7 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -182,7 +182,8 @@ $color[19] = (string)$_POST['stylesize'];
 text: <input type="color" name="styletext"><br>
 font size: 
 <input type = "range" name = "stylesize" min = "3" max = "36">
-<input method ="POST" type = "button" name= "submit" id = "submit" value = "submit">
+<input method ="POST" type = "submit" name= "enter" value = "enter" >
+
 
 
 </p>

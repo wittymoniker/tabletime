@@ -9,8 +9,8 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-$mysqli = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -78,6 +78,7 @@ $colort = "#000000";
 $fontSize = "14";
 }
 ?>
+
 <html class = "tabletime">
 <link href="style.php" rel="stylesheet" type="text/css">
 <head class = "html">
@@ -119,8 +120,8 @@ $fontSize = "14";
 </th>
 <tr>
 <br>
-<input method ="POST" type = "submit" name= "enter" value = "enter" ></tr>
-<br>
+<input method ="POST" type = "submit" name= "enter" value = "enter" >
+</form><br>
 </table>
 </div>
 <table>
@@ -347,7 +348,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
 
 
 		<br><br>
-	
+		<form method ="POST">
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
@@ -377,20 +378,20 @@ $calendar = new Calendar(date('Y-m-d'));
 	</a>
 	<?php endforeach; ?>
 
-
+	<?php echo $calendar;?>
+	<?php $calendar;?>
 
 <?php
 }
 ?><br>
 
-<?=$calendar?>
+<?php include 'pagination.php';?>
 
 
 
 </p>
 		</div>
 
-		<?php include 'pagination.php';?>
 
 
 
