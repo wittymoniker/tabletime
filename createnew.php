@@ -30,7 +30,7 @@ $stmt->close();
 $authorid = $_SESSION['id'];
 $author = $username;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-if(isset($_POST["submit"]))
+if(isset($_POST["enter"]))
             {
                 $test=$_POST["test"];
                 $number1=$_POST["no1"];
