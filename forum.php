@@ -18,9 +18,10 @@ if (mysqli_connect_errno()) {
 ?>
 
 <html class = "tabletime">
+<meta name="viewport" content="width=device-width">
+<meta charset="utf-8">
 <link href="style.php" rel="stylesheet" type="text/css">
 
-		<meta charset="utf-8">
 		<title>TABLETIME</title>
 <body class = "content">  
 <head class = "html">

@@ -88,11 +88,11 @@ $fontSize = "14";
 
 
 <html class = "tabletime">
-
+<meta name="viewport" content="width=device-width">
+		<meta charset="utf-8">
 
 <link href="style.php" rel="stylesheet" type="text/css">
 <head class = "html">
-		<meta charset="utf-8">
 		<title>tabletime</title>
 
 

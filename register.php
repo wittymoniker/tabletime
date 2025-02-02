@@ -78,6 +78,8 @@ $colort = "#000000";
 $fontSize = "14";
 }?>
 <!DOCTYPE html>
+<meta name="viewport" content="width=device-width">
+<meta charset="utf-8">
 <html class = "tabletime">
 	<head class = "html">
 		<link href="style.php" rel="stylesheet" type="text/css">

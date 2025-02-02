@@ -80,9 +80,10 @@ $fontSize = "14";
 ?>
 
 <html class = "tabletime">
+<meta name="viewport" content="width=device-width">
+<meta charset="utf-8">
 <link href="style.php" rel="stylesheet" type="text/css">
 <head class = "html">
-		<meta charset="utf-8">
 		<title>TABLETIME</title>
 <body class = "content">  
 
@@ -121,6 +122,11 @@ $fontSize = "14";
 <tr>
 <br>
 <input method ="POST" type = "submit" name= "enter" value = "enter" >
+<br><br>
+
+<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
+<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
+
 </form><br>
 </table>
 </div>
@@ -221,9 +227,7 @@ if($_POST['enter']){
 
 
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+
 $uname = $_SESSION['name'];
 /////////
 /////////
@@ -238,9 +242,7 @@ $sql = 'SELECT id FROM posts WHERE accounts(posts(name)) LIKE accounts($uname)  
 
 
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+
 $uname = $_SESSION['name'];
 $sql = 'SELECT * FROM accounts WHERE username = accounts($uname)';
 $result = $mysqli->query($sql);
@@ -347,11 +349,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
 		</body>
 
 
-		<br><br>
-		<form method ="POST">
-<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
-<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
-</form><?php
+		<?php
 if(isset($_POST['enter'])){
     $votetarget = $_POST['index'];
     $id = $_SESSION['id'];

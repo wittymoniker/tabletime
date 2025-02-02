@@ -184,9 +184,10 @@ function get_filetype_icon($filetype) {
 
 
 <html class = "tabletime">
+<meta name="viewport" content="width=device-width">
+<meta charset="utf-8">
 		<link href="style.php" rel="stylesheet" type="text/css">
 	
-		<meta charset="utf-8">
 		<title>tabletime</title>
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 		<title>File Management System</title>

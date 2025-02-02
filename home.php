@@ -16,6 +16,10 @@ if (mysqli_connect_errno()) {
 }
 ?>
 
+
+
+
+
 <?php
 
 
@@ -86,19 +90,15 @@ $fontSize = "14";
 
 
 
-
 <html >
-
+<meta name="viewport" content="width=device-width">
+<meta charset="utf-8">
 <link href="style.php" rel="stylesheet" type="text/css">
-
-
-
 
 <head class = "content">
 <body class = "tabletime">
 
 
-		<meta charset="utf-8">
 		<br><br><title>TABLETIME</title>
 
 
@@ -711,7 +711,8 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 
 
 
-
+		<a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
+		<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
 <br>
 <br>
 <br>
@@ -720,8 +721,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 <br>
 <br><br><br>
 
-<a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
-				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+
 
 </body>
 </head>

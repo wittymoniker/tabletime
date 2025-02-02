@@ -1,9 +1,9 @@
 
 
-<!DOCTYPE html>
 <html class = "tabletime">
 	<head class = "html">
-
+    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8">
 
 <link href="style.php" rel="stylesheet" type="text/css">
 <h1><b><a href="home.php">TABLETIME</a></b></h1>
