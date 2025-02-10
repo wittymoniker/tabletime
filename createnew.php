@@ -46,7 +46,7 @@ if(isset($_POST["enter"]))
 
                   $target_dir = "files/" . "file_" . uniqid() . "/";
                   $baseDir = "files/file_" . uniqid() . "/";
-                  $target_file = "files/" . "file_" . (string)(uniqid()) . "/" .basename($_FILES["file"]["name"]);
+                  $target_file = "files/" . "file_" . (string)(uniqid()) . "/" . basename($_FILES["file"]["name"]);
               
                   $uploadOk = 1;
                   $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
