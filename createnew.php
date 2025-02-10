@@ -45,12 +45,15 @@ if(isset($_POST["enter"]))
 
 
                   $target_dir = "files/" . "file_" . uniqid() . "/";
-                  $baseDir = "files/" . "file_" . uniqid() . "/";
-                  $target_file = "files/" . "file_" . uniqid() . "/" .basename($_FILES["file"]["name"]);
+                  $baseDir = "files/file_" . uniqid() . "/";
+                  $target_file = "files/" . "file_" . (string)(uniqid()) . "/" .basename($_FILES["file"]["name"]);
               
                   $uploadOk = 1;
                   $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-              
+                  if (!is_dir($targetDir)) {
+                    mkdir($targetDir, 0777, true);
+                }
+                $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
                   // Check if file already exists
                   if (file_exists($target_file)) {
                       echo "Sorry, file already exists.";
@@ -58,17 +61,13 @@ if(isset($_POST["enter"]))
                   }
               
                   // Check file size (limit to 5MB)
-                  if ($_FILES["file"]["size"] > 5000000) {
+                  if ($_FILES["file"]["size"] > 50000000) {
                       echo "Sorry, your file is too large.";
                       $uploadOk = 0;
                   }
               
                   // Allow certain file formats
-                  $allowedTypes = array("jpg", "png", "jpeg", "gif", "pdf");
-                  if (!in_array($fileType, $allowedTypes)) {
-                      echo "Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed.";
-                      $uploadOk = 0;
-                  }
+           
               
                   // Check if $uploadOk is set to 0 by an error
                   if ($uploadOk == 0) {

@@ -33,7 +33,7 @@ $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
 $stmt->close();
-if ($color != ''){
+if ($color != ""){
 	$color = explode(";", $color);
 	$colora= color[0];
 	$colorb= color[1];
@@ -148,6 +148,7 @@ $stmt->close();
 
 
 <div>
+	<p>
 
 		
 			<h1>Feed</h1>
@@ -698,7 +699,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 
 
 		
-
+</p>
 		</div>
 
 
