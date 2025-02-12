@@ -16,10 +16,6 @@ if (mysqli_connect_errno()) {
 }
 ?>
 
-
-
-
-
 <?php
 
 
@@ -33,7 +29,7 @@ $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
 $stmt->close();
-if ($color != ""){
+if ($color != ''){
 	$color = explode(";", $color);
 	$colora= color[0];
 	$colorb= color[1];
@@ -90,15 +86,19 @@ $fontSize = "14";
 
 
 
+
 <html >
-<meta name="viewport" content="width=device-width">
-<meta charset="utf-8">
+
 <link href="style.php" rel="stylesheet" type="text/css">
+
+
+
 
 <head class = "content">
 <body class = "tabletime">
 
 
+		<meta charset="utf-8">
 		<br><br><title>TABLETIME</title>
 
 
@@ -147,8 +147,7 @@ $stmt->close();
 
 
 
-<div>
-	<p>
+<div align = "center">
 
 		
 			<h1>Feed</h1>
@@ -444,8 +443,8 @@ if (ceil($total_pages / $num_results_on_page) > 0):
 
 
 	<br>
-			<h1>Events</h1>
-			relevant events<br>
+			<h1>Public</h1>
+			relevant groups/events<br>
 
 
 
@@ -481,7 +480,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT * FROM events WHERE members LIKE $friendslist ORDER BY dt DESC';
+$sql = 'SELECT * FROM events OR groups WHERE members LIKE $friendslist ORDER BY dt DESC';
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
@@ -554,7 +553,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM groups LIKE $postslist')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM groups OR events LIKE $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -699,7 +698,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 
 
 		
-</p>
+
 		</div>
 
 
@@ -712,8 +711,7 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 
 
 
-		<a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
-		<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+
 <br>
 <br>
 <br>
@@ -722,7 +720,8 @@ if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')
 <br>
 <br><br><br>
 
-
+<a href="account.php"><i class="fas fa-user-circle"></i>Account</a>
+				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
 
 </body>
 </head>
