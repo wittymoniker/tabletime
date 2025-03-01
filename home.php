@@ -147,7 +147,7 @@ $stmt->close();
 
 
 
-<div align = "center">
+<div>
 
 		
 			<h1>Feed</h1>
@@ -443,8 +443,8 @@ if (ceil($total_pages / $num_results_on_page) > 0):
 
 
 	<br>
-			<h1>Public</h1>
-			relevant groups/events<br>
+			<h1>Events</h1>
+			relevant events<br>
 
 
 
@@ -480,7 +480,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT * FROM events OR groups WHERE members LIKE $friendslist ORDER BY dt DESC';
+$sql = 'SELECT * FROM events WHERE members LIKE $friendslist ORDER BY dt DESC';
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
@@ -553,7 +553,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM groups OR events LIKE $postslist')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM groups LIKE $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);

@@ -1,4 +1,5 @@
 <?php
+session_start();
 $min  = 1;
 $max  = 500;
 $num1 = rand( $min, $max );
@@ -12,7 +13,7 @@ $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
 // Try and connect using the info above.
 $mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  $mysqli;
 if (mysqli_connect_errno()) {
 	// If there is an error with the connection, stop the script and display the error.
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
@@ -45,10 +46,10 @@ if(isset($_POST["enter"]))
 
 
 
-                  $target_dir = "files/" . "file_" . uniqid() . "/";
-                  $baseDir = "files/file_" . uniqid() . "/";
-                  $target_file = "files/" . "file_" . (string)(uniqid()) . "/" . basename($_FILES["file"]["name"]);
-              
+                  $uniqueFolder = "file_" . uniqid();
+$target_dir = "files/" . $uniqueFolder . "/";
+$target_file = $target_dir . basename($_FILES["file"]["name"]);
+                  
                   $uploadOk = 1;
                   $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
                   if (!is_dir($targetDir)) {
@@ -62,7 +63,7 @@ if(isset($_POST["enter"]))
                   }
               
                   // Check file size (limit to 5MB)
-                  if ($_FILES["file"]["size"] > 50000000) {
+                  if ($_FILES["file"]["size"] > 5000000) {
                       echo "Sorry, your file is too large.";
                       $uploadOk = 0;
                   }
@@ -81,8 +82,8 @@ if(isset($_POST["enter"]))
                           echo "Sorry, there was an error uploading your file.";
                       }
                   }
-$baseDir = "files/" . "file_" . uniqid() . "/" ;
-$file = (string)($baseDir . basename($_FILES["file"]["name"])) ;
+$baseDir = $target_dir;
+$file = (string)($target_file) ;
 
 
 
@@ -138,7 +139,7 @@ if ($posttype = "message"){
   }
   if ($stmt = $con->prepare('SELECT id  FROM accounts WHERE username = $uname')) {
     $sql= "INSERT INTO accounts(messages)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
-    
+    $sql->execute();
       if ($con->query($sql) === TRUE) {
           echo "New record INSERT INTOd successfully";
         } else {
@@ -147,7 +148,7 @@ if ($posttype = "message"){
         $stmt->close();
 
       }
-    $con->close();
+  
     $i=0;
     $stmt->close();
     $con->close();
@@ -159,6 +160,7 @@ if ($posttype = "media"){
       if ($stmt = $con->prepare('SELECT id  FROM forums WHERE tag = $posttaglet')) {
         $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
         VALUES ($posttaglet, $posttags, $postrecipients, $postinfo, $postrecipients)";
+        $sql->execute();
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
             echo "New record INSERT INTOd successfully";
@@ -172,7 +174,7 @@ if ($posttype = "media"){
   if ($stmt = $con->prepare('SELECT id  FROM posts WHERE title = $posttitle, posts(file) = $postmedia')) {
     $i=0;
     $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
-
+    $sql->execute();
     if ($con->query($sql) === TRUE) {
         echo "New record INSERT INTOd successfully";
       } else {
@@ -188,6 +190,7 @@ if ($posttype = "comment"){
     if ($stmt = $con->prepare('SELECT id  FROM posts WHERE name LIKE $posttarget OR WHERE id LIKE $posttarget')) {
       $sql= "INSERT INTO posts (comments) WHERE  posts(title, name) ==($posttitle, $posttarget) 
       VALUES ($postinfo)";
+      $sql->execute();
    $i=$i+1;
       if ($con->query($sql) === TRUE) {
           echo "New record INSERT INTOd successfully";
@@ -200,7 +203,7 @@ if ($posttype = "comment"){
   if ($stmt = $con->prepare('SELECT id  FROM accounts WHERE (username, id) = ($uname, $id)')) {
   $i=0;
   $sql= "INSERT INTO accounts(posts)  WHERE accounts(id, username) == ($id, $uname) VALUES ($postcontent)";
-    
+  $sql->execute();
       if ($con->query($sql) === TRUE) {
           echo "New record INSERT INTOd successfully";
         } else {
@@ -214,7 +217,7 @@ if ($posttype = "post"){
   if ($stmt = $con->prepare('SELECT id  FROM posts WHERE (name, file) = ($uname, $postfile)')) {
 
     $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
-
+    $sql->execute();
     if ($con->query($sql) === TRUE) {
         echo "New record INSERT INTOd successfully";
       } else {
@@ -229,6 +232,7 @@ if ($posttype = "post"){
 
         $sql= "INSERT INTO tags (posts, groups, events, forums) WHERE tags(value) == $posttaglet
         VALUES ($postinfo, $postrecipients, $postrecipients, $posttags)";
+        $sql->execute();
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
             echo "New record INSERT INTOd successfully";
@@ -246,6 +250,7 @@ if ($posttype = "post"){
 
       $sql= "INSERT INTO accounts (aboutcontent) 
           VALUE ($postinfo) WHERE  accounts(id, username) == ($id, $uname) ";
+          $sql->execute();
     
       if ($con->query($sql) === TRUE) {
           echo "New record INSERT INTOd successfully";
@@ -266,7 +271,7 @@ if ($posttype = "event"){
 
     $sql= "INSERT INTO events (title, type, about, groups, members, posts, tags) 
     VALUES ($posttitle, $posttype, $postcontent, $postrecipients, $postauthor, $postinfo, $posttags)";
-
+$sql->execute();
     if ($con->query($sql) === TRUE) {
         echo "New record INSERT INTOd successfully";
       } else {
@@ -279,7 +284,7 @@ if ($posttype = "event"){
   if ($stmt = $con->prepare('SELECT id  FROM posts WHERE (name, id, file) = ($uname, $id, $postmedia)')) {
 
       $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
-
+      $sql->execute();
       if ($con->query($sql) === TRUE) {
           echo "New record INSERT INTOd successfully";
         } else {
@@ -296,7 +301,7 @@ if ($posttype = "group"){
 
     $sql= "INSERT INTO groups (title, about, members, posts, tags, forums, tags) 
     VALUES ($posttitle, $posttype, $postauthor, $postinfo, $postrecipients, $posttags, $posttags)";
-
+$sql->execute();
     if ($con->query($sql) === TRUE) {
         echo "New record INSERT INTOd successfully";
       } else {
@@ -308,7 +313,7 @@ if ($posttype = "group"){
     if ($stmt = $con->prepare('SELECT id  FROM posts WHERE (name, id) = ($uname, $id)')) {
 
       $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
-
+      $sql->execute();
       if ($con->query($sql) === TRUE) {
           echo "New record INSERT INTOd successfully";
         } else {
@@ -325,6 +330,7 @@ if ($posttype = "forum"){
       if ($stmt = $con->prepare('SELECT id  FROM forums WHERE (tag) = ($posttaglet)')) {
         $sql= "INSERT INTO forums (tag, about, groups, posts, events) 
         VALUES ($posttaglets, $posttags, $postrecipients, $postinfo, $postrecipients)";
+        $sql->execute();
      $i=$i+1;
         if ($con->query($sql) === TRUE) {
             echo "New record INSERT INTOd successfully";
@@ -339,7 +345,7 @@ if ($posttype = "forum"){
 
     if ($stmt = $con->prepare('SELECT id  FROM posts WHERE (name, id, file) = ($uname, $id, $postmedia)')) {
     $sql= "INSERT INTO posts (content, title,  file, tags, name, dt, scope, type, recipients) VALUES ($postcontent, $posttitle, $postmedia, $posttags, $postauthor, $posttime, $postscope, $posttype, $postrecipients)";
-
+    $sql->execute();
     if ($con->query($sql) === TRUE) {
         echo "New record INSERT INTOd successfully";
       } else {
@@ -356,12 +362,14 @@ if ($stmt = $con->prepare('SELECT id  FROM accounts WHERE (username, id) = ($una
 $sql= "INSERT INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, votes) 
 WHERE accounts(username, id) == ($postauthor, $authorid) 
 VALUES ($postinfo, $postinfo, $postmedia, $posttags, $postrecipients, $postinfo, $postinfo, $postinfo, $postinfo)";  ;
-
-if ($con->query($sql) === TRUE) {
-    echo "New record INSERT INTOd successfully";
-  } else {
-    echo "Error: " . $sql . "<br>" . $con->error;
-  }
+$sql->execute();
+  if ($con->query($sql) === TRUE) {
+      echo "New record INSERT INTOd successfully";
+    } else {
+      echo "Error: " . $sql . "<br>" . $con->error;
+    }
+    $stmt->close();
+    $con->close();
 
 
 }
