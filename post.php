@@ -120,6 +120,7 @@ $fontSize = "14";
 <br>
 <input method ="POST" type = "submit" name= "enter" value = "enter" >
 <th><br><label name ="range">private/public/global range: </label>"
+<input method = "POST" type = "range" id = "view" name = "rate" min = "-256" max = "256">
 <?php 
 $viewselect = (float)($_POST['view'] / 256.0)+0.0; 
 $viewtag="public";
