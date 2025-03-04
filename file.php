@@ -1,5 +1,7 @@
 <?php
 // We need to use sessions, so you should always start sessions using the below password.
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
