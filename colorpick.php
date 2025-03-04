@@ -1,5 +1,6 @@
 <?php 
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
@@ -10,7 +11,8 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  $mysqli;
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -190,6 +192,7 @@ font size:
 </p>
 </form>
 <?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if ($_POST["submit"]) {
     // Retrieve the selected values from the form
 $colorp = ["#ababab",  "#bcbcbc",  "#cdcdcd",  "#dcdcdc",  "#ededed",   
@@ -227,7 +230,7 @@ if(($_POST['submit'])){
     $id = $_SESSION['id'];
     if(($_POST['reset'])){
         $color = $colorp;
-        $sql = "UPDATE accounts SET account(colors) TO $send WHERE accounts(id) = accounts($id)";
+        $sql = "UPDATE accounts SET account(colors) = '$send' WHERE id = '$id'";
         $result = $mysqli->query($sql);
 
         header('Location: index.html');
@@ -236,11 +239,11 @@ if(($_POST['submit'])){
     }
 
     $send = [implode(";", $color)];
-    $sql = "UPDATE accounts SET colors TO $send WHERE id = accounts($id)";
+    $sql = "UPDATE accounts SET account(colors) = '$send' WHERE id = '$id')";
     $result = $mysqli->query($sql);
 
 }
-   
+}
 
 ?>
 
