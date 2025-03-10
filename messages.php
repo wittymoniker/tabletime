@@ -90,23 +90,23 @@ $fontSize = "14";
 		<div class = "tabletime">		
 			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
-<a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
-<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
+<a href="messages.php"><i class="tabletime"></i>Messages</a>
+<a href="post.php"><i class="tabletime"></i>Posts</a>
+<a href="forum.php"><i class="tabletime"></i>Forums</a><br>
+<a href="event.php"><i class="tabletime"></i>Events</a>
+<a href="tags.php"><i class="tabletime"></i>Tags</a>
+<a href="group.php"><i class="tabletime"></i>Groups</a><br>
+<a href="statsmap.php"><i class="tabletime"></i>Stats/Map</a>
+<a href="profile.php"><i class="tabletime"></i>Profiles</a>
+<a href="file.php"><i class="tabletime"></i>Files</a><br>
+<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p>
 			</div>
 </nav>
 
 <div>
 	<p>
 <h1> Private Messages</h1></br>
-<?php 
+<?php require 'pagination.php';
 $message = "No new messages/posts/notifications!";
 $con =  $mysqli;
 if($stmt = $con-> prepare('SELECT  messages FROM accounts WHERE id = ?')){

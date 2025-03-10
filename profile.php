@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-
+require 'pagination.php';
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -91,16 +91,16 @@ $fontSize = "14";
 		<div class = "tabletime">		
 			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
-<a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
-<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
+<a href="messages.php"><i class="tabletime"></i>Messages</a>
+<a href="post.php"><i class="tabletime"></i>Posts</a>
+<a href="forum.php"><i class="tabletime"></i>Forums</a><br>
+<a href="event.php"><i class="tabletime"></i>Events</a>
+<a href="tags.php"><i class="tabletime"></i>Tags</a>
+<a href="group.php"><i class="tabletime"></i>Groups</a><br>
+<a href="statsmap.php"><i class="tabletime"></i>Stats/Map</a>
+<a href="profile.php"><i class="tabletime"></i>Profiles</a>
+<a href="file.php"><i class="tabletime"></i>Files</a><br>
+<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p>
 			</div>
 </nav>
 
@@ -180,7 +180,7 @@ $indexprofile = $_POST['userindex'];
 if ($con->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$sql = 'SELECT * FROM accounts LIKE $indexprofile ORDER BY username DESC BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
+$sql = 'SELECT * FROM accounts LIKE $indexprofile || $userindex ORDER BY username DESC BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
 $con =  $mysqli;
 $result = $mysqli->query($sql);
 
@@ -263,7 +263,7 @@ if ($result->num_rows > 0) {
 }
 $uname = $_SESSION['name'];
 $searchindex = $_POST['index'];
-$sql = 'SELECT posts WHERE name IN  $searchindex BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+$sql = 'SELECT posts WHERE name LIKE  $searchindex || $indexprofile BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $con =  $mysqli;
 $result = $con->query($sql);
 
@@ -367,8 +367,41 @@ if(isset($_POST['enter'])){
 }}}
 ?>
 
-<?php include 'pagination.php';?>
+<?php
+$con =  $mysqli;
+if($stmt = $con->prepare('SELECT password, email, username, votes, messages, media, posts, friends, aboutcontent FROM accounts BY username LIKE ? || ?')){
 
+
+
+	$stmt->bind_param('ss', $indexprofile, $userindex);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist, $listedabout);
+	$stmt->fetch();
+	$stmt->close();
+	$con->close();
+	$con =  $mysqli;
+	
+ 
+}?>
+<p><b>     USER (OR ) STATS BY SEARCH: <?php echo $userindex;?>, <?php echo $index;?>:</b><br>
+	<b>-</b>Tallied votes: <?php echo (string)(count(explode(";",$votelist)));?>,<br>
+	<b>-</b>Karma/moksha:<?php echo (string) (array_sum(explode(";",$votelist)));?>,<br>
+	<b>-</b>Average vote:<?php echo (string) (array_sum(explode(";",$votelist))/count(explode(";",$votelist)));?>,<br>
+	<b>-</b>Messages Count:<?php echo (string) (count(explode(";",$messagelist)));?>,<br>
+	<b>-</b>Upload Count:<?php echo (string) (count(explode(";",$medialist)));?>,<br>
+	<b>-</b>Friends Count:<?php echo (string) (count(explode(";",$friendslist)));?>,<br>
+	<b>-</b>Posts Count:<?php echo (string) (count(explode(";",$postslist)));?>,<br>
+	<?php if($stmt = $con->prepare('SELECT accounts BY accounts(username) LIKE ? || ?')){
+	$stmt->bind_param('ss', $indexprofile, $userindex);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($accountslist);
+	$stmt->fetch();
+	$stmt->close();
+	$con->close();
+}
+?>NUMBER USERS FOUND: <?php echo count($userindex);?><br>
 
 </p>
 		</div>

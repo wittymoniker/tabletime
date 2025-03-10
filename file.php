@@ -6,17 +6,18 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: index.html');
 	exit;
 }
+require 'pagination.php';
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
 $mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con = $mysqli
+$con = $mysqli;
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
-
+$con = $mysqli;
 $stmt = $con->prepare('SELECT username, files FROM accounts WHERE id = ?');
 
 $stmt->bind_param('i', $_SESSION['id']);
@@ -88,7 +89,7 @@ $colorf3= "#f3f3f3";
 $colort = "#000000";
 $fontSize = "14";
 }
-
+$con =  $mysqli;
 ?>
 
 
@@ -133,6 +134,7 @@ if (isset($_GET['file'])) {
         exit; 
     }
 }
+
 // Retrieve all files and directories
 $results = glob(str_replace(['[',']',"\f[","\f]"], ["\f[","\f]",'[[]','[]]'], ($current_directory ? $current_directory : $initial_directory)) . '*');
 // If true, directories will appear first in the populated file list
@@ -203,16 +205,16 @@ function get_filetype_icon($filetype) {
 		<div class = "tabletime">		
 			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
-<a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
-<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
+<a href="messages.php"><i class="tabletime"></i>Messages</a>
+<a href="post.php"><i class="tabletime"></i>Posts</a>
+<a href="forum.php"><i class="tabletime"></i>Forums</a><br>
+<a href="event.php"><i class="tabletime"></i>Events</a>
+<a href="tags.php"><i class="tabletime"></i>Tags</a>
+<a href="group.php"><i class="tabletime"></i>Groups</a><br>
+<a href="statsmap.php"><i class="tabletime"></i>Stats/Map</a>
+<a href="profile.php"><i class="tabletime"></i>Profiles</a>
+<a href="file.php"><i class="tabletime"></i>Files</a><br>
+<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p>
 			</div>
 </nav>
 
@@ -226,7 +228,7 @@ function get_filetype_icon($filetype) {
 <input method ="POST" type = "submit" name= "enter" value = "enter" >
 <br>
 </form><?php
-$fileID="";
+$fileID='';
 $current_directory = 'files/' . (string)($fileID);
 if(isset($_POST['submit'])){
     $fileID = $_POST['filei'];
@@ -247,7 +249,7 @@ if(isset($_POST['submit'])){
             <table >
                 <th>
                     <tr>
-                        <td >Name<i ></i></td>
+                        <td>Name<i></i></td>
                         <td>Size</td>
                         <td>Modified</td>
                         <td>Actions</td>
@@ -289,7 +291,7 @@ if(isset($_POST['submit'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
         $con =  $mysqli;
         $result = $mysqli->query($sql);
-
+        $con =  $mysqli;
     }
 }
 if(isset($_POST['submit'])){
@@ -300,6 +302,7 @@ if(isset($_POST['submit'])){
         $sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
         $con =  $mysqli;
         $result = $mysqli->query($sql);
+        $con =  $mysqli;
 
     }
 }

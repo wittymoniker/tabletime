@@ -33,8 +33,7 @@ $author = $username;
 $uname = $username;
 $_SESSION['$uname'] = $uname;
 $id = $_SESSION['id'];
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-if(isset($_POST["enter"])) {
+if (isset($_POST['submit'])) {
                 $test=$_POST["test"];
                 $number1=$_SESSION['num1'];
                 $number2=$_SESSION['num2'];;
@@ -48,8 +47,9 @@ if(isset($_POST["enter"])) {
 
 
                   $uniqueFolder = "file_" . uniqid();
-$target_dir = "files/" . $uniqueFolder . "/";
-$target_file = $target_dir . basename($_FILES["file"]["name"]);
+$target_dir = "files/" . $uniqueFolder;
+$target_folder = $target_dir . "/";
+$target_file = $target_folder . basename($_FILES['file']['name']);
                   
                   $uploadOk = 1;
                   $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -71,10 +71,12 @@ $target_file = $target_dir . basename($_FILES["file"]["name"]);
               
                   // Allow certain file formats
            
-                  move_uploaded_file($_FILES["file"]["name"], $target_file);
+                  if(move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
+                    echo "Your file post is uploaded.";
+                  }
                   // Check if $uploadOk is set to 0 by an error
                   if ($uploadOk = 0) {
-                      echo "Sorry, your file was not uploaded.";
+                    echo "Sorry, your file was not uploaded.";
                   }
                   
 $baseDir = $target_dir;
@@ -124,9 +126,10 @@ $msgvote = +0.5;
         (?,?,?,?,?)"))){
         
 	$stmt->bind_param('ssssss', '$posttarget', '$postinfo' . 'cc: ' . '$postrecipients',  '$msgvote', '$postauthor');
-  $stmt->execute(); 
-  $stmt->fetch();
-$stmt->close();
+  if($stmt->execute()){
+    $stmt->close(); 
+   }
+   $stmt->empty();
           $i=$i+1;
     
 
@@ -134,9 +137,10 @@ $stmt->close();
     }
           if($stmt= $con->prepare(("INSERT INTO accounts(id, messages)  VALUES (?,?)" ))){
     $stmt->bind_param('is', '$id','$postcontent');
-   $stmt->execute(); 
-   $stmt->fetch();
-   $stmt->close();
+    if($stmt->execute()){
+      $stmt->close(); 
+     }
+     $stmt->empty();
     
     }
  
@@ -153,9 +157,10 @@ if ($posttype == "media"){
         VALUES (?,?,?,?,?) ")){
          
         $stmt->bind_param('sssss','$posttaglet', '$posttags' . ':' . '$posttitle' . '...;', '$postrecipients', '$postinfo', '$postrecipients');
-        $stmt->execute(); 
-        $stmt->fetch();
-        $stmt->close();
+        if($stmt->execute()){
+          $stmt->close(); 
+         }
+         $stmt->empty();
         }
         
 
@@ -163,9 +168,10 @@ if ($posttype == "media"){
         VALUES (?,?)")){
          
         $stmt->bind_param('ss','$postinfo', '$posttaglet');
-        $stmt->execute(); 
-        $stmt->fetch();
-        $stmt->close();
+        if($stmt->execute()){
+          $stmt->close(); 
+         }
+         $stmt->empty();
  
     
     
@@ -176,9 +182,10 @@ if ($posttype == "media"){
         VALUES (?,?)")){
          
          $stmt->bind_param('ss','$postinfo', '$posttaglet');
-         $stmt->execute(); 
-        $stmt->fetch();
-        $stmt->close();
+         if($stmt->execute()){
+          $stmt->close(); 
+         }
+         $stmt->empty();
  
     
     
@@ -195,9 +202,10 @@ if ($posttype == "comment"){
       VALUES (?,?,?)")){
 
  $stmt->bind_param('sss',  '$postinfo','$posttitle', '$posttarget');
- $stmt->execute(); 
- $stmt->fetch();
- $stmt->close();
+ if($stmt->execute()){
+  $stmt->close(); 
+ }
+ $stmt->empty();
    $i=$i+1;
 
       }
@@ -207,9 +215,10 @@ if ($posttype == "comment"){
   if($stmt= $con->prepare( "INSERT INTO accounts(posts,id)  VALUES (?,?)")){
 
  $stmt->bind_param('si',  $postcontent,$id);
- $stmt->execute(); 
- $stmt->fetch();
- $stmt->close(); 
+ if($stmt->execute()){
+  $stmt->close(); 
+ }
+ $stmt->empty();
       
   }
   $stmt->close(); 
@@ -222,9 +231,10 @@ if ($posttype == "post"){
 
     if ($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
     $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $postmedia  );
-    $stmt->execute(); 
-    $stmt->fetch();
-    $stmt->close(); 
+    if($stmt->execute()){
+      $stmt->close(); 
+     }
+     $stmt->empty();
       
     }
     $i=0;
@@ -235,9 +245,10 @@ if ($posttype == "post"){
 
         VALUES (?,?,?,?,?) ")){
   $stmt->bind_param('sssss', $postinfo ,  $posttaglets ,  $posttaglets ,  $posttaglets ,  $posttaglet );
-  $stmt->execute(); 
-  $stmt->fetch();
-  $stmt->close();
+  if($stmt->execute()){
+    $stmt->close(); 
+   }
+   $stmt->empty();
      $i=$i+1;
     
     }
@@ -255,9 +266,10 @@ $con =  $mysqli;
             
 
  $stmt->bind_param('sis',   $postinfo , $id ,  $uname );
- $stmt->execute(); 
- $stmt->fetch();
- $stmt->close();
+ if($stmt->execute()){
+  $stmt->close(); 
+ }
+ $stmt->empty();
           }
      echo '.';
       
@@ -272,16 +284,18 @@ if ($posttype == "event"){
     if($stmt= $con->prepare( "INSERT INTO events (title, type, about, groups,  posts, tags, title, members, file) 
     VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss',  $posttitle ,  $posttype , $postinfo ,  $postrecipients ,  $postcontent ,  $posttags ,  $posttitle ,  $uname ,  $postmedia  );
-$stmt->execute(); 
-$stmt->fetch();
-$stmt->close(); 
+if($stmt->execute()){
+  $stmt->close(); 
+ }
+ $stmt->empty();
 
     
 if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
-$stmt->execute(); 
-$stmt->fetch();
-$stmt->close(); 
+if($stmt->execute()){
+  $stmt->close(); 
+ }
+ $stmt->empty();
 }
    
      echo '.';
@@ -294,16 +308,18 @@ if ($posttype == "group"){
     if($stmt= $con->prepare( "INSERT INTO groups (title, type, about, events,  posts, tags, title, members, file) 
   VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss',  $posttitle ,  $posttype , $postinfo ,  $postrecipients ,  $postcontent ,  $posttags ,  $posttitle ,  $uname ,  $postmedia  );
-$stmt->execute(); 
-$stmt->fetch();
-$stmt->close();
+if($stmt->execute()){
+  $stmt->close(); 
+ }
+ $stmt->empty();
   }
 
   if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
-$stmt->execute(); 
-$stmt->fetch();
-$stmt->close(); 
+if($stmt->execute()){
+  $stmt->close(); 
+ }
+ $stmt->empty();
   }
    echo '.';
 }$con =  $mysqli;
@@ -317,9 +333,11 @@ if ($posttype == "forum"){
 
      $i=$i+1;
      $stmt->bind_param('sssss', $posttags ,  $postrecipients ,  $postinfo ,  $postrecipients , $posttaglet );
-     $stmt->execute(); 
-     $stmt->fetch();
-     $stmt->close(); 
+     if($stmt->execute()){
+      $stmt->close(); 
+     }
+     $stmt->empty();
+     
        
     }
 
@@ -329,9 +347,10 @@ if ($posttype == "forum"){
     if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
         
     $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
-    $stmt->execute(); 
-    $stmt->fetch();
-    $stmt->close();
+    if($stmt->execute()){
+      $stmt->close(); 
+     }
+     $stmt->empty();
      
 
 
@@ -344,9 +363,10 @@ if ($posttype == "forum"){
     if($stmt= $con->prepare( "INSERT INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, username, id)  
 VALUES (?,?,?,?,?,?,?,?,?,?)")){
 $stmt->bind_param('sssssssssi',  $posttitle ,  $posttitle ,   $postmedia ,  $posttags ,  $postrecipients ,  $postinfo , $postinfo ,  $posttags ,  $uname ,  $id );  
-$stmt->execute(); 
-$stmt->fetch();
-$stmt->close();
+if($stmt->execute()){
+  $stmt->close(); 
+ }
+ $stmt->empty();
 }
 
      echo '.';
@@ -372,7 +392,6 @@ echo "<a href='home.php'>Return to home</a>";
                                 </font>
                             </p>";
                 }
-}
 }
 ?>
 

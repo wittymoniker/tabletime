@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-
+require 'pagination.php';
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -91,16 +91,16 @@ $fontSize = "14";
 		<div class = "tabletime">		
 			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
-<a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
-<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
+<a href="messages.php"><i class="tabletime"></i>Messages</a>
+<a href="post.php"><i class="tabletime"></i>Posts</a>
+<a href="forum.php"><i class="tabletime"></i>Forums</a><br>
+<a href="event.php"><i class="tabletime"></i>Events</a>
+<a href="tags.php"><i class="tabletime"></i>Tags</a>
+<a href="group.php"><i class="tabletime"></i>Groups</a><br>
+<a href="statsmap.php"><i class="tabletime"></i>Stats/Map</a>
+<a href="profile.php"><i class="tabletime"></i>Profiles</a>
+<a href="file.php"><i class="tabletime"></i>Files</a><br>
+<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p>
 			</div>
 </nav>	
 
@@ -187,7 +187,7 @@ if($_POST['enter']){
 			<?php
 		}
 		if (ceil($total_pages / $num_results_on_page) > 0): ?>
-			<ul class="pagination">
+			<ul class="content">
 				<?php if ($page > 1): ?>
 				<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
 				<?php endif; ?>
@@ -288,7 +288,7 @@ if ($result->num_rows > 0) {
 			<?php
     }
 	if (ceil($total_pages / $num_results_on_page) > 0): ?>
-		<ul class="pagination">
+		<ul class="content">
 			<?php if ($page > 1): ?>
 			<li class="prev"><a href="pagination.php?page=<?php echo $page-1 ?>">Prev</a></li>
 			<?php endif; ?>
@@ -353,7 +353,7 @@ if(isset($_POST['enter'])){
     }
     
 
-include 'functions.php';
+require 'functions.php';
 // Connect to MySQL
 // MySQL query that selects all the images
 $index = $_POST['index'];
@@ -383,7 +383,7 @@ $index = $_POST['index'];
 	</div>
 </div>
 
-<div class="image-popup">
+<div >
 <script>
 // Container we'll use to output the image
 let image_popup = document.querySelector('.image-popup');
@@ -439,7 +439,7 @@ if ($stmt = $con->prepare('SELECT * FROM * LIKE $postslist  ')) {
 <br>
 
 
-<?php include 'pagination.php';?>
+
 
 
 <br>
