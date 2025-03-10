@@ -9,7 +9,7 @@ $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
 $mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  $mysqli;
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -23,26 +23,24 @@ if (mysqli_connect_errno()) {
 		<title>TABLETIME</title>
 <body class = "content">  
 
+
 <nav class = "navtop">
 		<div class = "tabletime">		
-
-		<h1><b><a href="home.php">TABLETIME</a></b></h1>
+			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
+<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></p>
-
-
-
-
+<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
+<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
 			</div>
 </nav>
+
 
 <div>
 	<table>
@@ -57,7 +55,7 @@ if (mysqli_connect_errno()) {
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 		if(isset($_POST['perspective'])){
 			$sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
-			$result = $mysqli->query($sql);
+			$result = $con->query($sql);
 	
 		}
 	}
@@ -107,7 +105,8 @@ $viewtag="private";
 if($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes)))';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -125,13 +124,15 @@ if($_POST['enter']){
 		($row["id"]))';
 		
 		}
-		$result = $mysqli->query($sql);
+		$con =  $mysqli;
+		$result = $con->query($sql);
 	} else {
 		echo "0 posts";
 		$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes)))';
-	$result = $mysqli->query($sql);
+		$con =  $mysqli;
+		$result = $con->query($sql);
 	}
-}
+}	$con =  $mysqli;
 ?><b>
 	<th>name</th>
 					<th>topic</th>
@@ -172,6 +173,7 @@ if(isset($_POST['enter'])){
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
+		$con =  $mysqli;
         $result = $mysqli->query($sql);
 
     }
@@ -182,6 +184,7 @@ if(isset($_POST['enter'])){
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
     if(isset($_POST['perspective'])){
         $sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
+		$con =  $mysqli;
         $result = $mysqli->query($sql);
 
     }
@@ -193,6 +196,7 @@ $index = $_POST['index'];
 if(isset($_POST['enter'])){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts  WHERE (* LIKE $index) BY ((array_sum(posts(votes))/(count(posts(votes))) ';
+	$con =  $mysqli;
 	$result = $mysqli->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {

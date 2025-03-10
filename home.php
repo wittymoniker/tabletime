@@ -22,6 +22,7 @@ if (mysqli_connect_errno()) {
 
 $id = $_SESSION['id'];
 $color;
+$con =  $mysqli;
 $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 
 $stmt->bind_param('i', $id);
@@ -82,7 +83,7 @@ $colorf3= "#f3f3f3";
 
 $colort = "#000000";
 $fontSize = "14";
-}?>
+}	$con =  $mysqli;?>
 
 
 
@@ -103,37 +104,38 @@ $fontSize = "14";
 
 
 
-<nav class = "navtop">
+		<nav class = "navtop">
 		<div class = "tabletime">		
-
-		
-		<br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
-		<h1><br><br>
-		<b><a href="home.php">TABLETIME</a></b></h1>
-		<br><br>
+			<h1>		<br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
+			<b><a href="home.php">TABLETIME</a></b></h1>
+<p>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
+<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br><br><br>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
+<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
 <a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a><br><br><br><br>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></div></nav>
-
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
+<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
+			</div>
+</nav>
 
 
 <?php
+	$con =  $mysqli;
 $stmt = $con-> prepare('SELECT  aboutcontent FROM accounts WHERE id = ?');
 $prof;
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($prof);
 $stmt->fetch();
-$stmt->close();?>
+$stmt->close();	$con =  $mysqli;?>
 
 			
 <?php
+	$con =  $mysqli;
 $stmt = $con->prepare('SELECT password, email, username, votes FROM accounts WHERE id = ?');
 
 $stmt->bind_param('i', $_SESSION['id']);
@@ -141,6 +143,7 @@ $stmt->execute();
 $stmt->bind_result($password, $email, $username, $votelist);
 $stmt->fetch();
 $stmt->close();
+$con =  $mysqli;
 ?>
 <h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable </h1><br>...on timedelay shift (between posts) <?php echo (string)(6.0 - 6.0*(-1.0+(1.0+count(explode(";",$votelist))/(1.0+array_sum(explode(";",$votelist))))));?> minutes.<br> <a href="account.php"><i class="fas fa-user-circle"></i>Account </a>
 				 <br> DEFAULT DELAY: 10min<br><br>
@@ -163,25 +166,26 @@ $stmt->close();
 
 
 
-
+$con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname)';
-$result = $mysqli->query($sql);
+$result = $con->query($sql);
 $friendslist;
 $postslist;
-
+$con =  $mysqli;
 $sql = 'SELECT posts FROM accounts LIKE  $friendslist ORDER BY dt DESC';
-$result = $mysqli->query($sql);
+$result = $con->query($sql);
 
-
+$con =  $mysqli;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
-
-if ($stmt = $mysqli->prepare('SELECT * FROM accounts || posts LIKE $friendslist || $postslist')) {
+$con =  $mysqli;
+if ($stmt = $con->prepare('SELECT * FROM accounts || posts LIKE $friendslist || $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
+	$stmt->close();
 	
 }
 else {
@@ -213,7 +217,7 @@ else {
 	($row["media"]),
 	($row["posts"])),
 	($row["username"])';
-	$result = $mysqli->query($sql);
+	$result = $con->query($sql);
 	
     }
 if ($result->num_rows > 0) {?>
@@ -254,7 +258,6 @@ if ($result->num_rows > 0) {?>
 				<?php endif; ?>
 			</ul>
 			<?php endif; ?><?php
-	$result = $mysqli->query($sql);
 } }?>
 <br>
 
@@ -295,75 +298,82 @@ if ($result->num_rows > 0) {?>
 
 
 
-
+$con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT aboutcontent FROM accounts WHERE username = accounts($uname) OR tags  LIKE accounts($tags)';
-$result = $mysqli->query($sql);
+$result = $con->query($sql);
 $friendslist;
 $postslist;
+$con =  $mysqli;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()&& $row<=9) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["info"]))';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 
 } else {
     echo "0 friends";
 }
+$con =  $mysqli;
 $sql = 'SELECT posts FROM accounts WHERE username LIKE $friendslist';
-$result = $mysqli->query($sql);
+$result = $con->query($sql);
 
 if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()&& $row<=9) {
 		$sql = 'INSERT INTO $postslist VALUES
 		(($row[":"]))';
-		$result = $mysqli->query($sql);
+		$con =  $mysqli;
+		$result = $con->query($sql);
 		}
 
 } else {
     echo "0 posts";
 }
 
-
+$con =  $mysqli;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
-
-if ($stmt = $mysqli->prepare('SELECT * FROM posts IF * IN $postslist ORDER BY dt DESC')) {
+$con =  $mysqli;
+if ($stmt = $con->prepare('SELECT * FROM posts IF * IN $postslist ORDER BY dt DESC')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
+	$stmt->close();
+	$con =  $mysqli;
 	
 }
-
+$con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname)';
-$result = $mysqli->query($sql);
+$result = $con->query($sql);
 $friendslist;
 $postslist;
-
+$con =  $mysqli;
 $sql = 'SELECT posts FROM accounts LIKE  $friendslist ORDER BY dt DESC';
-$result = $mysqli->query($sql);
+$result = $con->query($sql);
 
-
+$con =  $mysqli;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
-
-if ($stmt = $mysqli->prepare('SELECT * FROM accounts || posts LIKE $friendslist || $postslist')) {
+$con =  $mysqli;
+if ($stmt = $con->prepare('SELECT * FROM accounts || posts LIKE $friendslist || $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	
+	$stmt->close();
 }
 else {
     echo "0 posts";
 }
-
+$con =  $mysqli;
 ?>
 
 			
@@ -387,7 +397,8 @@ while($row = $result->fetch_assoc()) {
 	($row["media"]),
 	($row["posts"])),
 	($row["username"])';
-	$result = $mysqli->query($sql);?>
+		$con =  $mysqli;
+	$result = $con->query($sql);?>
 	
 	<?php	
 }
@@ -461,28 +472,32 @@ if (ceil($total_pages / $num_results_on_page) > 0):
 
 
 
-
+$con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends FROM accounts WHERE username = accounts($uname)';
-$result = $mysqli->query($sql);
+$result = $con->query($sql);
+$con =  $mysqli;
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["friends"]))';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 
 } else {
     echo "0 friends";
 }
+$con =  $mysqli;
 $sql = 'SELECT * FROM events WHERE members LIKE $friendslist ORDER BY dt DESC';
-$result = $mysqli->query($sql);
-
+$result = $con->query($sql);
+$con =  $mysqli;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $postslist VALUES
@@ -490,7 +505,8 @@ if ($result->num_rows > 0) {
 	($row["about"]),
 	($row["posts"]),
 	($row["members"]))';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 	
 
 	
@@ -553,11 +569,12 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM groups LIKE $postslist')) {
+if ($stmt = $con->prepare('SELECT * FROM groups LIKE $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
+	$stmt->close();
 	
 }
 ?>
@@ -583,12 +600,14 @@ if ($stmt = $mysqli->prepare('SELECT * FROM groups LIKE $postslist')) {
 <?php
 
 
-
+$con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT tags FROM accounts WHERE username = accounts($id) && username = accounts($id) OR contains(accounts(friends), $uname)';
-$result = $mysqli->query($sql);
+$result = $con->query($sql);
+$con =  $mysqli;
 $tagslist;
 $postslist;
+$con =  $mysqli;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $tagslist VALUES
@@ -599,18 +618,21 @@ if ($result->num_rows > 0) {
 	(($row["groups"])),
 	(($row["posts"])),
 	(($row["aboutcontent"]))';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 
 } else {
     echo "0 friends";
 }
+$con =  $mysqli;
 $sql = 'SELECT * IN forums LIKE ORDER BY tags DESC';
-$result = $mysqli->query($sql);
-
+$result = $con->query($sql);
+$con =  $mysqli;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $postslist VALUES
@@ -618,7 +640,8 @@ if ($result->num_rows > 0) {
 	($row["events"]),
 	($row["content"]),
 	($row["tag"]))';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 	?><br>
 			
 			<table >
@@ -678,12 +701,12 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $mysqli->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')) {
+if ($stmt = $con->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	
+	$stmt->close();
 }
  
 			?>

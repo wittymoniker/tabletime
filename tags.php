@@ -10,13 +10,12 @@ $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
 $mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con =  $mysqli;
+$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 $id = $_SESSION['id'];
 $color;
-$con =  $mysqli;
 $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 
 $stmt->bind_param('i', $id);
@@ -77,7 +76,7 @@ $colorf3= "#f3f3f3";
 
 $colort = "#000000";
 $fontSize = "14";
-}	$con =  $mysqli;
+}
 ?>
 
 <html class = "tabletime">
@@ -114,8 +113,8 @@ $fontSize = "14";
 <br>
 <br><br>
 
-<br><label name ="index">username: </label>"
-<input type = "text" name="userindex" placeholder = "username">"
+<br><label name ="index">tag/IDs: </label>"
+<input type = "text" name="index" placeholder = "username">"
 </th>
 <tr>
 <br>
@@ -128,8 +127,8 @@ $fontSize = "14";
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 
 <br>
-<br><label name ="index">search: </label>"
-<input method ="POST" type = "text" name="index" placeholder = "search terms...">"
+<br><label name ="index">search terms: </label>"
+<input method ="POST" type = "text" name="tags" placeholder = "search terms...">"
 </th>
 <tr>
 <br>
@@ -150,8 +149,7 @@ $fontSize = "14";
 if ($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts WHERE (* LIKE $index) BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
-	$con =  $mysqli;
-	$result = $con->query($sql);
+	$result = $mysqli->query($sql);
 	$table = $result;
 	$feature;
 	if ($result->num_rows > 0) {
@@ -162,26 +160,25 @@ if ($_POST['enter']){
 
 
 
-if ($con->connect_error) {
+if ($mysqli->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $uname = $_SESSION['name'];
-$searchindex = $_POST['index'];
+$searchindex = $_POST['tags'];
 /////////
 /////////
 ///////////
 $uname = $_SESSION['name'];
 $postslist;
-$indexprofile = $_POST['userindex'];
+$index = $_POST['index'];
 
 
 
 
-if ($con->connect_error) {
+if ($mysqli->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$sql = 'SELECT * FROM accounts LIKE $indexprofile ORDER BY username DESC BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
-$con =  $mysqli;
+$sql = 'SELECT * FROM tags LIKE $searchindex ORDER BY value DESC BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
 $result = $mysqli->query($sql);
 
 
@@ -193,40 +190,24 @@ $num_results_on_page = 16 ;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $friendslist VALUES
-	(($row["username"]),
-	($row["aboutcontent"]),
-	($row["tags"]),
-	(($row["posts"]),
-	($row["events"]),
-	(($row["groups"]),
-	($row["forums"])),
-	($row["votes"]),
-	($row["comments"]),
-	($row["friends"]),
-	(($row["files"]),
-	($row["delay"]),
-	($row["ip"]))	';
-		$con =  $mysqli;
-	$result = $con->query($sql);?>
+	(($row["forums"]),
+	($row["posts"]),
+	($row["groups"]),
+	(($row["events"]),
+	($row["value"])	';
+	$result = $mysqli->query($sql);?>
 	
 	<meta charset="utf-8">
 					
 	<br>
 		<table class = "list">
 			<tc>
-				<tr>username</tr>
-				<tr>aboutcontent</tr>
-				<tr>tags</tr>
+				<tr>forums</tr>
 				<tr>posts</tr>
 				<tr>events</tr>
 				<tr>groups</tr>
-				<tr>forums</tr>
-				<tr>votes</tr>
-				<tr>comments</tr>
-				<tr>friends</tr>
-				<tr>files</tr>
-				<tr>delay</tr>
-				<tr>ip</tr>
+				<tr>VALUE</tr>
+				
 				</tc>
 				<tc>
 								
@@ -238,19 +219,12 @@ if ($result->num_rows > 0) {
 				while ($row = $result->fetch_assoc()){ ?>
 
 			<a href = "forum.php?index='<?php echo $row[$_POST['index']];?>'"><tr><?php echo $row['name']; ?></tr></a>
-				<tr><b><?php echo ($row['username']); ?></b> </tr>
-				<tr><b><?php echo $row['aboutcontent']; ?></b> </tr>
-						<tr><b><?php echo $row['tags']; ?></b></tr>
-						<tr><b><?php echo $row['posts']; ?></b> </tr>
-				<tr><b><?php echo $row['events']; ?></b> </tr>
-				<tr><b><?php echo $row['groups']; ?></b></tr>
-						<tr><b><?php echo $row['forums']; ?></b> </tr>
-				<tr><b><?php echo $row['votes']; ?></b> </tr>
-				<tr><b><?php echo $row['comments']; ?></b></tr>
-						<tr><b><?php echo $row['friends']; ?></b> </tr>
-				<tr><b><?php echo $row['files']; ?></b> </tr>
-				<tr><b><?php echo $row['delay']; ?></b></tr>
-						<tr><?php echo $row['ip']; ?></tr>
+				<tr><b><?php echo ($row['forums']); ?></b> </tr>
+				<tr><b><?php echo $row['posts']; ?></b> </tr>
+						<tr><b><?php echo $row['events']; ?></b></tr>
+						<tr><b><?php echo $row['groups']; ?></b> </tr>
+				<tr><b><?php echo $row['value']; ?></b> </tr>
+				
 			</tc>
 
 		</table>
@@ -263,9 +237,8 @@ if ($result->num_rows > 0) {
 }
 $uname = $_SESSION['name'];
 $searchindex = $_POST['index'];
-$sql = 'SELECT posts WHERE name IN  $searchindex BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
-$con =  $mysqli;
-$result = $con->query($sql);
+$sql = 'SELECT posts WHERE tags LIKE  $index BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+$result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -275,7 +248,7 @@ if ($result->num_rows > 0) {
 	($row["content"]),
 	($row["file"])),
 	($row["dt"])';
-	$result = $con->query($sql);?>
+	$result = $mysqli->query($sql);?>
 	<meta charset="utf-8">
 					
 	<body>
@@ -336,7 +309,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
-if ($stmt = $con->prepare('SELECT * FROM $postslist BY dt DESC')) {
+if ($stmt = $mysqli->prepare('SELECT * FROM $postslist BY dt DESC')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -349,8 +322,8 @@ if(isset($_POST['enter'])){
     $id = $_SESSION['id'];
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
     if(isset($_POST['perspective'])){
-        $sql = "UPDATE accounts ADD $vote TO votes WHERE username = $usrname";
-        $result = $con->query($sql);
+        $sql = "UPDATE accounts ADD $vote TO votes WHERE username LIKE $searchindex || $index";
+        $result = $mysqli->query($sql);
 
     }
 	if(isset($_POST['enter'])){
@@ -358,8 +331,8 @@ if(isset($_POST['enter'])){
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 		if(isset($_POST['perspective'])){
-			$sql = "UPDATE posts ADD $vote TO votes WHERE name == $usrname";
-			$result = $con->query($sql);
+			$sql = "UPDATE posts ADD $vote TO votes WHERE name  LIKE $searchindex || $index";
+			$result = $mysqli->query($sql);
 	
 		}
 	}

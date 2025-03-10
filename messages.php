@@ -5,7 +5,8 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con= $mysqli;
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -14,6 +15,7 @@ if (mysqli_connect_errno()) {
 <?php 
 $id = $_SESSION['id'];
 $color;
+$con =  $mysqli;
 $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 
 $stmt->bind_param('i', $id);
@@ -83,39 +85,39 @@ $fontSize = "14";
 		<meta charset="utf-8">
 		<title>TABLETIME</title>
 <body class = "content">  
+
 <nav class = "navtop">
 		<div class = "tabletime">		
-
-        <h1><b><a href="home.php">TABLETIME</a></b></h1>
+			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
+<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></p>
-
-
-
-
+<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
+<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
 			</div>
 </nav>
 
-<div><p>
+<div>
+	<p>
 <h1> Private Messages</h1></br>
 <?php 
-$stmt = $con-> prepare('SELECT  messages FROM accounts WHERE id = ?');
+$message = "No new messages/posts/notifications!";
+$con =  $mysqli;
+if($stmt = $con-> prepare('SELECT  messages FROM accounts WHERE id = ?')){
 $prof;
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($message);
 $stmt->fetch();
 $stmt->close();
-
-
+}
+$con =  $mysqli;
 echo $message;?>
 </p></div>
 

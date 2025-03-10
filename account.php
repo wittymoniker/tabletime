@@ -17,6 +17,7 @@ $con =  $mysqli;
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
+$con =  $mysqli;
 $stmt = $con->prepare('SELECT password, email FROM accounts WHERE id = ?');
 
 $stmt->bind_param('i', $_SESSION['id']);
@@ -26,6 +27,7 @@ $stmt->fetch();
 $stmt->close();
 $id = $_SESSION['id'];
 $color;
+$con =  $mysqli;
 $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 
 $stmt->bind_param('i', $id);
@@ -33,6 +35,7 @@ $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
 $stmt->close();
+$con =  $mysqli;
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -89,6 +92,7 @@ $fontSize = "14";
 }
 $id = $_SESSION['id'];
 $color;
+$con =  $mysqli;
 $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 
 $stmt->bind_param('i', $id);
@@ -97,7 +101,7 @@ $stmt->bind_result($color);
 $stmt->fetch();
 $stmt->close();
 
-
+$con =  $mysqli;
 $fileslist;
 $stmt = $con->prepare('SELECT files FROM accounts WHERE id =?');
 
@@ -178,23 +182,21 @@ $fontSize = "14";
 
 	<nav class = "navtop">
 		<div class = "tabletime">		
-
-		<h1><b><a href="home.php">TABLETIME</a></b></h1>
+			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
+<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></p>
-
-
-
+<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
+<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
 			</div>
 </nav>
+
 
 
 
@@ -242,12 +244,14 @@ client <- host -> admin host:
 <?php if(isset($_POST["enter"])){
 //$id = $_SESSION['id'];
 $clientmode = round($_POST['hostmode']);
+$con =  $mysqli;
 $stmt = $con->prepare('REPLACE hostmode FROM accounts WHERE id = $id TO ?');
 $stmt->bind_param('i', $clientmode);
 $stmt->execute();
 $stmt->close();
 
 $ipa = ($_POST['IP']);
+$con =  $mysqli;
 $stmt = $con->prepare('REPLACE ip FROM accounts WHERE id = $id TO ?');
 $stmt->bind_param('i', $ipa);
 $stmt->execute();

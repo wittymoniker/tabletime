@@ -10,12 +10,13 @@ $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
 $mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con =  $mysqli;
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 $id = $_SESSION['id'];
 $color;
+$con =  $mysqli;
 $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 
 $stmt->bind_param('i', $id);
@@ -88,24 +89,22 @@ $fontSize = "14";
 
 <nav class = "navtop">
 		<div class = "tabletime">		
-
-		<h1><b><a href="home.php">TABLETIME</a></b></h1>
+			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
+<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></p>
-
-
-
-
+<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
+<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
 			</div>
-</nav>
+</nav>	
+
+
 
 <div>
 	<table>
@@ -130,7 +129,8 @@ $index = $_POST['index'];
 if($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  ';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -146,7 +146,8 @@ if($_POST['enter']){
 		($row["scope"])),
 		($row["type"])),
 		($row["id"]))';
-		$result = $mysqli->query($sql);
+			$con =  $mysqli;
+		$result = $con->query($sql);
 
 		?>
 	<th>name</th>
@@ -221,29 +222,33 @@ if($_POST['enter']){
 
 
 
-if ($mysqli->connect_error) {
+if ($con->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $uname = $_SESSION['name'];
 $sql = 'SELECT * FROM accounts WHERE username = accounts($uname)  ';
-$result = $mysqli->query($sql);
+$con =  $mysqli;
+$result = $con->query($sql);
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["friends"]))';
-	$result = $mysqli->query($sql);
+		$con =  $mysqli;
+	$result = $con->query($sql);
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
-	$result = $mysqli->query($sql);
+		$con =  $mysqli;
+	$result = $con->query($sql);
 
 } else {
     echo "0 friends";
 }
 $sql = 'SELECT * FROM groups WHERE * LIKE $friendslist  ';
-$result = $mysqli->query($sql);
+$con =  $mysqli;
+$result = $con->query($sql);
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -252,7 +257,8 @@ if ($result->num_rows > 0) {
 	($row["about"]),
 	($row["posts"]),
 	($row["members"]))';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 	
 	?>
 			<meta charset="utf-8">
@@ -317,13 +323,13 @@ if ($result->num_rows > 0) {
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
-
-if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
+$con =  $mysqli;
+if ($stmt = $con->prepare('SELECT * FROM * LIKE $postslist  ')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	
+	$stmt->close();
 }
 ?>
 		</body>
@@ -341,7 +347,8 @@ if(isset($_POST['enter'])){
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
-        $result = $mysqli->query($sql);
+		$con =  $mysqli;
+        $result = $con->query($sql);
 
     }
     
@@ -351,12 +358,14 @@ include 'functions.php';
 // MySQL query that selects all the images
 $index = $_POST['index'];
 	$sql = 'SELECT file FROM posts WHERE title LIKE $searched';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+	$result = $con->query($sql);
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
 		$sql = 'INSERT INTO $feature VALUES (($row["file"])';
-		$result = $mysqli->query($sql);
+		$con =  $mysqli;
+		$result = $con->query($sql);
 		}?>
 		<?=template_header('Gallery')?>
 
@@ -415,8 +424,8 @@ image_popup.onclick = e => {
 }
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
-
-if ($stmt = $mysqli->prepare('SELECT * FROM * LIKE $postslist  ')) {
+$con =  $mysqli;
+if ($stmt = $con->prepare('SELECT * FROM * LIKE $postslist  ')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);

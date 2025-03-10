@@ -10,7 +10,8 @@ $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
 $DATABASE_NAME = 'tabletime';
-$con =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$con = $mysqli
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -25,6 +26,7 @@ $stmt->fetch();
 $stmt->close();
 $id = $_SESSION['id'];
 $color;
+$con =  $mysqli;
 $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 
 $stmt->bind_param('i', $id);
@@ -105,7 +107,7 @@ if (mysqli_connect_errno()) {
 
 
 
-
+$con =  $mysqli;
 $stmt = $con->prepare('SELECT username FROM accounts WHERE id = ?');
 $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
@@ -197,28 +199,22 @@ function get_filetype_icon($filetype) {
 	<body class="content">
 <head class = "html">
 
-    <nav class = "navtop">
+<nav class = "navtop">
 		<div class = "tabletime">		
-		
-
-		<h1><b><a href="home.php">TABLETIME</a></b></h1>
+			<h1><b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
+<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
+<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
 <a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a><br>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a><br>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a>
-<a href="create.php"><i class="fas fa-user-circle"></i>Create</a></p>
-
-
-
-
+<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
+<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
+<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
+<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
+<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
+<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
 			</div>
 </nav>
-
 
 
 
@@ -291,6 +287,7 @@ if(isset($_POST['submit'])){
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
+        $con =  $mysqli;
         $result = $mysqli->query($sql);
 
     }
@@ -301,6 +298,7 @@ if(isset($_POST['submit'])){
     $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
     if(isset($_POST['perspective'])){
         $sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
+        $con =  $mysqli;
         $result = $mysqli->query($sql);
 
     }
