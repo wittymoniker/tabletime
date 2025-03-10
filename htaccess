@@ -2,20 +2,7 @@
 
 
 
-# Enable URL rewriting
-RewriteEngine On
 
-# Redirect all requests to index.php
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Set custom error pages
-ErrorDocument 404 /home.php
-ErrorDocument 500 /home.php
-ErrorDocument 403 /home.php
-ErrorDocument 504 /home.php
-ErrorDocument 405 /home.php
-ErrorDocument 503 /home.php
 
 
 
