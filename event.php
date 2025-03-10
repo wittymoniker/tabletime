@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-require 'pagination.php';
+include 'pagination.php';
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -387,7 +387,7 @@ $calendar = new Calendar(date('Y-m-d'));
 	<?php $calendar;?>
 
 <?php
-}
+}require 'pagination.php';
 ?><br>
 
 
@@ -398,7 +398,7 @@ $calendar = new Calendar(date('Y-m-d'));
 		</div>
 
 
-
+		
 
 <br><br>
 </body>

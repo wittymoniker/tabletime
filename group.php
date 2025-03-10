@@ -431,7 +431,7 @@ if ($stmt = $con->prepare('SELECT * FROM * LIKE $postslist  ')) {
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
 	
-}?><br>
+}include 'pagination.php';?><br>
 </p>
 		</div>
 
