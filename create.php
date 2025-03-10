@@ -147,8 +147,8 @@ post type:			</label>
 <option value ="global">global</option>
 </select>
 <label for="file">
-			file:			</label>
-<input method ="POST" type="file" name="file"  placeholder="file directory..." id="file" required> <br>
+			file(required):			</label>
+<input method ="POST" type="file" name="file"  placeholder="file directory..." id="file"  required> <br>
 
 	<label for="title">
 			title:
@@ -169,12 +169,12 @@ post type:			</label>
 	<label for="tags">
 			tags:
 			</label>
-<input method ="POST" type="text" name="tags" placeholder="tags (separate by semicolon;)" id="tags" required>
+<input method ="POST" type="text" name="tags" placeholder="tags (separate by semicolon;)" id="tags" >
 
  <br><label for="recipients">
 			send to:
 			</label>
-<input method ="POST" type="text" name="recipients" placeholder="recipients (separate by semicolon;)" id="recipients" required>
+<input method ="POST" type="text" name="recipients" placeholder="recipients (separate by semicolon;)" id="recipients" >
 
  <br>
 

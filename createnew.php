@@ -234,7 +234,7 @@ if ($posttype == "post"){
 
 
         VALUES (?,?,?,?,?) ")){
-  $stmt->bind_param('sssssssss', $postinfo ,  $posttaglets ,  $posttaglets ,  $posttaglets ,  $posttaglet );
+  $stmt->bind_param('sssss', $postinfo ,  $posttaglets ,  $posttaglets ,  $posttaglets ,  $posttaglet );
   $stmt->execute(); 
   $stmt->fetch();
   $stmt->close();
