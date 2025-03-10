@@ -91,7 +91,7 @@ $fontSize = "14";
 <body class = "content">
 <div>
     		
-<?php include 'newuser.php'; ?>
+<?php require 'newuser.php'; ?>
 
 			<h1>tabletime<br></h1>
 <p>enter your name and code, msg<br>and solve the puzzle to access tabletime</p>

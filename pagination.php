@@ -10,9 +10,9 @@ $total_pages = $totalpages -> num_rows;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 
 
-$num_results_on_page = ($_GET['items']) ;
-
-if ($stmt = $con->prepare("SELECT * FROM ($_GET 'table') ORDER BY name LIMIT ?,?")) {
+$num_results_on_page = 16 ;
+$con = $mysqli;
+if ($stmt = $con->prepare("SELECT * FROM ($_GET 'table') LIMIT ?,?")) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
