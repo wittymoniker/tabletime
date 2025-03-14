@@ -21,7 +21,7 @@ if ($mysqli->connect_errno){
 
 $con =  $mysqli;
 $authorid = $_SESSION['id'];
-$author = $_SESSION['uname'];
+$author = $_SESSION['name'];
 $uname = $author;
 if($stmt = $con->prepare('SELECT password, email, username, votes, id FROM accounts WHERE id = ?')){
   $stmt->bind_param('i', $_SESSION['id']);
