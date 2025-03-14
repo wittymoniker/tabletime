@@ -19,10 +19,12 @@ if ($mysqli->connect_errno){
 }
 
 
-
-$stmt = $con->prepare('SELECT password, email, username, votes, id FROM accounts WHERE id = ?');
-
-$stmt->bind_param('i', $_SESSION['id']);
+$con =  $mysqli;
+$authorid = $_SESSION['id'];
+$author = $_SESSION['uname'];
+$uname = $author;
+if($stmt = $con->prepare('SELECT password, email, username, votes, id FROM accounts WHERE id = ?')){
+  $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($password, $email, $username, $votelist, $id);
 $stmt->fetch();
@@ -32,6 +34,9 @@ $authorid = $_SESSION['id'];
 $author = $username;
 $uname = $username;
 $_SESSION['$uname'] = $uname;
+$id = $_SESSION['id'];
+}
+
 $id = $_SESSION['id'];
 if (isset($_POST['submit'])) {
                 $test=$_POST["test"];

@@ -98,7 +98,7 @@ $fontSize = "14";
 
 <head class = "navtop">
 <body class = "content">
-
+<a href="account.php"><i class="tabletime"></i>Account</a>
 
 		<meta charset="utf-8">
 		<br><br><title>TABLETIME</title>
