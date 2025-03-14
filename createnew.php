@@ -61,7 +61,7 @@ $target_file = $target_folder . basename($_FILES['file']['name']);
                   if (!is_dir($target_dir)) {
                     mkdir($target_dir, 0777, true);
                 }
-                $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                
                   // Check if file already exists
                   if (file_exists($target_file)) {
                       echo "Sorry, file already exists.";
@@ -385,20 +385,19 @@ header('Location: home.php');
 sleep(6000 + 6000 * ((array_sum(explode(";",$votelist))/(count(explode(";",$votelist))))));
 echo "<html>Post created. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a></html>";
+}else {
+  echo "<p>
+              <font color=red 
+                  font face='arial' 
+                  size='5pt'>
+              Invalid captcha entered !
+              </font>
+          </p>";
 }
 
                    
                }
-                else {
-                    echo "<p>
-                                <font color=red 
-                                    font face='arial' 
-                                    size='5pt'>
-                                Invalid captcha entered !
-                                </font>
-                            </p>";
-                }
-}
+                
 ?>
 
 
