@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-require 'pagination.php';
+
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -881,7 +881,7 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 			echo "0 posts";
 		}
 	}
-
+	require 'pagination.php';
 
 	?>
 

@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-require 'pagination.php';
+
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -431,7 +431,7 @@ if ($stmt = $con->prepare('SELECT * FROM * LIKE $postslist  ')) {
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
 	
-}include 'pagination.php';?><br>
+}require 'pagination.php';?><br>
 </p>
 		</div>
 

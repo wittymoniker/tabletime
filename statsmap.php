@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-require 'pagination.php';
+
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -434,7 +434,7 @@ if ($stmt = $con->prepare('SELECT * FROM * LIKE $index, $tagslist, $listedabout,
 	<?php $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 $con =  $mysqli;
-if ($stmt = $con->prepare('SELECT * FROM * LIKE $index, $tagslist, $listedabout, (string)($postslists . $uname . $friendslist . $messagelist) ') {
+if ($stmt = $con->prepare('SELECT * FROM * LIKE $index, $tagslist, $listedabout, (string)($postslists . $uname . $friendslist . $messagelist) ')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -483,7 +483,7 @@ $calendar = new Calendar(date('Y-m-d'));
 	<?php $calendar;?>
 
 <?php
-}
+}require 'pagination.php';
 ?><br>
 
 

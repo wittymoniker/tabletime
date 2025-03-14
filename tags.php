@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-require 'pagination.php';
+
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -344,7 +344,7 @@ if(isset($_POST['enter'])){
 }}}
 ?>
 
-<?php include 'pagination.php';?>
+<?php require 'pagination.php';?>
 
 
 </p>

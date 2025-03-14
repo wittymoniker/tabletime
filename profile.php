@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-require 'pagination.php';
+
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -401,7 +401,7 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->close();
 	$con->close();
 }
-?>NUMBER USERS FOUND: <?php echo count($userindex);?><br>
+?>NUMBER USERS FOUND: <?php echo count($userindex);require 'pagination.php';?><br>
 
 </p>
 		</div>

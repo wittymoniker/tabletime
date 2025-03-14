@@ -6,7 +6,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: index.html');
 	exit;
 }
-require 'pagination.php';
+
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
@@ -305,7 +305,7 @@ if(isset($_POST['submit'])){
         $con =  $mysqli;
 
     }
-}
+}require 'pagination.php';
 ?>    </head>      
                                        
 </body>
