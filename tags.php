@@ -112,7 +112,7 @@ $fontSize = "14";
 
 	<table>
 <form method ="POST">
-	<h1>PROFILE INSPECTOR</h1>
+	<h1>TAGS INSPECTOR</h1>
 	<th><br>
 <br>
 <br><br>

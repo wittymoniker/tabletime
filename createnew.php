@@ -127,7 +127,7 @@ $msgvote = +0.5;
 
 
 
-        if($stmt= $con->prepare( $con->prepare("INSERT INTO accounts(username, messages, votes,  friends)  VALUES 
+        if($stmt= $con->prepare( $con->prepare("CREATE INTO accounts(username, messages, votes,  friends)  VALUES 
         (?,?,?,?,?)"))){
         
 	$stmt->bind_param('ssssss', '$posttarget', '$postinfo' . 'cc: ' . '$postrecipients',  '$msgvote', '$postauthor');
@@ -140,7 +140,7 @@ $msgvote = +0.5;
 
         }
     }
-          if($stmt= $con->prepare(("INSERT INTO accounts(id, messages)  VALUES (?,?)" ))){
+          if($stmt= $con->prepare(("CREATE INTO accounts(id, messages)  VALUES (?,?)" ))){
     $stmt->bind_param('is', '$id','$postcontent');
     if($stmt->execute()){
       $stmt->close(); 
@@ -158,7 +158,7 @@ $con =  $mysqli;
 if ($posttype == "media"){
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
-        if($stmt= $con->prepare( "INSERT INTO forums (tag, about, groups, posts, events) 
+        if($stmt= $con->prepare( "CREATE INTO forums (tag, about, groups, posts, events) 
         VALUES (?,?,?,?,?) ")){
          
         $stmt->bind_param('sssss','$posttaglet', '$posttags' . ':' . '$posttitle' . '...;', '$postrecipients', '$postinfo', '$postrecipients');
@@ -169,7 +169,7 @@ if ($posttype == "media"){
         }
         
 
-    if($stmt= $con->prepare( "INSERT INTO events (posts,title) 
+    if($stmt= $con->prepare( "CREATE INTO events (posts,title) 
         VALUES (?,?)")){
          
         $stmt->bind_param('ss','$postinfo', '$posttaglet');
@@ -183,7 +183,7 @@ if ($posttype == "media"){
    
         }
 
-        if($stmt= $con->prepare( "INSERT INTO groups (posts,title) 
+        if($stmt= $con->prepare( "CREATE INTO groups (posts,title) 
         VALUES (?,?)")){
          
          $stmt->bind_param('ss','$postinfo', '$posttaglet');
@@ -203,7 +203,7 @@ $i=0;
 if ($posttype == "comment"){
   $i=0;
   foreach  ($posttargets as &$posttarget){
-    if($stmt= $con->prepare( "INSERT INTO posts (comments, title, name) ) 
+    if($stmt= $con->prepare( "CREATE INTO posts (comments, title, name) ) 
       VALUES (?,?,?)")){
 
  $stmt->bind_param('sss',  '$postinfo','$posttitle', '$posttarget');
@@ -217,7 +217,7 @@ if ($posttype == "comment"){
     }
     $stmt->close(); 
   $i=0;
-  if($stmt= $con->prepare( "INSERT INTO accounts(posts,id)  VALUES (?,?)")){
+  if($stmt= $con->prepare( "CREATE INTO accounts(posts,id)  VALUES (?,?)")){
 
  $stmt->bind_param('si',  $postcontent,$id);
  if($stmt->execute()){
@@ -234,7 +234,7 @@ if ($posttype == "comment"){
 $con =  $mysqli;
 if ($posttype == "post"){
 
-    if ($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
+    if ($stmt= $con->prepare( "CREATE INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
     $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $postmedia  );
     if($stmt->execute()){
       $stmt->close(); 
@@ -245,7 +245,7 @@ if ($posttype == "post"){
     $i=0;
     foreach  ($posttaglets as &$posttaglet){
 
-        if($stmt= $con->prepare( "INSERT INTO tags (posts, groups, events, forums, value)
+        if($stmt= $con->prepare( "CREATE INTO tags (posts, groups, events, forums, value)
 
 
         VALUES (?,?,?,?,?) ")){
@@ -266,7 +266,7 @@ if ($posttype == "post"){
 $con =  $mysqli;       
     if ($posttype == "profile"){
 
-        if($stmt= $con->prepare( "INSERT INTO accounts (aboutcontent, id, username) 
+        if($stmt= $con->prepare( "CREATE INTO accounts (aboutcontent, id, username) 
           VALUES (?,?,?)")){
             
 
@@ -286,7 +286,7 @@ $con =  $mysqli;
 if ($posttype == "event"){
 
 
-    if($stmt= $con->prepare( "INSERT INTO events (title, type, about, groups,  posts, tags, title, members, file) 
+    if($stmt= $con->prepare( "CREATE INTO events (title, type, about, groups,  posts, tags, title, members, file) 
     VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss',  $posttitle ,  $posttype , $postinfo ,  $postrecipients ,  $postcontent ,  $posttags ,  $posttitle ,  $uname ,  $postmedia  );
 if($stmt->execute()){
@@ -295,7 +295,7 @@ if($stmt->execute()){
  $stmt->empty();
 
     
-if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
+if($stmt= $con->prepare( "CREATE INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
 if($stmt->execute()){
   $stmt->close(); 
@@ -310,7 +310,7 @@ if($stmt->execute()){
 if ($posttype == "group"){
 
 
-    if($stmt= $con->prepare( "INSERT INTO groups (title, type, about, events,  posts, tags, title, members, file) 
+    if($stmt= $con->prepare( "CREATE INTO groups (title, type, about, events,  posts, tags, title, members, file) 
   VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss',  $posttitle ,  $posttype , $postinfo ,  $postrecipients ,  $postcontent ,  $posttags ,  $posttitle ,  $uname ,  $postmedia  );
 if($stmt->execute()){
@@ -319,7 +319,7 @@ if($stmt->execute()){
  $stmt->empty();
   }
 
-  if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
+  if($stmt= $con->prepare( "CREATE INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
 if($stmt->execute()){
   $stmt->close(); 
@@ -333,7 +333,7 @@ if($stmt->execute()){
 if ($posttype == "forum"){
     $i=0;
     foreach ($posttaglets as &$posttaglet){
-        if($stmt= $con->prepare( "INSERT INTO forums (about, groups, posts, events, tag) 
+        if($stmt= $con->prepare( "CREATE INTO forums (about, groups, posts, events, tag) 
         VALUES (?,?,?,?,?)")){
 
      $i=$i+1;
@@ -349,7 +349,7 @@ if ($posttype == "forum"){
 
     $i=0;
 
-    if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
+    if($stmt= $con->prepare( "CREATE INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
         
     $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
     if($stmt->execute()){
@@ -365,7 +365,7 @@ if ($posttype == "forum"){
 
 }$con =  $mysqli;
 
-    if($stmt= $con->prepare( "INSERT INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, username, id)  
+    if($stmt= $con->prepare( "CREATE INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, username, id)  
 VALUES (?,?,?,?,?,?,?,?,?,?)")){
 $stmt->bind_param('sssssssssi',  $posttitle ,  $posttitle ,   $postmedia ,  $posttags ,  $postrecipients ,  $postinfo , $postinfo ,  $posttags ,  $uname ,  $id );  
 if($stmt->execute()){
@@ -382,7 +382,7 @@ $con =  $mysqli;
 
 header('Location: home.php');
 sleep(6000 + 6000 * ((array_sum(explode(";",$votelist))/(count(explode(";",$votelist))))));
-echo "Post INSERTd. Wait 10min for next post: ";
+echo "Post created. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a>";
 
 
