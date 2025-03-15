@@ -165,24 +165,16 @@ $colort = "#000000";
 $fontSize = "14";
 }
 ?>
-
 <html class = "tabletime">
-<meta name="viewport" content="width=device-width">
-<meta charset="utf-8">
-		<link href="style.php" rel="stylesheet" type="text/css">
-	<head class = "html">
-		<title>tabletime</title>
-
-
-
-		
-	<body class="content">
-
-
-
-	<nav class = "navtop">
-		<div class = "tabletime">		
-			<h1><b><a href="home.php">TABLETIME</a></b></h1>
+<link href="style.php" rel="stylesheet" type="text/css">
+		<meta charset="utf-8">
+		<br><br><title>TABLETIME</title>
+		<head class = "content">
+<body class = "html">
+		<nav class = "content">
+		<div class = "content">		
+			<h1><br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
+			<b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="tabletime"></i>Messages</a>
 <a href="post.php"><i class="tabletime"></i>Posts</a>
@@ -230,7 +222,7 @@ $fontSize = "14";
 <a href="file.php"><i class="tabletime"></i>Export account data</a>
 <a href="usrchange.php"><i class="tabletime"></i>Change user/pass/msg</a>
 <a href="create.php"><i class="tabletime"></i>Import Account Data</a><br>
-<form method="POST" <br> IP Tables Mode:<br>
+<form method="POST"> <br> IP Tables Mode:<br>
 client <- host -> admin host: 
 <label><br>mode<br></label>
 <input type = "range" name = "hostmode" min = "0" max = "3"default = "<?php echo $clientmode;?>">

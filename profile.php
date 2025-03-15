@@ -82,14 +82,14 @@ $fontSize = "14";
 
 <html class = "tabletime">
 <link href="style.php" rel="stylesheet" type="text/css">
-<head class = "html">
 		<meta charset="utf-8">
-		<title>TABLETIME</title>
-<body class = "content">  
-
-<nav class = "navtop">
-		<div class = "tabletime">		
-			<h1><b><a href="home.php">TABLETIME</a></b></h1>
+		<br><br><title>TABLETIME</title>
+		<head class = "content">
+<body class = "html">
+		<nav class = "content">
+		<div class = "content">		
+			<h1><br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
+			<b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="tabletime"></i>Messages</a>
 <a href="post.php"><i class="tabletime"></i>Posts</a>
@@ -104,7 +104,6 @@ $fontSize = "14";
 			</div>
 </nav>
 
-<div>
 
 
 	<table>

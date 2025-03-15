@@ -398,7 +398,7 @@ $con =  $mysqli;
 
 
 header('Location: home.php');
-sleep(6000 + 6000 * ((array_sum(explode(";",$votelist))/(count(explode(";",$votelist))))));
+sleep(6000 + 6000 * (0-(array_sum(explode(";",$votelist))*(1+abs(count(explode(";",$votelist)))))));
 echo "<html>Post created. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a></html>";
 }else {

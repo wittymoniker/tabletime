@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
-//error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ERROR | E_PARSE);
 
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
@@ -96,14 +96,12 @@ $fontSize = "14";
 
 
 
-<head class = "navtop">
-<body class = "content">
-<a href="account.php"><i class="tabletime"></i>Account</a>
-
 		<meta charset="utf-8">
 		<br><br><title>TABLETIME</title>
 
-
+		<head class = "content">
+<a href="account.php"><i class="tabletime"></i>Account</a>
+<body class = "html">
 
 		<nav class = "content">
 		<div class = "content">		
@@ -124,12 +122,16 @@ $fontSize = "14";
 </nav>
 
 
+
+
+
 <?php
 	$con =  $mysqli;
 if($stmt = $con-> prepare('SELECT  aboutcontent FROM accounts WHERE id = ?')){
 	$stmt->bind_param('i', $id);
 	$stmt->execute();
 	$stmt->bind_result($about);
+	$stmt->close();
 	$con =  $mysqli;
 }
 else{
@@ -144,6 +146,7 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->bind_param('i', $_SESSION['id']);
 	$stmt->execute();
 	$stmt->store_result();
+	$stmt->close();
 	$stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist,$tagslist, $listedabout);
 
 	$con =  $mysqli;
@@ -171,7 +174,7 @@ if($stmt = $con->prepare('SELECT  username, votes,  media, posts,tags, friends a
  
 }
 ?></head>
-<h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable <br>.. on post timedelay  <?php echo (string)((1*(array_sum(explode(";",$votelist)))/(array_sum(explode(";",$votelist))))*(10.0 - 10.0*(0+(count(explode(";",$votelist)))/(1 + abs(array_sum(explode(";",$votelist)))))));?> minutes.<br> 
+<h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable <br>.. on post timedelay  <?php echo (string)((10.0 - 10.0*(0+(count(explode(";",$votelist)))*(abs(array_sum(explode(";",$votelist)))))));?> minutes.<br> 
 <br> Default delay is 10min.<br><br></h1>
 				
 
@@ -766,8 +769,7 @@ if ($stmt = $con->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')) {
 		<br>
 <div>
 
-<a href="account.php"><i class="tabletime"></i>Account</a>
-				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+
 
 
 <b> This is a chart of your account record  for posts, media, messages, karma/moksha, and friends standing:</b><br>
@@ -930,9 +932,7 @@ $calendar = new Calendar(date('Y-m-d'));
 	<?php echo $calendar;?>
 	<?php $calendar;?>
 
-<?php
-}require 'pagination.php';
-?><br>
+<br>
 
 
 
@@ -943,5 +943,10 @@ $calendar = new Calendar(date('Y-m-d'));
 	</tc>
 </tr>
 </table>
+<?php
+}require 'pagination.php';
+?>
 </body>
+<a href="account.php"><i class="tabletime"></i>Account</a>
+				<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
 </html>

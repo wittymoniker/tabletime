@@ -185,25 +185,16 @@ function get_filetype_icon($filetype) {
 
 
 
-
-
 <html class = "tabletime">
-		<link href="style.php" rel="stylesheet" type="text/css">
-	
+<link href="style.php" rel="stylesheet" type="text/css">
 		<meta charset="utf-8">
-		<title>tabletime</title>
-  <meta name="viewport" content="width=device-width,minimum-scale=1">
-		<title>File Management System</title>
-
-
-
-		
-	<body class="content">
-<head class = "html">
-
-<nav class = "navtop">
-		<div class = "tabletime">		
-			<h1><b><a href="home.php">TABLETIME</a></b></h1>
+		<br><br><title>TABLETIME</title>
+		<head class = "content">
+<body class = "html">
+		<nav class = "content">
+		<div class = "content">		
+			<h1><br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
+			<b><a href="home.php">TABLETIME</a></b></h1>
 <p>
 <a href="messages.php"><i class="tabletime"></i>Messages</a>
 <a href="post.php"><i class="tabletime"></i>Posts</a>
@@ -217,8 +208,6 @@ function get_filetype_icon($filetype) {
 <a href="create.php"><i class="tabletime"></i><b>Create</b></a></p>
 			</div>
 </nav>
-
-
 
 
 
@@ -263,7 +252,7 @@ if(isset($_POST['submit'])){
                     <?php endif; ?>
                     <?php foreach ($results as $result): ?>
                     <tr >
-                        <td ><?=get_filetype_icon($result)?><a href="?file=<?=urlencode($result)?>" <?=(string)($result)?></a></td>
+                        <td ><?=get_filetype_icon($result)?><a href="?file=<?=urlencode($result)?>"><?=(string)htmlspecialchars($result)?></a></td>
                         <td><?=is_dir($result) ? 'Folder' : convert_filesize(filesize($result))?></td>
                         <td><?=str_replace(date('F j, Y'), 'Today,', date('F j, Y H:ia', filemtime($result)))?></td>
                         <td >

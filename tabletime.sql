@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: sql103.infinityfree.com
--- Generation Time: Mar 15, 2025 at 01:35 PM
--- Server version: 10.6.19-MariaDB
--- PHP Version: 7.2.22
+-- Host: 127.0.0.1
+-- Generation Time: Mar 15, 2025 at 07:21 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `if0_38191057_tabletime`
+-- Database: `tabletime`
 --
 
 -- --------------------------------------------------------
@@ -48,9 +47,13 @@ CREATE TABLE `accounts` (
   `aboutcontent` text NOT NULL,
   `delay` time DEFAULT NULL,
   `ip` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `events`
+--
 
 CREATE TABLE `events` (
   `title` varchar(255) NOT NULL,
@@ -60,7 +63,7 @@ CREATE TABLE `events` (
   `posts` text NOT NULL,
   `tags` text NOT NULL,
   `type` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -73,7 +76,7 @@ CREATE TABLE `forums` (
   `posts` text NOT NULL,
   `groups` text NOT NULL,
   `events` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -89,7 +92,7 @@ CREATE TABLE `groups` (
   `posts` text NOT NULL,
   `tags` text NOT NULL,
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -110,8 +113,13 @@ CREATE TABLE `posts` (
   `recipients` text NOT NULL,
   `type` varchar(50) NOT NULL,
   `votes` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tags`
+--
 
 CREATE TABLE `tags` (
   `posts` text NOT NULL,
@@ -119,15 +127,19 @@ CREATE TABLE `tags` (
   `events` text NOT NULL,
   `groups` text NOT NULL,
   `value` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
+-- Indexes for dumped tables
+--
 
+--
+-- Indexes for table `accounts`
+--
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_account` (`username`,`email`);
+  ADD UNIQUE KEY `unique_account` (`username`,`email`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `events`
@@ -154,7 +166,8 @@ ALTER TABLE `groups`
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `tags`
@@ -180,3 +193,6 @@ ALTER TABLE `posts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

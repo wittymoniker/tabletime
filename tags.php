@@ -80,32 +80,29 @@ $fontSize = "14";
 ?>
 
 <html class = "tabletime">
-
 <link href="style.php" rel="stylesheet" type="text/css">
-
-
-
-
-<head class = "navtop">
-<body class = "content">
-		<title>TABLETIME</title>
-
-<nav class = "navtop">
-		<div class = "tabletime">		
-			<h1><b><a href="home.php">TABLETIME</a></b></h1>
+		<meta charset="utf-8">
+		<br><br><title>TABLETIME</title>
+		<head class = "content">
+<body class = "html">
+		<nav class = "content">
+		<div class = "content">		
+			<h1><br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
+			<b><a href="home.php">TABLETIME</a></b></h1>
 <p>
-<a href="messages.php"><i class="fas fa-user-circle"></i>Messages</a>
-<a href="post.php"><i class="fas fa-user-circle"></i>Posts</a>
-<a href="forum.php"><i class="fas fa-user-circle"></i>Forums</a><br>
-<a href="event.php"><i class="fas fa-user-circle"></i>Events</a>
-<a href="tags.php"><i class="fas fa-user-circle"></i>Tags</a>
-<a href="group.php"><i class="fas fa-user-circle"></i>Groups</a><br>
-<a href="statsmap.php"><i class="fas fa-user-circle"></i>Stats/Map</a>
-<a href="profile.php"><i class="fas fa-user-circle"></i>Profiles</a>
-<a href="file.php"><i class="fas fa-user-circle"></i>Files</a><br>
-<a href="create.php"><i class="fas fa-user-circle"></i><b>Create</b></a></p>
+<a href="messages.php"><i class="tabletime"></i>Messages</a>
+<a href="post.php"><i class="tabletime"></i>Posts</a>
+<a href="forum.php"><i class="tabletime"></i>Forums</a><br>
+<a href="event.php"><i class="tabletime"></i>Events</a>
+<a href="tags.php"><i class="tabletime"></i>Tags</a>
+<a href="group.php"><i class="tabletime"></i>Groups</a><br>
+<a href="statsmap.php"><i class="tabletime"></i>Stats/Map</a>
+<a href="profile.php"><i class="tabletime"></i>Profiles</a>
+<a href="file.php"><i class="tabletime"></i>Files</a><br>
+<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p>
 			</div>
 </nav>
+
 
 <div>
 

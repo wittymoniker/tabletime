@@ -140,7 +140,7 @@ $fontSize = "14";
 	display: flex;
 	margin: 0 auto;
 	width: 750px;
-	height: 100%;
+	height: 250px;
 }
 .navtop div h1, .navtop div a {
 	display: inline-flex;
@@ -166,7 +166,7 @@ $fontSize = "14";
 	color: <?php echo $colora3; ?>;
 }
 .content {
-	width: 1000px;
+	width: 1250px;
 	margin: auto;
 }
 .content h2 {
@@ -320,7 +320,7 @@ body {
     color: #<?php echo $colort; ?>;
 }
 .content {
-    width: 1000px;
+    width: 1200px;
     margin: 0 auto;
 }
 .content h2 {
@@ -489,7 +489,7 @@ align-items: center;
 			}
 			.html > table {
 				border-collapse: collapse;
-				width: 750px;
+				width: 1000px;
 			}
 			.html > td, th {
 				padding: 20px;
