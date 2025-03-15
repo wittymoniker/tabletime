@@ -58,31 +58,32 @@ $target_file = $target_folder . basename($_FILES['file']['name']);
                   
                   $uploadOk = 1;
                   $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                  
                   if (!is_dir($target_dir)) {
                     mkdir($target_dir, 0777, true);
                 }
                 
-                  // Check if file already exists
+      
                   if (file_exists($target_file)) {
                       echo "Sorry, file already exists.";
                       $uploadOk = 0;
                   }
               
-                  // Check file size (limit to 5MB)
+           
                   if ($_FILES["file"]["size"] > 5000000) {
                       echo "Sorry, your file is too large.";
                       $uploadOk = 0;
                   }
               
                   // Allow certain file formats
-           
-                  if(move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
-                    echo "Your file post is uploaded.";
+                  if($uploadOk){
+                    if(move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
+                      $uploadOk=2;
+                    }else {
+                      echo "Sorry, your file was not uploaded.";
+                    }
                   }
-                  // Check if $uploadOk is set to 0 by an error
-                  if ($uploadOk = 0) {
-                    echo "Sorry, your file was not uploaded.";
-                  }
+                  
                   
 $baseDir = $target_dir;
 $file = (string)($target_file);
