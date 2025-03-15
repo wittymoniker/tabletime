@@ -212,6 +212,10 @@ function get_filetype_icon($filetype) {
 
 
 <form method ="POST">
+<table>
+	<h1>FILE INSPECTOR</h1>
+	<th><br>
+<table>
 <label name ="fileindex"> <br>file: </label><br>
 <input method = "POST" type = "text" id = "filei" default = "file/: index key"><br>
 <input method ="POST" type = "submit" name= "enter" value = "enter" >
