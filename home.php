@@ -218,7 +218,7 @@ if ($stmt = $con->prepare('SELECT * FROM accounts || posts LIKE $friendslist || 
 	
 }
 else {
-    echo "0 posts";
+    
 }
 
 
@@ -347,7 +347,7 @@ if ($result->num_rows > 0) {
 	$result = $con->query($sql);
 
 } else {
-    echo "0 friends";
+    
 }
 $con =  $mysqli;
 $sql = 'SELECT posts FROM accounts WHERE username LIKE $friendslist';
@@ -400,7 +400,7 @@ if ($stmt = $con->prepare('SELECT * FROM accounts || posts LIKE $friendslist || 
 	$stmt->close();
 }
 else {
-    echo "0 posts";
+    
 }
 $con =  $mysqli;
 ?>
@@ -521,7 +521,7 @@ if ($result->num_rows > 0) {
 	$result = $con->query($sql);
 
 } else {
-    echo "0 friends";
+    
 }
 $con =  $mysqli;
 $sql = 'SELECT * FROM events WHERE members LIKE $friendslist ORDER BY dt DESC';
