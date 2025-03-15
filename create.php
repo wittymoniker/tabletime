@@ -124,12 +124,13 @@ $fontSize = "14";
 </nav>
 
 
-
-<p> <?php require 'createnew.php'; echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s post. </p><br>
+<div class = "content">	
+		<h2>create a post</h2>
+<p> <h2>[<i>all fields required</i>]</h2><?php require 'createnew.php'; echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s post. </p><br>
 <form method="POST" action = "createnew.php">					<br>				
 <label for="type">
 post type:			</label> 
-<select name = "type" id = "type" value = "type">
+<select name = "type" id = "type" value = "type" default = "post">
 <option value ="message">message</option>
 <option value ="comment">comment</option>
 <option value ="media">media</option>
@@ -141,13 +142,13 @@ post type:			</label>
 </select>
 <label for="scope">
 			post scope:			</label>
-<select name = "scope" id = "scope">
+<select name = "scope" id = "scope" default = "public">
 <option value ="private">private</option>
 <option value ="public ">public</option>
 <option value ="global">global</option>
 </select>
 <label for="file">
-			file(required):			</label>
+			file:			</label>
 <input method ="POST" type="file" name="file"  placeholder="file directory..." id="file"  required> <br>
 
 	<label for="title">
@@ -216,10 +217,11 @@ post type:			</label>
  <br>
 
  
-	</form>
+	
 
+
+</form>
 </div>
-
 </body>
 </head>
 </html>
