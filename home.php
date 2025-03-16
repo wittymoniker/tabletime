@@ -362,7 +362,7 @@ if ($result->num_rows > 0) {
 		}
 
 } else {
-    echo "0 posts";
+
 }
 
 $con =  $mysqli;
@@ -658,7 +658,7 @@ if ($result->num_rows > 0) {
 	$result = $con->query($sql);
 
 } else {
-    echo "0 friends";
+    
 }
 $con =  $mysqli;
 $sql = 'SELECT * IN forums LIKE ORDER BY tags DESC';
