@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   $uniqueFolder = "file_" . uniqid();
 $target_dir = "files/" . $uniqueFolder;
 $target_folder = $target_dir . "/";
-$target_file = $target_folder . basename($_FILES['file']['name']);
+$target_file = (string) ($target_folder .  ((string) basename($_FILES['file']['name'])));
                   
                   $uploadOk = 1;
                   $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -75,18 +75,18 @@ $target_file = $target_folder . basename($_FILES['file']['name']);
                       $uploadOk = 0;
                   }
               
-                  // Allow certain file formats
+                
                   if($uploadOk){
-                    if(move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
-                      $uploadOk=2;
-                    }else {
+                    if(!move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
                       echo "Sorry, your file was not uploaded.";
+                    }else {
+                      $uploadOk=2;
                     }
                   }
                   
                   
 $baseDir = $target_dir;
-$file = (string)($target_file);
+$file = $target_file;
 
 
 
