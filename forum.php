@@ -893,27 +893,33 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 <label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 <input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
 </form><?php
-if(isset($_POST['enter'])){
-    $votetarget = $_POST['index'];
-    $id = $_SESSION['id'];
-    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
-    if(isset($_POST['perspective'])){
-        $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
-		$con =  $mysqli;
-		$result = $con->query($sql);
 
-    }
+if(isset($_POST['enter'])){
+	$votetarget = $_POST['index'];
+	$id = $_SESSION['id'];
+	$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+	if(isset($_POST['perspective'])){
+		if($sql = $con->prepare("UPDATE accounts ADD $vote TO votes WHERE username = $votetarget")){
+			$sql->execute();
+			$sql->close();
+			$con=$mysqli;
+		}
+
+	}
 }
-if(isset($_POST['enter'])){
-    $votetarget = $_POST['index'];
-    $id = $_SESSION['id'];
-    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
-    if(isset($_POST['perspective'])){
-        $sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
-		$con =  $mysqli;
-		$result = $con->query($sql);
 
-    }
+if(isset($_POST['enter'])){
+	$votetarget = $_POST['index'];
+	$id = $_SESSION['id'];
+	$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+	if(isset($_POST['perspective'])){
+		if($sql = $con->prepare("UPDATE posts ADD $vote TO votes WHERE id == $feature[10]")){
+			$sql->execute();
+			$sql->close();
+			$con=$mysqli;
+		}
+		
+	}
 }
 ?><br><br><br>
 

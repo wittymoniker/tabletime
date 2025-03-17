@@ -343,27 +343,37 @@ if ($stmt = $con->prepare('SELECT * FROM $postslist BY dt DESC')) {
 	
 }
 
-if(isset($_POST['enter'])){
-    $usrname = $_POST['index'];
-    $id = $_SESSION['id'];
-    $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
-    if(isset($_POST['perspective'])){
-        $sql = "UPDATE accounts ADD $vote TO votes WHERE username = $usrname";
-        $result = $con->query($sql);
 
-    }
+	if(isset($_POST['enter'])){
+		$uname = $_POST['index'];
+		$id = $_SESSION['id'];
+		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+		if(isset($_POST['perspective'])){
+			if($sql = $con->prepare("UPDATE accounts ADD $vote TO votes WHERE username = $usrname")){
+				$sql->execute();
+				$sql->close();
+				$con=$mysqli;
+			}
+	
+		}
+	}
+	
 	if(isset($_POST['enter'])){
 		$votetarget = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 		if(isset($_POST['perspective'])){
-			$sql = "UPDATE posts ADD $vote TO votes WHERE name == $usrname";
-			$result = $con->query($sql);
-	
+			if($sql = $con->prepare("UPDATE posts ADD $vote TO votes WHERE name == $usrname")){
+				$sql->execute();
+				$sql->close();
+				$con=$mysqli;
+			}
+			
 		}
 	}
 }
-}}}
+}
+}
 ?>
 
 <?php

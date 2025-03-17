@@ -51,13 +51,30 @@ if (mysqli_connect_errno()) {
 	<?php
 	
 	if(isset($_POST['enter'])){
+		$uname = $_POST['index'];
+		$id = $_SESSION['id'];
+		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
+		if(isset($_POST['perspective'])){
+			if($sql = $con->prepare("UPDATE accounts ADD $vote TO votes WHERE username = $uname")){
+				$sql->execute();
+				$sql->close();
+				$con=$mysqli;
+			}
+	
+		}
+	}
+	
+	if(isset($_POST['enter'])){
 		$votetarget = $_POST['index'];
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 		if(isset($_POST['perspective'])){
-			$sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
-			$result = $con->query($sql);
-	
+			if($sql = $con->prepare("UPDATE posts ADD $vote TO votes WHERE id == $feature[10]")){
+				$sql->execute();
+				$sql->close();
+				$con=$mysqli;
+			}
+			
 		}
 	}
 	?>

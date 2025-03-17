@@ -298,7 +298,9 @@ if(isset($_POST['submit'])){
         $con =  $mysqli;
 
     }
-}require 'pagination.php';
+}
+
+require 'pagination.php';
 ?>    </head>      
                                        
 </body>
