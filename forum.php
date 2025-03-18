@@ -81,15 +81,23 @@ $con =  $mysqli;
 ?>
 
 <html class = "tabletime">
+
 <link href="style.php" rel="stylesheet" type="text/css">
+
+
+
+
 		<meta charset="utf-8">
 		<br><br><title>TABLETIME</title>
+
 		<head class = "content">
+
 <body class = "html">
+
 		<nav class = "content">
 		<div class = "content">		
-			<h1><br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
-			<b><a href="home.php">TABLETIME</a></b></h1>
+			<h1>		<br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
+			<b><a href="home.php">TABLETIME</a></b>
 <p>
 <a href="messages.php"><i class="tabletime"></i>Messages</a>
 <a href="post.php"><i class="tabletime"></i>Posts</a>
@@ -100,10 +108,9 @@ $con =  $mysqli;
 <a href="statsmap.php"><i class="tabletime"></i>Stats/Map</a>
 <a href="profile.php"><i class="tabletime"></i>Profiles</a>
 <a href="file.php"><i class="tabletime"></i>Files</a><br>
-<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p>
+<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p></h1>
 			</div>
 </nav>
-
 
 <div>
 	<table>

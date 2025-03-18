@@ -117,20 +117,24 @@ $color[18] = (string)$_POST['styletext'];
 $color[19] = (string)$_POST['stylesize'];
 ?>
 
-
 <html class = "tabletime">
-<meta name="viewport" content="width=device-width">
-<meta charset="utf-8">
+
 <link href="style.php" rel="stylesheet" type="text/css">
-<head class = "html">
-		<title>TABLETIME</title>
 
 
-<body class = "content">  
 
-<nav class = "navtop">
-		<div class = "tabletime">		
-			<h1><b><a href="home.php">TABLETIME</a></b></h1>
+
+		<meta charset="utf-8">
+		<br><br><title>TABLETIME</title>
+
+		<head class = "content">
+
+<body class = "html">
+
+		<nav class = "content">
+		<div class = "content">		
+			<h1>		<br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
+			<b><a href="home.php">TABLETIME</a></b>
 <p>
 <a href="messages.php"><i class="tabletime"></i>Messages</a>
 <a href="post.php"><i class="tabletime"></i>Posts</a>
@@ -141,48 +145,47 @@ $color[19] = (string)$_POST['stylesize'];
 <a href="statsmap.php"><i class="tabletime"></i>Stats/Map</a>
 <a href="profile.php"><i class="tabletime"></i>Profiles</a>
 <a href="file.php"><i class="tabletime"></i>Files</a><br>
-<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p>
+<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p></h1>
 			</div>
 </nav>
-
 
 
 <div>
 
 <form action = "colorpick.php" method = "POST">
     <p> Colors:<br><br>
-<input type="color" name="style1a" default = "<?php echo $colora; ?>">
-<input type="color" name="style2a"default = "<?php echo $colord1; ?>">
-<input type="color" name="style3b"default = "<?php echo $colorb2; ?>">
-<input type="color" name="style4b"default = "<?php echo $colore2; ?>">
-<input type="color" name="style5b"default = "<?php echo $colorb3; ?>">
-<input type="color" name="style6b"default = "<?php echo $colore3; ?>">
+<input method = "POST" type="color" name="style1a" default = "<?php echo $colora; ?>">
+<input method = "POST" type="color" name="style2a" default = "<?php echo $colord1; ?>">
+<input method = "POST" type="color" name="style3b" default = "<?php echo $colorb2; ?>">
+<input method = "POST" type="color" name="style4b" default = "<?php echo $colore2; ?>">
+<input method = "POST" type="color" name="style5b" default = "<?php echo $colorb3; ?>">
+<input method = "POST" type="color" name="style6b" default = "<?php echo $colore3; ?>">
 <br>
 
-<input type="color" name="style1b"default = "<?php echo $colorb; ?>">
-<input type="color" name="style2b"default = "<?php echo $colore; ?>">
-<input type="color" name="style3c"default = "<?php echo $colorc2; ?>">
-<input type="color" name="style4c"default = "<?php echo $colorf2; ?>">
-<input type="color" name="style5c"default = "<?php echo $colorc3; ?>">
-<input type="color" name="style6c"default = "<?php echo $colorf3; ?>">
+<input method = "POST" type="color" name="style1b" default = "<?php echo $colorb; ?>">
+<input method = "POST" type="color" name="style2b" default = "<?php echo $colore; ?>">
+<input method = "POST" type="color" name="style3c" default = "<?php echo $colorc2; ?>">
+<input method = "POST" type="color" name="style4c" default = "<?php echo $colorf2; ?>">
+<input method = "POST" type="color" name="style5c" default = "<?php echo $colorc3; ?>">
+<input method = "POST" type="color" name="style6c" default = "<?php echo $colorf3; ?>">
 
 <br>
 
-<input type="color" name="style5a"default = "<?php echo $colora3; ?>">
-<input type="color" name="style6a"default = "<?php echo $colord3; ?>">
-<input type="color" name="style3a"default = "<?php echo $colora2; ?>">
-<input type="color" name="style4a"default = "<?php echo $colord2; ?>">
-<input type="color" name="style1c"default = "<?php echo $colorc; ?>">
-<input type="color" name="style2c"default = "<?php echo $colord; ?>"><br><br><br><br>
+<input method = "POST" type="color" name="style5a" default = "<?php echo $colora3; ?>">
+<input method = "POST" type="color" name="style6a" default = "<?php echo $colord3; ?>">
+<input method = "POST" type="color" name="style3a" default = "<?php echo $colora2; ?>">
+<input method = "POST" type="color" name="style4a" default = "<?php echo $colord2; ?>">
+<input method = "POST" type="color" name="style1c" default = "<?php echo $colorc; ?>">
+<input method = "POST" type="color" name="style2c" default = "<?php echo $colord; ?>"><br><br><br><br>
 <label name="reset">
     reset to default:
 </label>
-<input type = "checkbox" name = "reset" value = "reset"><br><br><br><br><br><br><br><br>
+<input method = "POST" type = "checkbox" name = "reset" value = "reset"><br><br><br><br><br><br><br><br>
 
 
-text: <input type="color" name="styletext"><br>
+text: <input method = "POST" type="color" name="styletext"><br>
 font size: 
-<input type = "range" name = "stylesize" min = "3" max = "36">
+<input method = "POST" type = "range" name = "stylesize" min = "3" max = "36">
 <input method ="POST" type = "submit" name= "enter" value = "enter" >
 
 
@@ -223,9 +226,6 @@ $colorp = ["#ababab",  "#bcbcbc",  "#cdcdcd",  "#dcdcdc",  "#ededed",
     $color[18] = (string)$_POST['styletext'];
     $color[19] = (string)$_POST['stylesize'];
     
-
-
-if(($_POST['submit'])){
     $id = $_SESSION['id'];
     if(($_POST['reset'])){
         $color = $colorp;
@@ -242,7 +242,6 @@ if(($_POST['submit'])){
     $sql = "UPDATE accounts SET account(colors) = '$send' WHERE id = '$id')";
     $result = $con->query($sql);
     $con =  $mysqli;
-}
 }
 
 ?>
