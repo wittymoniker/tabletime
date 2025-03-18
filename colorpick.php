@@ -7,10 +7,7 @@ if (!isset($_SESSION['loggedin'])) {
 	exit;
 }
 
-$DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'tabletime';
+
 $mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $con =  $mysqli;
 if (mysqli_connect_errno()) {
