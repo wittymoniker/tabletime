@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   $uniqueFolder = "file_" . uniqid();
 $target_dir = "files/" . $uniqueFolder;
 $target_folder = $target_dir . "/";
-$target_file = (string) ($target_folder .  ((string) basename($_FILES['file']['name'])));
+$target_file =  $target_folder .  $_FILES["file"]["name"];
                   
                   $uploadOk = 1;
                   $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -64,11 +64,7 @@ $target_file = (string) ($target_folder .  ((string) basename($_FILES['file']['n
                 }
                 
       
-                  if (file_exists($target_file)) {
-                      echo "Sorry, file already exists.";
-                      $uploadOk = 0;
-                  }
-              
+                 
            
                   if ($_FILES["file"]["size"] > 5000000) {
                       echo "Sorry, your file is too large.";
@@ -76,13 +72,12 @@ $target_file = (string) ($target_folder .  ((string) basename($_FILES['file']['n
                   }
               
                 
-                  if($uploadOk){
-                    if(!move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
-                      echo "Sorry, your file was not uploaded.";
-                    }else {
-                      $uploadOk=2;
-                    }
-                  }
+                  if($uploadOk==1){
+                    if(move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)){
+                      echo "File uploaded successfully!";
+                    } else {
+                    echo "Error moving file.";
+                  }}
                   
                   
 $baseDir = $target_dir;
@@ -124,11 +119,8 @@ $msgvote = +0;
         (?,?,?,?)"))){
         
 	$stmt->bind_param('ssss', $posttarget, $postinfo, $msgvote, $postauthor);
-  if($stmt->execute()){
-    $stmt->close(); 
-   }else{
-    $stmt->close();
-    }     
+  $stmt->execute();
+  $stmt->close();   
           $i=$i+1;
     
 
@@ -136,11 +128,8 @@ $msgvote = +0;
     }
           if($stmt= $con->prepare(("INSERT INTO accounts(id, messages)  VALUES (?,?)" ))){
     $stmt->bind_param('is', $id,$postcontent);
-    if($stmt->execute()){
-      $stmt->close(); 
-     }else{
-      $stmt->close();
-      }     
+    $stmt->execute();
+    $stmt->close();      
     
     }
  
@@ -158,11 +147,8 @@ if ($posttype == "media"){
         VALUES (?,?,?,?,?) ")){
          
         $stmt->bind_param('sssss',$posttaglet, $postcontent, $postrecipients, $postinfo, $postrecipients);
-        if($stmt->execute()){
-          $stmt->close(); 
-         }else{
-    $stmt->close();
-    }     
+        $stmt->execute();
+        $stmt->close();   
         }
         
         $con =  $mysqli;
@@ -170,11 +156,8 @@ if ($posttype == "media"){
         VALUES (?,?)")){
          
         $stmt->bind_param('ss',$postinfo, $posttaglet);
-        if($stmt->execute()){
-          $stmt->close(); 
-         }else{
-    $stmt->close();
-    }     
+        $stmt->execute();
+    $stmt->close(); 
  
     
     
@@ -185,12 +168,8 @@ if ($posttype == "media"){
         VALUES (?,?)")){
          
          $stmt->bind_param('ss',$postinfo, $posttaglet);
-         if($stmt->execute()){
-          $stmt->close(); 
-         }else{
-    $stmt->close();
-    }     
- 
+         $stmt->execute();
+    $stmt->close(); 
     
     
    
@@ -208,11 +187,8 @@ if ($posttype == "comment"){
       VALUES (?,?,?)")){
 
  $stmt->bind_param('sss',  $postinfo,$posttitle, $posttarget);
- if($stmt->execute()){
-  $stmt->close(); 
- }else{
-    $stmt->close();
-    }      
+ $stmt->execute();
+ $stmt->close();       
    $i=$i+1;
 
       }
@@ -223,11 +199,8 @@ if ($posttype == "comment"){
   if($stmt= $con->prepare( "INSERT INTO accounts(posts,id)  VALUES (?,?)")){
 
  $stmt->bind_param('si',  $postcontent,$id);
- if($stmt->execute()){
-  $stmt->close(); 
- }else{
-    $stmt->close();
-    }      
+ $stmt->execute();
+ $stmt->close();      
       
   }
   $stmt->close(); 
@@ -240,11 +213,8 @@ if ($posttype == "post"){
   $con =  $mysqli;
     if ($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
     $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $postmedia  );
-    if($stmt->execute()){
-      $stmt->close(); 
-     }else{
-      $stmt->close();
-      }      
+    $stmt->execute();
+    $stmt->close(); 
       
     }
     $i=0;
@@ -255,11 +225,9 @@ if ($posttype == "post"){
 
         VALUES (?,?,?,?,?) ")){
   $stmt->bind_param('sssss', $postinfo ,  $posttaglets ,  $posttaglets ,  $posttaglets ,  $posttaglet );
-  if($stmt->execute()){
+ $stmt->execute();
     $stmt->close(); 
-   }else{
-    $stmt->close();
-    }      
+    
      $i=$i+1;
     
     }
@@ -277,11 +245,8 @@ $con =  $mysqli;
             
 
  $stmt->bind_param('sis',   $postinfo , $id ,  $uname );
- if($stmt->execute()){
-  $stmt->close(); 
- }else{
-    $stmt->close();
-    }      
+ $stmt->execute();
+    $stmt->close();  
           }
      echo '.';
       
@@ -296,20 +261,14 @@ if ($posttype == "event"){
     if($stmt= $con->prepare( "INSERT INTO events (title, type, about, groups,  posts, tags, title, members, file) 
     VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss',  $posttitle ,  $posttype , $postinfo ,  $postrecipients ,  $postcontent ,  $posttags ,  $posttitle ,  $uname ,  $postmedia  );
-if($stmt->execute()){
-  $stmt->close(); 
- }else{
-    $stmt->close();
-    }      
+$stmt->execute();
+$stmt->close();      
 
  $con =  $mysqli;
 if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
-if($stmt->execute()){
-  $stmt->close(); 
- }else{
-    $stmt->close();
-    }      
+$stmt->execute();
+$stmt->close();     
    
      echo '.';
       
@@ -324,26 +283,19 @@ if ($posttype == "group"){
     if($stmt= $con->prepare( "INSERT INTO groups (title, type, about, events,  posts, tags, title, members, file) 
   VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss',  $posttitle ,  $posttype , $postinfo ,  $postrecipients ,  $postcontent ,  $posttags ,  $posttitle ,  $uname ,  $postmedia  );
-if($stmt->execute()){
-  $stmt->close(); 
- }else{
-    $stmt->close();
-    }      
+$stmt->execute();
+$stmt->close();    
   $con =  $mysqli;
   if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
-if($stmt->execute()){
-  $stmt->close(); 
- }else{
-    $stmt->close();
-    }      
-  }
+$stmt->execute();
+$stmt->close(); 
    echo '.';
+}
 }
 }
 $con =  $mysqli;
 
-    
 if ($posttype == "forum"){
     $i=0;
     foreach ($posttaglets as &$posttaglet){
@@ -353,11 +305,8 @@ if ($posttype == "forum"){
 
      $i=$i+1;
      $stmt->bind_param('sssss', $posttags ,  $postrecipients ,  $postinfo ,  $postrecipients , $posttaglet );
-     if($stmt->execute()){
-      $stmt->close(); 
-     }else{
-      $stmt->close();
-      }  
+     $stmt->execute();
+     $stmt->close(); 
      
        
     }
@@ -368,11 +317,8 @@ if ($posttype == "forum"){
     if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
         
     $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
-    if($stmt->execute()){
-      $stmt->close(); 
-     }else{
-      $stmt->close();
-      }      
+    $stmt->execute();
+$stmt->close();    
 
 
       
@@ -385,11 +331,8 @@ $con =  $mysqli;
     if($stmt= $con->prepare( "INSERT INTO accounts(groups, events, files, forums, friends,  messages, posts, tags, username, id)  
 VALUES (?,?,?,?,?,?,?,?,?,?)")){
 $stmt->bind_param('sssssssssi',  $posttitle ,  $posttitle ,   $postmedia ,  $posttags ,  $postrecipients ,  $postinfo , $postinfo ,  $posttags ,  $uname ,  $id );  
-if($stmt->execute()){
-  $stmt->close(); 
- }else{
-  $stmt->close();
-  }
+$stmt->execute();
+$stmt->close(); 
 }  
 
      echo '.';

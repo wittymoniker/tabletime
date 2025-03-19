@@ -149,7 +149,7 @@ post type:			</label>
 </select>
 <label for="file">
 			file:			</label>
-<input method ="POST" type="file" name="file"  placeholder="file directory..." id="file"  required> <br>
+<input method ="POST" type="file" name="file"  id="file"  required> <br>
 
 	<label for="title">
 			title:
