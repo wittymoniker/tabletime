@@ -12,10 +12,10 @@ $min  = 1;
 $max  = 500;
 $num1 = rand( $min, $max );
 $num2 = rand( $min, $max );
-$DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'tabletime';
+$DATABASE_HOST = 'sql103.infinityfree.com';
+$DATABASE_USER = 'if0_38191057';
+$DATABASE_PASS = 'Greenapples55';
+$DATABASE_NAME = 'if0_38191057_tabletime';
 $mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $con =  $mysqli;if ( mysqli_connect_errno() ) {
 		exit('Failed to connect to MySQL: ' . mysqli_connect_error());
