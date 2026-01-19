@@ -160,8 +160,13 @@ if($viewtag ="private"){
 	if($_POST['enter']){
 		$index = $_POST['index'];
 		$con =  $mysqli;
-		$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  WHERE type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
-		$result = $con->query($sql);
+		$sql = 'SELECT * FROM posts BY * LIKE $index, type LIKE $viewtag, BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+		$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$feature;
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -177,7 +182,12 @@ if($viewtag ="private"){
 			($row["scope"])),
 			($row["type"])),
 			($row["id"]))';
-			$result = $con->query($sql);
+			$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 			$table = $result;?>
 				<th>name</th>
 						
@@ -254,7 +264,12 @@ if($viewtag ="private"){
 		if(isset($_POST['perspective'])){
 			$con =  $mysqli;
 			$sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
-			$result = $con->query($sql);
+			$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 		}
 	}
@@ -265,7 +280,11 @@ if($viewtag ="private"){
 		if(isset($_POST['perspective'])){
 			$sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
 			$con =  $mysqli;
-			$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 		}
 	}
@@ -284,7 +303,7 @@ if($viewtag ="private"){
 	/////////
 	///////////
 	
-	$sql = 'SELECT tags FROM posts WHERE value LIKE $index WHERE type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+	$sql = 'SELECT tags FROM posts BY value LIKE $index, type LIKE $viewtag, BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	/////////////
 	///////////
 	///////////
@@ -298,12 +317,20 @@ if($viewtag ="private"){
 		$sql = 'INSERT INTO $friendslist VALUES
 		(($row["tags"]))';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$table = $result;
 		$sql = 'INSERT INTO $postslist VALUES
 		($row[$_POST["index"]])';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$table = $result;
 		}
 		
@@ -315,7 +342,11 @@ if($viewtag ="private"){
 	$sql = 'SELECT posts FROM forums WHERE forums(posts) LIKE $friendslist  ORDER BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$table = $result;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -326,13 +357,22 @@ if($viewtag ="private"){
 		($row["tags"])),
 		($row["file"])';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$table = $result;
 		}
 		
 		$sql = 'INSERT INTO $postsslist VALUES
 	($row[$_POST["index"]])';
-	$result = $con->query($sql);
+	$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 	} else {
 		echo "0 posts";
@@ -342,6 +382,7 @@ if($viewtag ="private"){
 	$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 	$num_results_on_page = 16 ;
 	$table = $result;
+	$con =  $mysqli;
 	if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist WHERE  ((array_sum(posts(votes))/(count(posts(votes)))>=0  ORDER BY dt DESC ')) {
 	
 		$calc_page = ($page - 1) * $num_results_on_page;
@@ -379,7 +420,11 @@ if($viewtag ="private"){
 								$sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
 								$table = $result;
 								$con =  $mysqli;
-								$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 						
 							}
 						}
@@ -404,17 +449,31 @@ if($viewtag ="private"){
 						///////////
 						//////////
 						$con =  $mysqli;
-						$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 						$friendslist;
 						$postslist;
 						if ($result->num_rows > 0) {
 							while($row = $result->fetch_assoc()) {
 							$sql = 'INSERT INTO $friendslist VALUES
 							(($row["tags"]))';
-							$result = $con->query($sql);
+							$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 							$sql = 'INSERT INTO $friendslist VALUES
 							($row[$_POST["index"]])';
-							$result = $con->query($sql);
+							$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 							}
 							
 							
@@ -424,7 +483,11 @@ if($viewtag ="private"){
 						}
 						$sql = 'SELECT posts FROM forums WHERE forums(posts) LIKE $friendslist ORDER BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 						$con =  $mysqli;
-						$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 						
 						if ($result->num_rows > 0) {
 							while($row = $result->fetch_assoc()) {
@@ -436,7 +499,11 @@ if($viewtag ="private"){
 							($row["file"]),
 							($row[$_POST["index"]]);';
 								$con =  $mysqli;
-							$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 							while ($row = $result->fetch_assoc()){ ?>
 								<tr>
 								<a href = "profile.php?index='<?php echo $row["name"]?>'"><td><?php echo $row['name']; ?></td>
@@ -500,7 +567,11 @@ if($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -606,7 +677,11 @@ $sql = 'SELECT tags FROM posts WHERE value LIKE $index BY ((array_sum(posts(vote
 ///////////
 //////////
 $con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
@@ -614,11 +689,19 @@ if ($result->num_rows > 0) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["tags"]))';
 		$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
 		$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
     }
 	
 	
@@ -628,7 +711,11 @@ if ($result->num_rows > 0) {
 }
 $sql = 'SELECT posts FROM forums WHERE forums(posts) LIKE $friendslist ORDER BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -639,12 +726,20 @@ if ($result->num_rows > 0) {
 	($row["tags"])),
 	($row["file"])';
 		$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
     }
 	$sql = 'INSERT INTO $postsslist VALUES
 	($row[$_POST["index"]])';
 		$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 
 } else {
@@ -689,7 +784,11 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 						if(isset($_POST['perspective'])){
 							$sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
 							$con =  $mysqli;
-							$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 					
 						}
 					}
@@ -715,7 +814,11 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 					///////////
 					//////////
 					$con =  $mysqli;
-					$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 					$friendslist;
 					$postslist;
 					if ($result->num_rows > 0) {
@@ -723,11 +826,19 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 						$sql = 'INSERT INTO $friendslist VALUES
 						(($row["tags"]))';
 							$con =  $mysqli;
-						$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 						$sql = 'INSERT INTO $friendslist VALUES
 						($row[$_POST["index"]])';
 							$con =  $mysqli;
-						$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 						}
 						
 						
@@ -737,7 +848,11 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 					}
 					$sql = 'SELECT posts FROM forums WHERE forums(posts) LIKE $friendslist ORDER BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 					$con =  $mysqli;
-					$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 					
 					if ($result->num_rows > 0) {
 						while($row = $result->fetch_assoc()) {
@@ -748,7 +863,12 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 						($row["tags"])),
 						($row["file"]),
 						($row[$_POST["index"]]);';
-						$result = $con->query($sql);
+						$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 						while ($row = $result->fetch_assoc()){ ?>
 							<tr>
 							<a href = "profile.php?index='<?php echo $row["name"]?>'"><td><?php echo $row['name']; ?></td>
@@ -810,9 +930,13 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 	if($_POST['enter']){
 
 		$index = $_POST['index'];
-		$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
+		$sql = 'SELECT * FROM posts BY * LIKE $index, BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$feature;
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -828,7 +952,11 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 			($row["scope"])),
 			($row["type"]))';
 				$con =  $mysqli;
-			$result = $con->query($sql);?>
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 			<th>name</th>
 						
 						<tr>
@@ -906,10 +1034,14 @@ if(isset($_POST['enter'])){
 	$id = $_SESSION['id'];
 	$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 	if(isset($_POST['perspective'])){
+		$con =  $mysqli;
 		if($sql = $con->prepare("UPDATE accounts ADD $vote TO votes WHERE username = $votetarget")){
-			$sql->execute();
-			$sql->close();
-			$con=$mysqli;
+			
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		}
 
 	}
@@ -920,10 +1052,14 @@ if(isset($_POST['enter'])){
 	$id = $_SESSION['id'];
 	$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 	if(isset($_POST['perspective'])){
+		$con =  $mysqli;
 		if($sql = $con->prepare("UPDATE posts ADD $vote TO votes WHERE id == $feature[10]")){
-			$sql->execute();
-			$sql->close();
-			$con=$mysqli;
+			
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		}
 		
 	}

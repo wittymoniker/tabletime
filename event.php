@@ -136,7 +136,11 @@ if($_POST['enter']){
 	$index = $_POST['index'];
 	$con =  $mysqli;
 	$sql = 'SELECT * FROM posts WHERE posts(type) == "event" && (* LIKE $index)  ';
-	$result = $con->query($sql);
+	$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -152,8 +156,12 @@ if($_POST['enter']){
 		($row["scope"])),
 		($row["type"])),
 		($row["id"]))';
-		$result = $con->query($sql);
 		$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		?>
 	<th>name</th>
 					<th>topic</th>
@@ -235,7 +243,13 @@ $uname = $_SESSION['name'];
 /////////
 ///////////
 
-$sql = 'SELECT id FROM posts WHERE accounts(posts(name)) LIKE accounts($uname)  ';
+$sql = 'SELECT id FROM posts BY accounts(posts(name)) LIKE accounts($uname)  ';
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 /////////////
 ///////////
 ///////////
@@ -250,27 +264,43 @@ if ($con->connect_error) {
 $uname = $_SESSION['name'];
 $con =  $mysqli;
 $sql = 'SELECT * FROM accounts WHERE username = accounts($uname)';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["friends"]))';
-	$con =  $mysqli;
-	$result = $con->query($sql);
+	$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
-	$con =  $mysqli;
-	$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 } else {
     echo "0 friends";
 }
-$sql = 'SELECT * FROM events WHERE * LIKE $friendslist ';
+$sql = 'SELECT * FROM events BY * LIKE $friendslist ';
 $con =  $mysqli;
-$result = $con->query($sql);
+$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -280,7 +310,11 @@ if ($result->num_rows > 0) {
 	($row["posts"]),
 	($row["members"]))';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$table = $result;
 	?>
 			<meta charset="utf-8">
@@ -347,7 +381,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 $con =  $mysqli;
-if ($stmt = $con->prepare('SELECT * FROM * LIKE $postslist  ')) {
+if ($stmt = $con->prepare('SELECT * FROM * BY * LIKE $postslist  ')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -371,15 +405,23 @@ if(isset($_POST['enter'])){
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
 		$con =  $mysqli;
-        $result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
     }
 	
 		require 'Calendar.php';
 		$searched=  $_POST['index'];
-		$sql = 'SELECT * FROM posts  FROM posts WHERE title LIKE $searched BY DT DESC';
-		$result = $con->query($sql);
+		$sql = 'SELECT * FROM posts  FROM posts BY title LIKE $searched BY DT DESC';
 		$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $events = $result;
 
 $calendar = new Calendar(date('Y-m-d'));

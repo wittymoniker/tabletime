@@ -23,7 +23,7 @@ $con =  $mysqli;
 $authorid = $_SESSION['id'];
 $author = $_SESSION['name'];
 $uname = $author;
-if($stmt = $con->prepare('SELECT password, email, username, votes, id FROM accounts WHERE id = ?')){
+if($stmt = $con->prepare('SELECT password, email, username, votes, id FROM accounts WHERE id IS ?')){
   $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($password, $email, $username, $votelist, $id);
@@ -86,7 +86,7 @@ $file = $target_file;
 
 
 
-
+//////////////////////////
 
 $postfile = $file;
 				$postcontent = $_POST['content'];
@@ -115,6 +115,7 @@ if ($posttype == "message"){
     $i=0;
     foreach  ($posttargets as &$posttarget){
 $msgvote = +0;
+$con =  $mysqli;
         if($stmt= $con->prepare( $con->prepare("INSERT INTO accounts(username, messages, votes,  friends)  VALUES 
         (?,?,?,?)"))){
         
@@ -126,6 +127,7 @@ $msgvote = +0;
 
         }
     }
+    $con =  $mysqli;
           if($stmt= $con->prepare(("INSERT INTO accounts(id, messages)  VALUES (?,?)" ))){
     $stmt->bind_param('is', $id,$postcontent);
     $stmt->execute();
@@ -312,6 +314,21 @@ if ($posttype == "forum"){
     }
 
   }
+$i=0;
+    foreach ($posttaglets as &$posttaglet){
+      $con =  $mysqli;
+        if($stmt= $con->prepare( "INSERT INTO tags (value,  posts, forums) 
+        VALUES (?,?,?,?,?)")){
+
+     $i=$i+1;
+     $stmt->bind_param('sssss', $posttaglet ,  $posttitle ,  $posttaglets);
+     $stmt->execute();
+     $stmt->close(); 
+     
+       
+    }
+
+  }
     $i=0;
     $con =  $mysqli;
     if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
@@ -342,7 +359,7 @@ $con =  $mysqli;
 
 
 header('Location: home.php');
-sleep(6000 + 6000 * (0-(array_sum(explode(";",$votelist))*(1+abs(count(explode(";",$votelist)))))));
+sleep(6000 + 3000 * (0-(array_sum(explode(";",$votelist))*(1+abs(count(explode(";",$votelist)))))));
 echo "<html>Post created. Wait 10min for next post: ";
 echo "<a href='home.php'>Return to home</a></html>";
 }else {

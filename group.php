@@ -236,7 +236,12 @@ if ($con->connect_error) {
 $uname = $_SESSION['name'];
 $sql = 'SELECT * FROM accounts WHERE username = accounts($uname)  ';
 $con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
+
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
@@ -244,20 +249,32 @@ if ($result->num_rows > 0) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["friends"]))';
 		$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
 		$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 } else {
     echo "0 friends";
 }
+
 $sql = 'SELECT * FROM groups WHERE * LIKE $friendslist  ';
 $con =  $mysqli;
-$result = $con->query($sql);
-
+$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 	$sql = 'INSERT INTO $postslist VALUES
@@ -266,7 +283,11 @@ if ($result->num_rows > 0) {
 	($row["posts"]),
 	($row["members"]))';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 	?>
 			<meta charset="utf-8">
@@ -356,7 +377,11 @@ if(isset($_POST['enter'])){
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
 		$con =  $mysqli;
-        $result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
     }
     
@@ -366,14 +391,21 @@ require 'functions.php';
 // MySQL query that selects all the images
 $index = $_POST['index'];
 	$sql = 'SELECT file FROM posts WHERE title LIKE $searched';
-	$con =  $mysqli;
-	$result = $con->query($sql);
+	$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
 		$sql = 'INSERT INTO $feature VALUES (($row["file"])';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		}?>
 		<?=template_header('Gallery')?>
 

@@ -145,10 +145,9 @@ $prof;
 if($stmt = $con->prepare('SELECT password, email, username, votes, messages, media, posts, friends, tags, aboutcontent FROM accounts WHERE id = ?')){
 	$stmt->bind_param('i', $_SESSION['id']);
 	$stmt->execute();
-	$stmt->store_result();
-	$stmt->close();
-	$stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist,$tagslist, $listedabout);
 
+	$stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist,$tagslist, $listedabout);
+$stmt->close();
 	$con =  $mysqli;
 }
 else{
@@ -164,7 +163,7 @@ if($stmt = $con->prepare('SELECT  username, votes,  media, posts,tags, friends a
 
 	$stmt->bind_param('sss',$tagslist, $listedabout, (string)($postslists . $uname . $friendslist . $messagelist) );
 	$stmt->execute();
-	$stmt->store_result();
+
 	$stmt->bind_result($thrusername, $thrvotelist,  $thrmedialist, $thrpostslist,$thrtagslist, $thrfriendlist,  $thrlistedabout);
 	$stmt->fetch();
 	$stmt->close();
@@ -174,9 +173,9 @@ if($stmt = $con->prepare('SELECT  username, votes,  media, posts,tags, friends a
  
 }
 ?></head>
-<h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable <br>.. on post timedelay  <?php echo (string)((10.0 - 10.0*(0+(count(explode(";",$votelist)))*(abs(array_sum(explode(";",$votelist)))))));?> minutes.<br> 
+<h1><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);?>'s timetable <br>.. on post timedelay  <?php echo (string)((10.0 - 5.0*(0+(count(explode(";",$votelist)))*(abs(array_sum(explode(";",$votelist)))))));?> minutes.<br> 
 <br> Default delay is 10min.<br><br></h1>
-				
+	
 
 
 <div class = "content">	
@@ -198,12 +197,22 @@ if($stmt = $con->prepare('SELECT  username, votes,  media, posts,tags, friends a
 $con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname)';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $friendslist;
 $postslist;
 $con =  $mysqli;
 $sql = 'SELECT posts FROM accounts LIKE  $friendslist ORDER BY dt DESC';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 $con =  $mysqli;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -245,7 +254,12 @@ else {
 	($row["media"]),
 	($row["posts"])),
 	($row["username"])';
-	$result = $con->query($sql);
+	$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
     }
 if ($result->num_rows > 0) {?>
@@ -330,7 +344,12 @@ if ($result->num_rows > 0) {?>
 $con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT aboutcontent FROM accounts WHERE username = accounts($uname) OR tags  LIKE accounts($tags)';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $friendslist;
 $postslist;
 $con =  $mysqli;
@@ -339,26 +358,43 @@ if ($result->num_rows > 0) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["info"]))';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 } else {
     
 }
 $con =  $mysqli;
 $sql = 'SELECT posts FROM accounts WHERE username LIKE $friendslist';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()&& $row<=9) {
 		$sql = 'INSERT INTO $postslist VALUES
 		(($row[":"]))';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		}
 
 } else {
@@ -381,12 +417,22 @@ if ($stmt = $con->prepare('SELECT * FROM posts IF * IN $postslist ORDER BY dt DE
 $con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname)';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $friendslist;
 $postslist;
 $con =  $mysqli;
 $sql = 'SELECT posts FROM accounts LIKE  $friendslist ORDER BY dt DESC';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 $con =  $mysqli;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -427,7 +473,11 @@ while($row = $result->fetch_assoc()) {
 	($row["posts"])),
 	($row["username"])';
 		$con =  $mysqli;
-	$result = $con->query($sql);?>
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 	
 	<?php	
 }
@@ -504,7 +554,12 @@ if (ceil($total_pages / $num_results_on_page) > 0):
 $con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends FROM accounts WHERE username = accounts($uname)';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $con =  $mysqli;
 $friendslist;
 $postslist;
@@ -513,19 +568,32 @@ if ($result->num_rows > 0) {
 	$sql = 'INSERT INTO $friendslist VALUES
 	(($row["friends"]))';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 } else {
     
 }
 $con =  $mysqli;
 $sql = 'SELECT * FROM events WHERE members LIKE $friendslist ORDER BY dt DESC';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $con =  $mysqli;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -535,7 +603,11 @@ if ($result->num_rows > 0) {
 	($row["posts"]),
 	($row["members"]))';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 
 	
@@ -634,7 +706,12 @@ if ($stmt = $con->prepare('SELECT * FROM groups LIKE $postslist')) {
 $con =  $mysqli;
 $uname = $_SESSION['name'];
 $sql = 'SELECT tags FROM accounts WHERE username = accounts($id) && username = accounts($id) OR contains(accounts(friends), $uname)';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $con =  $mysqli;
 $tagslist;
 $postslist;
@@ -650,19 +727,32 @@ if ($result->num_rows > 0) {
 	(($row["posts"])),
 	(($row["aboutcontent"]))';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 } else {
     
 }
 $con =  $mysqli;
 $sql = 'SELECT * IN forums LIKE ORDER BY tags DESC';
-$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $con =  $mysqli;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -672,7 +762,11 @@ if ($result->num_rows > 0) {
 	($row["content"]),
 	($row["tag"]))';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	?><br>
 			
 			<table >
@@ -732,6 +826,7 @@ if ($result->num_rows > 0) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $num_results_on_page = 16 ;
 
+$con =  $mysqli;
 if ($stmt = $con->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')) {
 
 	$calc_page = ($page - 1) * $num_results_on_page;
@@ -802,13 +897,21 @@ if ($stmt = $con->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')) {
 $index = $_POST['index'];
 	$sql = 'SELECT file FROM * WHERE * LIKE $tagslist, $listedabout, (string)($postslists . $uname . $friendslist . $messagelist)';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
 		$sql = 'INSERT INTO $feature VALUES (($row["file"])';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$con =  $mysqli;
 		}?>
 		<?=template_header('Gallery')?>
@@ -908,15 +1011,23 @@ if(isset($_POST['enter'])){
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
 		$con =  $mysqli;
-        $result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
     }
 	
 		require 'Calendar.php';
 		$searched=  $_POST['index'];
 		$sql = 'SELECT * FROM posts  FROM posts WHERE title LIKE $tagslist, $listedabout, (string)($postslists . $uname . $friendslist . $messagelist) BY DT DESC';
-		$result = $con->query($sql);
 		$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $events = $result;
 
 $calendar = new Calendar(date('Y-m-d'));

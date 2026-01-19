@@ -131,7 +131,11 @@ if($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes)))';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -150,12 +154,20 @@ if($_POST['enter']){
 		
 		}
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	} else {
 		echo "0 posts";
 		$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes)))';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	}
 }	$con =  $mysqli;
 ?><b>
@@ -199,7 +211,11 @@ if(isset($_POST['enter'])){
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
 		$con =  $mysqli;
-        $result = $mysqli->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
     }
 }
@@ -210,7 +226,11 @@ if(isset($_POST['enter'])){
     if(isset($_POST['perspective'])){
         $sql = "UPDATE accounts ADD $vote TO votes WHERE username == $votetarget";
 		$con =  $mysqli;
-        $result = $mysqli->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
     }
 }
@@ -222,7 +242,11 @@ if(isset($_POST['enter'])){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts  WHERE (* LIKE $index) BY ((array_sum(posts(votes))/(count(posts(votes))) ';
 	$con =  $mysqli;
-	$result = $mysqli->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -239,7 +263,12 @@ if(isset($_POST['enter'])){
 		($row["files"]))
 		';
 	
-		$result = $mysqli->query($sql);?>?>
+		$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>?>
 		<th>name</th>
 		<th>aboutcontent</th>
 		<th>tags</th>
@@ -376,13 +405,21 @@ $con =  $mysqli;?>
 $index = $_POST['index'];
 	$sql = 'SELECT file FROM * WHERE * LIKE $index, $tagslist, $listedabout, (string)($postslists . $uname . $friendslist . $messagelist)  ';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
 		$sql = 'INSERT INTO $feature VALUES (($row["file"])';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$con =  $mysqli;
 		}?>
 		<?=template_header('Gallery')?>
@@ -482,15 +519,23 @@ if(isset($_POST['enter'])){
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
 		$con =  $mysqli;
-        $result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
     }
 	
 		require 'Calendar.php';
 		$searched=  $_POST['index'];
 		$sql = 'SELECT * FROM posts  FROM posts WHERE title LIKE $index, $tagslist, $listedabout, (string)($postslists . $uname . $friendslist . $messagelist)  BY DT DESC';
-		$result = $con->query($sql);
 		$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $events = $result;
 
 $calendar = new Calendar(date('Y-m-d'));

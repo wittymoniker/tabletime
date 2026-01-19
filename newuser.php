@@ -4,7 +4,7 @@ $max  = 500;
 $num1 = rand( $min, $max );
 $num2 = rand( $min, $max );
 
-    
+    session_start();
 // Change this to your connection info.
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';

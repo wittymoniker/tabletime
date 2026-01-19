@@ -158,7 +158,11 @@ if ($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts WHERE (* LIKE $index) BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$table = $result;
 	$feature;
 	if ($result->num_rows > 0) {
@@ -189,7 +193,11 @@ if ($con->connect_error) {
 }
 $sql = 'SELECT * FROM accounts LIKE $indexprofile || $userindex ORDER BY username DESC BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
 $con =  $mysqli;
-$result = $mysqli->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 
 
@@ -214,7 +222,11 @@ if ($result->num_rows > 0) {
 	($row["delay"]),
 	($row["ip"]))	';
 		$con =  $mysqli;
-	$result = $con->query($sql);?>
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 	
 	<meta charset="utf-8">
 					
@@ -272,7 +284,11 @@ $uname = $_SESSION['name'];
 $searchindex = $_POST['index'];
 $sql = 'SELECT posts WHERE name LIKE  $searchindex || $indexprofile BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -282,7 +298,12 @@ if ($result->num_rows > 0) {
 	($row["content"]),
 	($row["file"])),
 	($row["dt"])';
-	$result = $con->query($sql);?>
+	$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 	<meta charset="utf-8">
 					
 	<body>
@@ -358,9 +379,12 @@ if ($stmt = $con->prepare('SELECT * FROM $postslist BY dt DESC')) {
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 		if(isset($_POST['perspective'])){
 			if($sql = $con->prepare("UPDATE accounts ADD $vote TO votes WHERE username = $usrname")){
-				$sql->execute();
-				$sql->close();
-				$con=$mysqli;
+				$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 			}
 	
 		}
@@ -372,9 +396,12 @@ if ($stmt = $con->prepare('SELECT * FROM $postslist BY dt DESC')) {
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 		if(isset($_POST['perspective'])){
 			if($sql = $con->prepare("UPDATE posts ADD $vote TO votes WHERE name == $usrname")){
-				$sql->execute();
-				$sql->close();
-				$con=$mysqli;
+				$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 			}
 			
 		}
@@ -396,7 +423,6 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist, $listedabout);
 	$stmt->fetch();
 	$stmt->close();
-	$con->close();
 	$con =  $mysqli;
 	
  
@@ -416,7 +442,6 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->bind_result($accountslist);
 	$stmt->fetch();
 	$stmt->close();
-	$con->close();
 }
 ?>NUMBER USERS FOUND: <?php echo count($userindex);require 'pagination.php';?><br>
 

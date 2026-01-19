@@ -157,7 +157,12 @@ $fontSize = "14";
 if ($_POST['enter']){
 	$index = $_POST['index'];
 	$sql = 'SELECT * FROM accounts WHERE (* LIKE $index) BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
-	$result = $mysqli->query($sql);
+	$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$table = $result;
 	$feature;
 	if ($result->num_rows > 0) {
@@ -187,7 +192,12 @@ if ($mysqli->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $sql = 'SELECT * FROM tags LIKE $searchindex ORDER BY value DESC BY ((array_sum(accounts(votes))/(count(accounts(votes))) DESC';
-$result = $mysqli->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 
 
@@ -203,7 +213,12 @@ if ($result->num_rows > 0) {
 	($row["groups"]),
 	(($row["events"]),
 	($row["value"])	';
-	$result = $mysqli->query($sql);?>
+	$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 	
 	<meta charset="utf-8">
 					
@@ -246,7 +261,12 @@ if ($result->num_rows > 0) {
 $uname = $_SESSION['name'];
 $searchindex = $_POST['index'];
 $sql = 'SELECT posts WHERE tags LIKE  $index BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
-$result = $mysqli->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -256,7 +276,12 @@ if ($result->num_rows > 0) {
 	($row["content"]),
 	($row["file"])),
 	($row["dt"])';
-	$result = $mysqli->query($sql);?>
+	$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 	<meta charset="utf-8">
 					
 	<body>

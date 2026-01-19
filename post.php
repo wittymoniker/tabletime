@@ -146,6 +146,9 @@ $viewtag="private";
 </form><br>
 </table>
 </div>
+
+
+
 <form method ="POST">
 	<label name ="rate"> <br>leave rating (-/+) karma/moksha: </label>"
 	<input method = "POST" type = "range" id = "perspective" name = "rate" min = "-256" max = "256">
@@ -155,6 +158,8 @@ $viewtag="private";
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 		if(isset($_POST['perspective'])){
+			$con =  $mysqli;
+
 			if($sql = $con->prepare("UPDATE accounts ADD $vote TO votes WHERE username = $uname")){
 				$sql->execute();
 				$sql->close();
@@ -169,6 +174,7 @@ $viewtag="private";
 		$id = $_SESSION['id'];
 		$vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 		if(isset($_POST['perspective'])){
+			$con =  $mysqli;
 			if($sql = $con->prepare("UPDATE posts ADD $vote TO votes WHERE id == $feature[10]")){
 				$sql->execute();
 				$sql->close();
@@ -194,7 +200,11 @@ if($viewtag ="private"){
 		$index = $_POST['index'];
 		$sql = 'SELECT * FROM posts WHERE (* LIKE $index) WHERE type = "private" BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 		$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$feature;
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -210,7 +220,11 @@ if($viewtag ="private"){
 			($row["scope"])),
 			($row["type"]))';
 				$con =  $mysqli;
-			$result = $con->query($sql);?>
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 			<th>name</th>
 						
 						<tr>
@@ -290,7 +304,11 @@ if($viewtag ="private"){
 	///////////
 	//////////
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$friendslist;
 	$postslist;
 	if ($con->connect_error) {
@@ -299,7 +317,11 @@ if($viewtag ="private"){
 	$uname = $_SESSION['name'];
 	$sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$friendslist;
 	$postslist;
 	if ($result->num_rows > 0) {
@@ -311,7 +333,11 @@ if($viewtag ="private"){
 		($row["posts"])),
 		($row["username"])';
 			$con =  $mysqli;
-		$result = $con->query($sql);?>
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 		
 	?>
 	<meta charset="utf-8">
@@ -371,14 +397,17 @@ if($viewtag ="private"){
 				<?php endif; ?>
 			</body>
 	<?php
-		$con =  $mysqli;
-		$result = $con->query($sql);
+		
 	} else {
 		echo "0 friends";
 	}
 	$sql = 'SELECT posts FROM accounts LIKE  $friendslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 	
 	
@@ -422,7 +451,11 @@ if($viewtag= "global"){
 $index = $_POST['index'];
 $sql = 'SELECT * FROM posts WHERE (* LIKE $index)  WHERE type = "global" BY ((array_sum(posts(votes))/(count(posts(votes)))  DESC';
 $con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $feature;
 if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()) {
@@ -438,7 +471,11 @@ if ($result->num_rows > 0) {
 	($row["scope"])),
 	($row["type"]))';
 		$con =  $mysqli;
-	$result = $con->query($sql);?>
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 	<th>name</th>
 				
 				<tr>
@@ -507,7 +544,11 @@ $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 if(isset($_POST['perspective'])){
 	$sql = "UPDATE accounts ADD $vote TO votes WHERE username = $uname";
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 }
 }
@@ -519,7 +560,11 @@ $vote = ( (string)(float)((256+$_POST['perspective'])/255) . ";" );
 if(isset($_POST['perspective'])){
 	$sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 }
 }
@@ -542,7 +587,11 @@ $sql = 'SELECT * FROM posts WHERE accounts(posts(name)) LIKE accounts($uname) WH
 ///////////
 //////////
 $con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $friendslist;
 $postslist;
 if ($con->connect_error) {
@@ -551,7 +600,11 @@ die("Connection failed: " . $conn->connect_error);
 $uname = $_SESSION['name'];
 $sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
@@ -563,18 +616,30 @@ $sql = 'INSERT INTO $friendslist VALUES
 ($row["posts"])),
 ($row["username"])';
 	$con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 }
 $sql = 'INSERT INTO $friendslist VALUES
 ($row[$_POST["index"]])';
 	$con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 } else {
 echo "0 friends";
 }
 $sql = 'SELECT posts FROM accounts LIKE  $friendslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 $con =  $mysqli;
-$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
 
 
@@ -674,8 +739,12 @@ echo "0 posts";
 
 		$index = $_POST['index'];
 		$sql = 'SELECT * FROM posts WHERE (* LIKE $index)  BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
-		$con =  $mysqli;
-		$result = $con->query($sql);
+	$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		$feature;
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -691,7 +760,11 @@ echo "0 posts";
 			($row["scope"])),
 			($row["type"]))';
 				$con =  $mysqli;
-			$result = $con->query($sql);?>
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();?>
 			<th>name</th>
 						
 						<tr>
@@ -733,7 +806,11 @@ echo "0 posts";
 		if(isset($_POST['perspective'])){
 			$sql = "UPDATE accounts ADD $vote TO votes WHERE username = $uname";
 			$con =  $mysqli;
-			$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 		}
 	}
@@ -745,7 +822,11 @@ echo "0 posts";
 		if(isset($_POST['perspective'])){
 			$sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
 			$con =  $mysqli;
-			$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 		}
 	}
@@ -768,8 +849,12 @@ echo "0 posts";
 	///////////
 	///////////
 	//////////
-	$con =  $mysqli;
-	$result = $con->query($sql);
+$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$friendslist;
 	$postslist;
 	if ($con->connect_error) {
@@ -778,7 +863,12 @@ echo "0 posts";
 	$con =  $mysqli;
 	$uname = $_SESSION['name'];
 	$sql = 'SELECT friends, tags, media, posts, username FROM accounts WHERE username = accounts($uname) BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
-	$result = $con->query($sql);
+	$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	$friendslist;
 	$postslist;
 	if ($result->num_rows > 0) {
@@ -790,18 +880,30 @@ echo "0 posts";
 		($row["posts"])),
 		($row["username"])';
 			$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 		}
 		$sql = 'INSERT INTO $friendslist VALUES
 		($row[$_POST["index"]])';
 			$con =  $mysqli;
-		$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	} else {
 		echo "0 friends";
 	}
 	$sql = 'SELECT posts FROM accounts LIKE  $friendslist BY ((array_sum(posts(votes))/(count(posts(votes))) DESC';
 	$con =  $mysqli;
-	$result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 	
 	
 	
@@ -1010,15 +1112,24 @@ if(isset($_POST['enter'])){
     if(isset($_POST['perspective'])){
         $sql = "UPDATE posts ADD $vote TO votes WHERE id == $feature[10]";
 		$con =  $mysqli;
-        $result = $con->query($sql);
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
 
     }
 	
 		require 'Calendar.php';
 		$searched=  $_POST['index'];
 		$sql = 'SELECT * FROM posts  FROM posts WHERE title LIKE $index BY DT DESC';
-		$result = $con->query($sql);
 		$con =  $mysqli;
+		$stmt = $con->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($result);
+$stmt->fetch();
+$stmt->close();
+		
 $events = $result;
 
 $calendar = new Calendar(date('Y-m-d'));
