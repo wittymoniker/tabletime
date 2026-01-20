@@ -22,7 +22,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -162,7 +162,7 @@ if ($_POST['enter']){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$table = $result;
 	$feature;
 	if ($result->num_rows > 0) {
@@ -197,7 +197,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 
 
@@ -218,7 +218,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 	
 	<meta charset="utf-8">
 					
@@ -266,7 +266,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -281,7 +281,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 	<meta charset="utf-8">
 					
 	<body>

@@ -74,7 +74,7 @@ if ($stmt->num_rows > 0) {
 } else {
 	echo 'Incorrect username and/or password!';
 }
-	$stmt->close();
+	 
 }
 
 
@@ -158,7 +158,7 @@ echo 'Incorrect username and/or password!';
 } else {
 echo 'Incorrect username and/or password!';
 }
-$stmt->close();
+ 
 }
 
 

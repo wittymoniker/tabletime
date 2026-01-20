@@ -32,7 +32,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -132,7 +132,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];

@@ -19,7 +19,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 
 //*/
 

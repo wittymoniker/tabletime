@@ -23,12 +23,12 @@ $con =  $mysqli;
 $authorid = $_SESSION['id'];
 $author = $_SESSION['name'];
 $uname = $author;
-if($stmt = $con->prepare('SELECT password, email, username, votes, id FROM accounts WHERE id IS ?')){
+if($stmt = $con->prepare('SELECT password, email, username, votes, id FROM accounts WHERE id = ?')){
   $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($password, $email, $username, $votelist, $id);
 $stmt->fetch();
-$stmt->close();
+ 
 $con =  $mysqli;
 $authorid = $_SESSION['id'];
 $author = $username;
@@ -121,7 +121,7 @@ $con =  $mysqli;
         
 	$stmt->bind_param('ssss', $posttarget, $postinfo, $msgvote, $postauthor);
   $stmt->execute();
-  $stmt->close();   
+    
           $i=$i+1;
     
 
@@ -131,7 +131,7 @@ $con =  $mysqli;
           if($stmt= $con->prepare(("INSERT INTO accounts(id, messages)  VALUES (?,?)" ))){
     $stmt->bind_param('is', $id,$postcontent);
     $stmt->execute();
-    $stmt->close();      
+         
     
     }
  
@@ -150,7 +150,7 @@ if ($posttype == "media"){
          
         $stmt->bind_param('sssss',$posttaglet, $postcontent, $postrecipients, $postinfo, $postrecipients);
         $stmt->execute();
-        $stmt->close();   
+          
         }
         
         $con =  $mysqli;
@@ -159,7 +159,7 @@ if ($posttype == "media"){
          
         $stmt->bind_param('ss',$postinfo, $posttaglet);
         $stmt->execute();
-    $stmt->close(); 
+      
  
     
     
@@ -171,7 +171,7 @@ if ($posttype == "media"){
          
          $stmt->bind_param('ss',$postinfo, $posttaglet);
          $stmt->execute();
-    $stmt->close(); 
+      
     
     
    
@@ -190,22 +190,22 @@ if ($posttype == "comment"){
 
  $stmt->bind_param('sss',  $postinfo,$posttitle, $posttarget);
  $stmt->execute();
- $stmt->close();       
+       
    $i=$i+1;
 
       }
     }
-    $stmt->close(); 
+      
   $i=0;
   $con =  $mysqli;
   if($stmt= $con->prepare( "INSERT INTO accounts(posts,id)  VALUES (?,?)")){
 
  $stmt->bind_param('si',  $postcontent,$id);
  $stmt->execute();
- $stmt->close();      
+      
       
   }
-  $stmt->close(); 
+    
      echo '.';
       
 
@@ -216,7 +216,7 @@ if ($posttype == "post"){
     if ($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
     $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $postmedia  );
     $stmt->execute();
-    $stmt->close(); 
+      
       
     }
     $i=0;
@@ -228,7 +228,7 @@ if ($posttype == "post"){
         VALUES (?,?,?,?,?) ")){
   $stmt->bind_param('sssss', $postinfo ,  $posttaglets ,  $posttaglets ,  $posttaglets ,  $posttaglet );
  $stmt->execute();
-    $stmt->close(); 
+      
     
      $i=$i+1;
     
@@ -248,7 +248,7 @@ $con =  $mysqli;
 
  $stmt->bind_param('sis',   $postinfo , $id ,  $uname );
  $stmt->execute();
-    $stmt->close();  
+     
           }
      echo '.';
       
@@ -264,13 +264,13 @@ if ($posttype == "event"){
     VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss',  $posttitle ,  $posttype , $postinfo ,  $postrecipients ,  $postcontent ,  $posttags ,  $posttitle ,  $uname ,  $postmedia  );
 $stmt->execute();
-$stmt->close();      
+     
 
  $con =  $mysqli;
 if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
 $stmt->execute();
-$stmt->close();     
+    
    
      echo '.';
       
@@ -286,12 +286,12 @@ if ($posttype == "group"){
   VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss',  $posttitle ,  $posttype , $postinfo ,  $postrecipients ,  $postcontent ,  $posttags ,  $posttitle ,  $uname ,  $postmedia  );
 $stmt->execute();
-$stmt->close();    
+   
   $con =  $mysqli;
   if($stmt= $con->prepare( "INSERT INTO posts (content, title,   tags, dt, scope, type, recipients, name, file) VALUES (?,?,?,?,?,?,?,?,?) ")){
 $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
 $stmt->execute();
-$stmt->close(); 
+  
    echo '.';
 }
 }
@@ -308,7 +308,7 @@ if ($posttype == "forum"){
      $i=$i+1;
      $stmt->bind_param('sssss', $posttags ,  $postrecipients ,  $postinfo ,  $postrecipients , $posttaglet );
      $stmt->execute();
-     $stmt->close(); 
+       
      
        
     }
@@ -323,7 +323,7 @@ $i=0;
      $i=$i+1;
      $stmt->bind_param('sssss', $posttaglet ,  $posttitle ,  $posttaglets);
      $stmt->execute();
-     $stmt->close(); 
+       
      
        
     }
@@ -335,7 +335,7 @@ $i=0;
         
     $stmt->bind_param('sssssssss', $postcontent ,  $posttitle ,  $posttags ,  $posttime ,  $postscope ,  $posttype ,  $postrecipients ,  $uname ,  $posttitle ,  $postmedia  );
     $stmt->execute();
-$stmt->close();    
+   
 
 
       
@@ -349,7 +349,7 @@ $con =  $mysqli;
 VALUES (?,?,?,?,?,?,?,?,?,?)")){
 $stmt->bind_param('sssssssssi',  $posttitle ,  $posttitle ,   $postmedia ,  $posttags ,  $postrecipients ,  $postinfo , $postinfo ,  $posttags ,  $uname ,  $id );  
 $stmt->execute();
-$stmt->close(); 
+  
 }  
 
      echo '.';

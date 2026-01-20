@@ -24,7 +24,7 @@ $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($username, $files);
 $stmt->fetch();
-$stmt->close();
+ 
 $id = $_SESSION['id'];
 $color;
 $con =  $mysqli;
@@ -34,7 +34,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -114,7 +114,7 @@ $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($username);
 $stmt->fetch();
-$stmt->close();
+ 
 
 
 $initial_directory = 'files/';

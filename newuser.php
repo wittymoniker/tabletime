@@ -64,7 +64,7 @@ header('Location: index.php');
 				echo 'Could not prepare statement!';
 			}
 	}
-	$stmt->close();
+	 
 } else {
 		echo 'Could not prepare statement!';
 }

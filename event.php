@@ -22,7 +22,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -140,7 +140,7 @@ if($_POST['enter']){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -161,7 +161,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		?>
 	<th>name</th>
 					<th>topic</th>
@@ -249,7 +249,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 /////////////
 ///////////
 ///////////
@@ -269,7 +269,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
@@ -280,7 +280,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
@@ -289,7 +289,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 } else {
     echo "0 friends";
@@ -300,7 +300,7 @@ $stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -314,7 +314,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$table = $result;
 	?>
 			<meta charset="utf-8">
@@ -386,7 +386,7 @@ if ($stmt = $con->prepare('SELECT * FROM * BY * LIKE $postslist  ')) {
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 	
 }?>
 
@@ -409,7 +409,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
     }
 	
@@ -421,7 +421,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $events = $result;
 
 $calendar = new Calendar(date('Y-m-d'));

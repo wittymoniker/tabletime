@@ -30,7 +30,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != ''){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -131,7 +131,7 @@ if($stmt = $con-> prepare('SELECT  aboutcontent FROM accounts WHERE id = ?')){
 	$stmt->bind_param('i', $id);
 	$stmt->execute();
 	$stmt->bind_result($about);
-	$stmt->close();
+	 
 	$con =  $mysqli;
 }
 else{
@@ -147,7 +147,7 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->execute();
 
 	$stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist,$tagslist, $listedabout);
-$stmt->close();
+ 
 	$con =  $mysqli;
 }
 else{
@@ -166,7 +166,7 @@ if($stmt = $con->prepare('SELECT  username, votes,  media, posts,tags, friends a
 
 	$stmt->bind_result($thrusername, $thrvotelist,  $thrmedialist, $thrpostslist,$thrtagslist, $thrfriendlist,  $thrlistedabout);
 	$stmt->fetch();
-	$stmt->close();
+	 
 	 
 	$con =  $mysqli;
 	
@@ -202,7 +202,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $friendslist;
 $postslist;
 $con =  $mysqli;
@@ -212,7 +212,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 $con =  $mysqli;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -223,7 +223,7 @@ if ($stmt = $con->prepare('SELECT * FROM accounts || posts LIKE $friendslist || 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 	
 }
 else {
@@ -259,7 +259,7 @@ else {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
     }
 if ($result->num_rows > 0) {?>
@@ -349,7 +349,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $friendslist;
 $postslist;
 $con =  $mysqli;
@@ -362,7 +362,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
@@ -371,7 +371,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 } else {
     
@@ -383,7 +383,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()&& $row<=9) {
@@ -394,7 +394,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		}
 
 } else {
@@ -410,7 +410,7 @@ if ($stmt = $con->prepare('SELECT * FROM posts IF * IN $postslist ORDER BY dt DE
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 	$con =  $mysqli;
 	
 }
@@ -422,7 +422,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $friendslist;
 $postslist;
 $con =  $mysqli;
@@ -432,7 +432,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 $con =  $mysqli;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -443,7 +443,7 @@ if ($stmt = $con->prepare('SELECT * FROM accounts || posts LIKE $friendslist || 
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 }
 else {
     
@@ -477,7 +477,7 @@ while($row = $result->fetch_assoc()) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 	
 	<?php	
 }
@@ -559,7 +559,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $con =  $mysqli;
 $friendslist;
 $postslist;
@@ -572,7 +572,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
@@ -581,7 +581,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 } else {
     
@@ -593,7 +593,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $con =  $mysqli;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -607,7 +607,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
 
 	
@@ -677,7 +677,7 @@ if ($stmt = $con->prepare('SELECT * FROM groups LIKE $postslist')) {
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 	
 }
 ?>
@@ -711,7 +711,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $con =  $mysqli;
 $tagslist;
 $postslist;
@@ -731,7 +731,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
     }
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
@@ -740,7 +740,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 } else {
     
@@ -752,7 +752,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $con =  $mysqli;
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -766,7 +766,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	?><br>
 			
 			<table >
@@ -832,7 +832,7 @@ if ($stmt = $con->prepare('SELECT * FROM posts LIKE $tagslist || $postslist')) {
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 }
  
 			?>
@@ -901,7 +901,7 @@ $index = $_POST['index'];
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -911,7 +911,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$con =  $mysqli;
 		}?>
 		<?=template_header('Gallery')?>
@@ -992,7 +992,7 @@ if ($stmt = $con->prepare('SELECT * FROM * LIKE $tagslist, $listedabout, (string
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 	
 }?>
 
@@ -1015,7 +1015,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
     }
 	
@@ -1027,7 +1027,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $events = $result;
 
 $calendar = new Calendar(date('Y-m-d'));

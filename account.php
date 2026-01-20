@@ -24,7 +24,7 @@ $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($password, $email);
 $stmt->fetch();
-$stmt->close();
+ 
 $id = $_SESSION['id'];
 $color;
 $con =  $mysqli;
@@ -34,7 +34,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 $con =  $mysqli;
 if ($color != NULL){
 	$color = explode(";", $color);
@@ -99,7 +99,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 
 $con =  $mysqli;
 $fileslist;
@@ -109,7 +109,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($fileslist);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -240,14 +240,14 @@ $con =  $mysqli;
 $stmt = $con->prepare('REPLACE hostmode FROM accounts WHERE id = $id TO ?');
 $stmt->bind_param('i', $clientmode);
 $stmt->execute();
-$stmt->close();
+ 
 
 $ipa = ($_POST['IP']);
 $con =  $mysqli;
 $stmt = $con->prepare('REPLACE ip FROM accounts WHERE id = $id TO ?');
 $stmt->bind_param('i', $ipa);
 $stmt->execute();
-$stmt->close();
+ 
 }?>
 
 

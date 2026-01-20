@@ -77,7 +77,7 @@ $colorf3= "#f3f3f3";
 $colort = "#000000";
 $fontSize = "14";
 }
-$stmt->close();
+ 
 ?>
 
 <html class = "tabletime">
@@ -204,7 +204,7 @@ if($viewtag ="private"){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$feature;
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -224,7 +224,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 			<th>name</th>
 						
 						<tr>
@@ -308,7 +308,7 @@ $stmt->close();?>
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$friendslist;
 	$postslist;
 	if ($con->connect_error) {
@@ -321,7 +321,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$friendslist;
 	$postslist;
 	if ($result->num_rows > 0) {
@@ -337,7 +337,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 		
 	?>
 	<meta charset="utf-8">
@@ -407,7 +407,7 @@ $stmt->close();?>
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
 	
 	
@@ -420,7 +420,7 @@ $stmt->close();
 		$calc_page = ($page - 1) * $num_results_on_page;
 		$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 		$stmt->execute(); 
-		$stmt->close();
+		 
 		
 	}
 	else {
@@ -455,7 +455,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $feature;
 if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()) {
@@ -475,7 +475,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 	<th>name</th>
 				
 				<tr>
@@ -548,7 +548,7 @@ if(isset($_POST['perspective'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 }
 }
@@ -564,7 +564,7 @@ if(isset($_POST['perspective'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 }
 }
@@ -591,7 +591,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $friendslist;
 $postslist;
 if ($con->connect_error) {
@@ -604,7 +604,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
@@ -620,7 +620,7 @@ $sql = 'INSERT INTO $friendslist VALUES
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 }
 $sql = 'INSERT INTO $friendslist VALUES
 ($row[$_POST["index"]])';
@@ -629,7 +629,7 @@ $sql = 'INSERT INTO $friendslist VALUES
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 } else {
 echo "0 friends";
 }
@@ -639,7 +639,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 
 
@@ -652,7 +652,7 @@ if ($stmt = $con->prepare('SELECT * FROM  posts LIKE $friendslist || $postslist 
 $calc_page = ($page - 1) * $num_results_on_page;
 $stmt->bind_param('ii', $calc_page, $num_results_on_page);
 $stmt->execute(); 
-$stmt->close();
+ 
 
 }
 else {
@@ -744,7 +744,7 @@ echo "0 posts";
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$feature;
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -764,7 +764,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 			<th>name</th>
 						
 						<tr>
@@ -810,7 +810,7 @@ $stmt->close();?>
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
 		}
 	}
@@ -826,7 +826,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
 		}
 	}
@@ -854,7 +854,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$friendslist;
 	$postslist;
 	if ($con->connect_error) {
@@ -868,7 +868,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$friendslist;
 	$postslist;
 	if ($result->num_rows > 0) {
@@ -884,7 +884,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		}
 		$sql = 'INSERT INTO $friendslist VALUES
 		($row[$_POST["index"]])';
@@ -893,7 +893,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	} else {
 		echo "0 friends";
 	}
@@ -903,7 +903,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
 	
 	
@@ -916,7 +916,7 @@ $stmt->close();
 		$calc_page = ($page - 1) * $num_results_on_page;
 		$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 		$stmt->execute(); 
-		$stmt->close();
+		 
 		
 	}
 	else {
@@ -1093,7 +1093,7 @@ if ($stmt = $con->prepare('SELECT * FROM * LIKE $postslist  ')) {
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 	
 }?>
 
@@ -1116,7 +1116,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
     }
 	
@@ -1128,7 +1128,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		
 $events = $result;
 

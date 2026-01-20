@@ -23,7 +23,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -162,7 +162,7 @@ if ($_POST['enter']){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$table = $result;
 	$feature;
 	if ($result->num_rows > 0) {
@@ -197,7 +197,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 
 
@@ -226,7 +226,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 	
 	<meta charset="utf-8">
 					
@@ -288,7 +288,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -303,7 +303,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 	<meta charset="utf-8">
 					
 	<body>
@@ -384,7 +384,7 @@ if ($stmt = $con->prepare('SELECT * FROM $postslist BY dt DESC')) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 			}
 	
 		}
@@ -401,7 +401,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 			}
 			
 		}
@@ -422,7 +422,7 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->store_result();
 	$stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist, $listedabout);
 	$stmt->fetch();
-	$stmt->close();
+	 
 	$con =  $mysqli;
 	
  
@@ -441,7 +441,7 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->store_result();
 	$stmt->bind_result($accountslist);
 	$stmt->fetch();
-	$stmt->close();
+	 
 }
 ?>NUMBER USERS FOUND: <?php echo count($userindex);require 'pagination.php';?><br>
 

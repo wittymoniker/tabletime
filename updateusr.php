@@ -76,7 +76,7 @@ if ($stmt->num_rows > 0) {
                         $password = password_hash($_POST['password2'], PASSWORD_DEFAULT);
                     $stmt->bind_param('sss', $_POST['username2'], $password, $_POST['email2']);
             $stmt->execute();
-            $stmt->close();
+             
             header('Location: account.php');
         }  else {
 		echo 'Incorrect username and/or password!';

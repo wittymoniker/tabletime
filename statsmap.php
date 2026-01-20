@@ -135,7 +135,7 @@ if($_POST['enter']){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -158,7 +158,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	} else {
 		echo "0 posts";
 		$sql = 'SELECT * FROM posts WHERE * LIKE $index AND type LIKE $viewtag BY ((array_sum(posts(votes))/(count(posts(votes)))';
@@ -167,7 +167,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	}
 }	$con =  $mysqli;
 ?><b>
@@ -215,7 +215,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
     }
 }
@@ -230,7 +230,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
     }
 }
@@ -246,7 +246,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -268,7 +268,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>?>
+ ?>?>
 		<th>name</th>
 		<th>aboutcontent</th>
 		<th>tags</th>
@@ -409,7 +409,7 @@ $index = $_POST['index'];
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -419,7 +419,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$con =  $mysqli;
 		}?>
 		<?=template_header('Gallery')?>
@@ -500,7 +500,7 @@ if ($stmt = $con->prepare('SELECT * FROM * LIKE $index, $tagslist, $listedabout,
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 	
 }?>
 
@@ -523,7 +523,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
     }
 	
@@ -535,7 +535,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $events = $result;
 
 $calendar = new Calendar(date('Y-m-d'));

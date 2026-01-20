@@ -21,7 +21,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
 $stmt->fetch();
-$stmt->close();
+ 
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -166,7 +166,7 @@ if($viewtag ="private"){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$feature;
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -187,7 +187,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 			$table = $result;?>
 				<th>name</th>
 						
@@ -269,7 +269,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
 		}
 	}
@@ -284,7 +284,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
 		}
 	}
@@ -321,7 +321,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$table = $result;
 		$sql = 'INSERT INTO $postslist VALUES
 		($row[$_POST["index"]])';
@@ -330,7 +330,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$table = $result;
 		}
 		
@@ -346,7 +346,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$table = $result;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -361,7 +361,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$table = $result;
 		}
 		
@@ -372,7 +372,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	
 	} else {
 		echo "0 posts";
@@ -388,7 +388,7 @@ $stmt->close();
 		$calc_page = ($page - 1) * $num_results_on_page;
 		$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 		$stmt->execute(); 
-		$stmt->close();
+		 
 		$table = $result;
 	}
 	?>
@@ -424,7 +424,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 						
 							}
 						}
@@ -453,7 +453,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 						$friendslist;
 						$postslist;
 						if ($result->num_rows > 0) {
@@ -465,7 +465,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 							$sql = 'INSERT INTO $friendslist VALUES
 							($row[$_POST["index"]])';
 							$con =  $mysqli;
@@ -473,7 +473,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 							}
 							
 							
@@ -487,7 +487,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 						
 						if ($result->num_rows > 0) {
 							while($row = $result->fetch_assoc()) {
@@ -503,7 +503,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 							while ($row = $result->fetch_assoc()){ ?>
 								<tr>
 								<a href = "profile.php?index='<?php echo $row["name"]?>'"><td><?php echo $row['name']; ?></td>
@@ -571,7 +571,7 @@ if($_POST['enter']){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$feature;
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -681,7 +681,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 $friendslist;
 $postslist;
 if ($result->num_rows > 0) {
@@ -693,7 +693,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 	$sql = 'INSERT INTO $friendslist VALUES
 	($row[$_POST["index"]])';
 		$con =  $mysqli;
@@ -701,7 +701,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
     }
 	
 	
@@ -715,7 +715,7 @@ $con =  $mysqli;
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -730,7 +730,7 @@ if ($result->num_rows > 0) {
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
     }
 	$sql = 'INSERT INTO $postsslist VALUES
 	($row[$_POST["index"]])';
@@ -739,7 +739,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 
 
 } else {
@@ -755,7 +755,7 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 	$stmt->execute(); 
-	$stmt->close();
+	 
 }
 ?>
 			<meta charset="utf-8">
@@ -788,7 +788,7 @@ if ($stmt = $con->prepare('SELECT * FROM  posts, forums LIKE $postslist ORDER BY
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 					
 						}
 					}
@@ -818,7 +818,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 					$friendslist;
 					$postslist;
 					if ($result->num_rows > 0) {
@@ -830,7 +830,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 						$sql = 'INSERT INTO $friendslist VALUES
 						($row[$_POST["index"]])';
 							$con =  $mysqli;
@@ -838,7 +838,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 						}
 						
 						
@@ -852,7 +852,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 					
 					if ($result->num_rows > 0) {
 						while($row = $result->fetch_assoc()) {
@@ -868,7 +868,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 						while ($row = $result->fetch_assoc()){ ?>
 							<tr>
 							<a href = "profile.php?index='<?php echo $row["name"]?>'"><td><?php echo $row['name']; ?></td>
@@ -936,7 +936,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		$feature;
 		if ($result->num_rows > 0) {
 			while($row = $result->fetch_assoc()) {
@@ -956,7 +956,7 @@ $stmt->close();
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();?>
+ ?>
 			<th>name</th>
 						
 						<tr>
@@ -1041,7 +1041,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		}
 
 	}
@@ -1059,7 +1059,7 @@ if(isset($_POST['enter'])){
 $stmt->execute();
 $stmt->bind_result($result);
 $stmt->fetch();
-$stmt->close();
+ 
 		}
 		
 	}
