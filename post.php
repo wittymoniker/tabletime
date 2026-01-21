@@ -22,7 +22,9 @@ $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];
@@ -203,7 +205,9 @@ if($viewtag ="private"){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 		$feature;
 		if ($result->num_rows > 0) {
@@ -223,7 +227,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  ?>
 			<th>name</th>
 						
@@ -307,7 +313,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	$friendslist;
 	$postslist;
@@ -320,7 +328,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	$friendslist;
 	$postslist;
@@ -336,7 +346,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  ?>
 		
 	?>
@@ -406,7 +418,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	
 	
@@ -454,7 +468,9 @@ $con =  $mysqli;
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 $feature;
 if ($result->num_rows > 0) {
@@ -474,7 +490,9 @@ if ($result->num_rows > 0) {
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  ?>
 	<th>name</th>
 				
@@ -547,7 +565,9 @@ if(isset($_POST['perspective'])){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
 }
@@ -563,7 +583,9 @@ if(isset($_POST['perspective'])){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
 }
@@ -590,7 +612,9 @@ $con =  $mysqli;
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 $friendslist;
 $postslist;
@@ -603,7 +627,9 @@ $con =  $mysqli;
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 $friendslist;
 $postslist;
@@ -619,7 +645,9 @@ $sql = 'INSERT INTO $friendslist VALUES
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 }
 $sql = 'INSERT INTO $friendslist VALUES
@@ -628,7 +656,9 @@ $sql = 'INSERT INTO $friendslist VALUES
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 } else {
 echo "0 friends";
@@ -638,7 +668,9 @@ $con =  $mysqli;
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
 
@@ -743,7 +775,9 @@ echo "0 posts";
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 		$feature;
 		if ($result->num_rows > 0) {
@@ -763,7 +797,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  ?>
 			<th>name</th>
 						
@@ -809,7 +845,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	
 		}
@@ -825,7 +863,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	
 		}
@@ -853,7 +893,9 @@ $con =  $mysqli;
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	$friendslist;
 	$postslist;
@@ -867,7 +909,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	$friendslist;
 	$postslist;
@@ -883,7 +927,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 		}
 		$sql = 'INSERT INTO $friendslist VALUES
@@ -892,7 +938,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	} else {
 		echo "0 friends";
@@ -902,7 +950,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	
 	
@@ -1115,7 +1165,9 @@ if(isset($_POST['enter'])){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
     }
@@ -1127,7 +1179,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 		
 $events = $result;

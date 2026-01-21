@@ -134,7 +134,10 @@ if($_POST['enter']){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+  $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
+
  
 	$feature;
 	if ($result->num_rows > 0) {
@@ -157,7 +160,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	} else {
 		echo "0 posts";
@@ -166,7 +171,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	}
 }	$con =  $mysqli;
@@ -214,7 +221,9 @@ if(isset($_POST['enter'])){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
     }
@@ -229,7 +238,9 @@ if(isset($_POST['enter'])){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
     }
@@ -245,7 +256,9 @@ if(isset($_POST['enter'])){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	$feature;
 	if ($result->num_rows > 0) {
@@ -267,7 +280,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  ?>?>
 		<th>name</th>
 		<th>aboutcontent</th>
@@ -353,7 +368,9 @@ $prof;
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($prof);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
 
 $con->close();
 $con =  $mysqli;?>
@@ -367,7 +384,9 @@ $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->store_result();
 $stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist,$tagslist, $listedabout);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
 
 $con->close();
 $con =  $mysqli;?>
@@ -408,7 +427,9 @@ $index = $_POST['index'];
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	$feature;
 	if ($result->num_rows > 0) {
@@ -418,7 +439,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 		$con =  $mysqli;
 		}?>
@@ -522,7 +545,9 @@ if(isset($_POST['enter'])){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
     }
@@ -534,7 +559,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 $events = $result;
 

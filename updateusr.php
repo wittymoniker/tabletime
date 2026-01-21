@@ -49,7 +49,9 @@ if ($stmt = $con->prepare('SELECT username, password, email, id FROM accounts WH
 	$stmt->store_result();
 if ($stmt->num_rows > 0) {
 	$stmt->bind_result($name, $pass, $email, $id);
-	$stmt->fetch();
+	 $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
 		if (password_verify($_POST['password'], $pass)) {
 		session_regenerate_id();
 		$_SESSION['loggedin'] = TRUE;

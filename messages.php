@@ -21,7 +21,9 @@ $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 if ($color != NULL){
 	$color = explode(";", $color);

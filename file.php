@@ -23,7 +23,9 @@ $stmt = $con->prepare('SELECT username, files FROM accounts WHERE id = ?');
 $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($username, $files);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 $id = $_SESSION['id'];
 $color;
@@ -33,7 +35,9 @@ $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 if ($color != NULL){
 	$color = explode(";", $color);
@@ -113,7 +117,9 @@ $stmt = $con->prepare('SELECT username FROM accounts WHERE id = ?');
 $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($username);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
 

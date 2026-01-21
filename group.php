@@ -22,7 +22,9 @@ $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 if ($color != NULL){
 	$color = explode(";", $color);
@@ -239,7 +241,9 @@ $con =  $mysqli;
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
 $friendslist;
@@ -252,7 +256,9 @@ if ($result->num_rows > 0) {
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
     }
 	$sql = 'INSERT INTO $friendslist VALUES
@@ -261,7 +267,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
 } else {
@@ -273,7 +281,9 @@ $con =  $mysqli;
 $stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -286,7 +296,9 @@ if ($result->num_rows > 0) {
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	
 	?>
@@ -380,7 +392,9 @@ if(isset($_POST['enter'])){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
     }
@@ -394,7 +408,9 @@ $index = $_POST['index'];
 	$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	$feature;
 	if ($result->num_rows > 0) {
@@ -404,7 +420,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 		}?>
 		<?=template_header('Gallery')?>

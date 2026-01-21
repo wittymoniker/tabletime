@@ -22,8 +22,10 @@ $stmt = $con->prepare('SELECT password, email FROM accounts WHERE id = ?');
 $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($password, $email);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
 $stmt->close();
+
 $id = $_SESSION['id'];
 $color;
 $con =  $mysqli;
@@ -32,8 +34,10 @@ $con =  $mysqli;
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
 $stmt->close();
+
 if ($color != NULL){
 	$color = explode(";", $color);
 	$colora= color[0];

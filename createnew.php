@@ -27,7 +27,9 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, id FROM accou
   $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($password, $email, $username, $votelist, $id);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 $con =  $mysqli;
 $authorid = $_SESSION['id'];

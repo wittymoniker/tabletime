@@ -22,7 +22,9 @@ $stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $stmt->bind_result($color);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 if ($color != NULL){
 	$color = explode(";", $color);
@@ -161,7 +163,9 @@ if ($_POST['enter']){
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 	$table = $result;
 	$feature;
@@ -196,7 +200,9 @@ $con =  $mysqli;
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
 
@@ -225,7 +231,9 @@ if ($result->num_rows > 0) {
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  ?>
 	
 	<meta charset="utf-8">
@@ -287,7 +295,9 @@ $con =  $mysqli;
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 
 if ($result->num_rows > 0) {
@@ -302,7 +312,9 @@ if ($result->num_rows > 0) {
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  ?>
 	<meta charset="utf-8">
 					
@@ -383,7 +395,9 @@ if ($stmt = $con->prepare('SELECT * FROM $postslist BY dt DESC')) {
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 			}
 	
@@ -400,7 +414,9 @@ $stmt->fetch();
 		$stmt = $con->prepare($sql);
 $stmt->execute();
 $stmt->bind_result($result);
-$stmt->fetch();
+ $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
  
 			}
 			
@@ -421,7 +437,9 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result($password, $email, $username, $votelist, $messagelist, $medialist, $postslist, $friendlist, $listedabout);
-	$stmt->fetch();
+	 $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
 	 
 	$con =  $mysqli;
 	
@@ -440,7 +458,9 @@ if($stmt = $con->prepare('SELECT password, email, username, votes, messages, med
 	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result($accountslist);
-	$stmt->fetch();
+	 $stmt->fetch();
+ $stmt->free_result();  // Free them
+$stmt->close();
 	 
 }
 ?>NUMBER USERS FOUND: <?php echo count($userindex);require 'pagination.php';?><br>
