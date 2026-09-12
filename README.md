@@ -1,4 +1,5 @@
 <img width="443" height="443" alt="tabletime logo" src="https://github.com/user-attachments/assets/4b1de6e6-af15-4e54-9cf7-a1914ed718e5" />
+
 # Tabletime — GitHub-ready source
 
 Current hardened Tabletime PHP/MySQL source from the Eski/Wasmer site bundle (2026-09-12).
