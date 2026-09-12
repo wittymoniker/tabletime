@@ -39,7 +39,7 @@ a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:3px}a:hov
 form{max-width:760px;margin:18px auto;padding:18px;background:var(--surface);border:1px solid var(--line)}label{display:block;font-weight:bold;margin:10px 0 4px}
 input,textarea,select,button{font:inherit;padding:9px;border:1px solid var(--line);max-width:100%;background:var(--surface2);color:var(--ink)}input[type=text],input[type=password],input[type=email],textarea,select{width:100%}textarea{min-height:180px;resize:vertical}
 button,input[type=submit]{cursor:pointer;background:var(--button);color:var(--button-ink);border-color:var(--button)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.card{background:var(--surface);border:1px solid var(--line);padding:16px;text-align:left}.card h2,.card h3{margin:.2em 0}.meta{color:var(--muted);font-size:.9rem}.tag{display:inline-block;background:var(--tag);border:1px solid var(--line);border-radius:999px;padding:2px 7px;margin:2px;font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.card{background:var(--surface);border:1px solid var(--line);padding:16px;text-align:left;min-width:0;overflow-wrap:anywhere}.card h2,.card h3{margin:.2em 0}.meta{color:var(--muted);font-size:.9rem}.tag{display:inline-block;background:var(--tag);border:1px solid var(--line);border-radius:999px;padding:2px 7px;margin:2px;font-size:.85rem}
 .notice{padding:12px;border:1px solid var(--line);background:var(--surface)}.error{border-color:#a33;background:#fee;color:#400}.ok{border-color:#398;background:#efe;color:#030}
 .searchbar{display:flex;gap:8px;flex-wrap:wrap;max-width:100%;padding:12px}.searchbar input{flex:1;min-width:220px}.searchbar select{width:auto}.media{max-width:100%;height:auto}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.actions a{display:inline-block;padding:7px 10px;border:1px solid var(--line);background:var(--surface)}
 table{width:100%;border-collapse:collapse;background:var(--surface)}th,td{padding:9px;border:1px solid var(--line);text-align:left}
@@ -50,3 +50,29 @@ fieldset{border:1px solid var(--line);margin:14px 0;padding:14px}legend{font-wei
 
 .scope-slider,.karma-slider{width:100%;padding:0;accent-color:var(--dark)}
 .slider-labels{display:flex;justify-content:space-between;gap:10px;font-size:.82rem;color:var(--muted);margin:4px 0 10px}.scope-control{min-width:260px;flex:1}.inline-check{display:flex;gap:6px;align-items:center;font-weight:normal}.inline-check input{width:auto}.rating-form{max-width:none;margin:12px 0;padding:12px}.karma-summary{margin-top:12px;padding:8px;border:1px solid var(--line);background:var(--surface2)}.inline-form{display:inline;padding:0;margin:0;background:none;border:0}.inline-form button{width:auto}.scope-search{align-items:end}
+
+/* Post comment presentation: keep long comments/URLs inside their card and make the disclosure read like a link. */
+.comments-disclosure{margin-top:10px;max-width:100%;min-width:0}
+.comments-disclosure>summary{display:inline-block;cursor:pointer;color:var(--ink);font-weight:bold;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;padding:2px 0;list-style:none}
+.comments-disclosure>summary::-webkit-details-marker{display:none}
+.comments-disclosure>summary::before{content:"▸ ";display:inline-block;text-decoration:none}
+.comments-disclosure[open]>summary::before{content:"▾ "}
+.comments-disclosure>summary:hover{opacity:.7}
+.comments-disclosure>summary:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.comments-body{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;max-width:100%;min-width:0;margin:8px 0 0;padding:10px;border:1px solid var(--line);background:var(--surface2);font:inherit;line-height:1.45}
+.post-card{cursor:zoom-in;transition:padding .15s ease,border-width .15s ease}
+.post-card.is-expanded{grid-column:1/-1;cursor:zoom-out;padding:24px;border-width:2px}
+.post-card.is-expanded>p:not(.meta){font-size:1.04em;line-height:1.55}
+.post-card.is-expanded .comments-body{line-height:1.55}
+@media(max-width:700px){.post-card.is-expanded{padding:18px}}
+
+/* Forum time/content cloud: occupied time bands descend vertically; each band is a horizontal post array. */
+.forum-cloud{display:flex;flex-direction:column;gap:16px;min-width:0}
+.forum-cloud-controls{max-width:none}
+.forum-time-row{min-width:0;border-left:3px solid var(--line);padding-left:10px}
+.forum-time-row>header{font-size:.92rem;color:var(--muted);margin:0 0 7px 2px}
+.forum-row-posts{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 12px;scroll-snap-type:x proximity;align-items:stretch}
+.forum-cloud-post{flex:0 0 min(360px,82vw);scroll-snap-align:start;transition:flex-basis .16s ease,padding .15s ease,border-width .15s ease}
+.forum-row-posts .post-card.is-expanded{grid-column:auto;flex-basis:min(900px,92vw);width:auto}
+.forum-cloud-post>p,.forum-cloud-post .comments-body{overflow-wrap:anywhere;word-break:break-word}
+@media(max-width:700px){.forum-cloud-post{flex-basis:86vw}.forum-row-posts .post-card.is-expanded{flex-basis:94vw}}

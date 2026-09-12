@@ -38,8 +38,29 @@ function tt_upgrade_posts_schema(mysqli $db,array &$notes=[]):bool{$defs=['title
 function tt_upgrade_events_schema(mysqli $db,array &$notes=[]):bool{return tt_schema_upgrade_columns($db,'events',['title'=>"varchar(255) NOT NULL DEFAULT ''",'members'=>'longtext NULL','about'=>'longtext NULL','groups'=>'longtext NULL','posts'=>'longtext NULL','tags'=>'longtext NULL','type'=>"varchar(64) NOT NULL DEFAULT 'event'"],$notes);}
 function tt_upgrade_groups_schema(mysqli $db,array &$notes=[]):bool{return tt_schema_upgrade_columns($db,'groups',['title'=>"varchar(255) NOT NULL DEFAULT ''",'about'=>'longtext NULL','members'=>'longtext NULL','forums'=>'longtext NULL','events'=>'longtext NULL','posts'=>'longtext NULL','tags'=>'longtext NULL'],$notes);}
 function tt_upgrade_forums_schema(mysqli $db,array &$notes=[]):bool{return tt_schema_upgrade_columns($db,'forums',['tag'=>"varchar(191) NOT NULL DEFAULT ''",'posts'=>'longtext NULL','groups'=>'longtext NULL','events'=>'longtext NULL'],$notes);}
+function tt_schema_reply_parent_from_tags(string $tags):int{
+ if(preg_match('/(?:^|[;,\r\n]\s*)ID#:\s*(\d+)\b/i',$tags,$m))return (int)$m[1];
+ if(preg_match('/(?:^|[;,\r\n]\s*)(?:reply[-_ ]to[-_ ]post|target[-_ ]post)\s*(?:=|:)\s*(\d+)\b/i',$tags,$m))return (int)$m[1];
+ return 0;
+}
+function tt_schema_backfill_reply_identity_tags(mysqli $db,array &$notes=[]):bool{
+ if(!tt_schema_table_exists($db,'posts'))return true;
+ $r=$db->query("SELECT `id`,`tags` FROM `posts` WHERE `tags` IS NOT NULL AND `tags`<>''");if(!$r)return false;
+ $exists=$db->prepare('SELECT 1 FROM `posts` WHERE `id`=? LIMIT 1');$upd=$db->prepare('UPDATE `posts` SET `tags`=? WHERE `id`=?');
+ $pti=$db->prepare('INSERT IGNORE INTO `post_tags` (`tag`,`post_id`) VALUES (?,?)');
+ $tic=$db->prepare('SELECT COUNT(*) FROM `tag_index` WHERE `post_id`=? AND `tag`=?');
+ $tii=$db->prepare("INSERT INTO `tag_index` (`post_id`,`tag`,`raw_token`,`is_numeric`,`polarity`,`comparator`,`numeric_value`,`expression_text`) VALUES (?,?,?,0,1,'',NULL,'')");
+ if(!$exists||!$upd||!$pti||!$tic||!$tii){$r->free();return false;}$changed=0;
+ while($row=$r->fetch_assoc()){
+  $id=(int)$row['id'];$tags=(string)$row['tags'];if(preg_match('/(?:^|[;,\r\n]\s*)ID#:\s*\d+\b/i',$tags))continue;$parent=tt_schema_reply_parent_from_tags($tags);if($parent<=0||$parent===$id)continue;
+  $exists->bind_param('i',$parent);$exists->execute();$exists->store_result();$ok=$exists->num_rows>0;$exists->free_result();if(!$ok)continue;
+  $token='ID#:'.$parent;$base=rtrim($tags," ;,\r\n");$room=4096-strlen($token)-2;if($room<0)$room=0;if(strlen($base)>$room)$base=substr($base,0,$room);$new=$base!==''?rtrim($base," ;,\r\n").'; '.$token:$token;
+  $upd->bind_param('si',$new,$id);if(!$upd->execute())continue;$canon=strtolower($token);$pti->bind_param('si',$canon,$id);@$pti->execute();$tic->bind_param('is',$id,$canon);$tic->execute();$tic->bind_result($n);$tic->fetch();$tic->free_result();if((int)$n===0){$tii->bind_param('iss',$id,$canon,$token);@$tii->execute();}$changed++;
+ }
+ $r->free();$exists->close();$upd->close();$pti->close();$tic->close();$tii->close();if($changed)$notes[]='backfilled canonical ID# reply tags on '.$changed.' recognized replies';return true;
+}
 function tt_upgrade_runtime_schema(mysqli $db,array &$notes=[]):bool{if(!tt_schema_create_tables($db,$notes))return false;if(!tt_upgrade_accounts_schema($db,$notes)||!tt_upgrade_posts_schema($db,$notes)||!tt_upgrade_events_schema($db,$notes)||!tt_upgrade_groups_schema($db,$notes)||!tt_upgrade_forums_schema($db,$notes))return false;
- $indexes=[['posts','idx_posts_dt','CREATE INDEX `idx_posts_dt` ON `posts` (`dt`)'],['posts','idx_posts_name','CREATE INDEX `idx_posts_name` ON `posts` (`name`)'],['posts','idx_posts_scope','CREATE INDEX `idx_posts_scope` ON `posts` (`scope`)'],['posts','idx_posts_type','CREATE INDEX `idx_posts_type` ON `posts` (`type`)'],['posts','uq_posts_origin','CREATE UNIQUE INDEX `uq_posts_origin` ON `posts` (`origin_host`,`origin_post_id`)'],['groups','idx_groups_title','CREATE INDEX `idx_groups_title` ON `groups` (`title`)'],['events','idx_events_title','CREATE INDEX `idx_events_title` ON `events` (`title`)']];foreach($indexes as [$t,$i,$sql]){if(!tt_schema_index_exists($db,$t,$i))@$db->query($sql);}if(!tt_schema_index_exists($db,'forums','uq_forums_tag'))@$db->query('CREATE UNIQUE INDEX `uq_forums_tag` ON `forums` (`tag`)');return true;}
+ $indexes=[['posts','idx_posts_dt','CREATE INDEX `idx_posts_dt` ON `posts` (`dt`)'],['posts','idx_posts_name','CREATE INDEX `idx_posts_name` ON `posts` (`name`)'],['posts','idx_posts_scope','CREATE INDEX `idx_posts_scope` ON `posts` (`scope`)'],['posts','idx_posts_type','CREATE INDEX `idx_posts_type` ON `posts` (`type`)'],['posts','uq_posts_origin','CREATE UNIQUE INDEX `uq_posts_origin` ON `posts` (`origin_host`,`origin_post_id`)'],['groups','idx_groups_title','CREATE INDEX `idx_groups_title` ON `groups` (`title`)'],['events','idx_events_title','CREATE INDEX `idx_events_title` ON `events` (`title`)']];foreach($indexes as [$t,$i,$sql]){if(!tt_schema_index_exists($db,$t,$i))@$db->query($sql);}if(!tt_schema_index_exists($db,'forums','uq_forums_tag'))@$db->query('CREATE UNIQUE INDEX `uq_forums_tag` ON `forums` (`tag`)');if(!tt_schema_backfill_reply_identity_tags($db,$notes))return false;return true;}
 function tt_verify_accounts_runtime_columns(mysqli $db):array{$needed=['id','username','password','email','friends','posts','groups','events','forums','tags','messages','colors','votes','files','hostips','hostmode','aboutcontent','delay','ip','created_at','last_login_at','protected_account'];$missing=[];foreach($needed as $c)if(!tt_schema_column_exists($db,'accounts',$c))$missing[]=$c;return $missing;}
 function tt_runtime_sql_selfcheck(mysqli $db):array{$sqls=[
  'register'=>'INSERT INTO `accounts` (`username`,`password`,`email`,`friends`,`posts`,`groups`,`events`,`forums`,`tags`,`messages`,`colors`,`votes`,`files`,`hostips`,`hostmode`,`aboutcontent`,`delay`,`ip`,`created_at`,`last_login_at`,`protected_account`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,UTC_TIMESTAMP(),UTC_TIMESTAMP(),?)',
