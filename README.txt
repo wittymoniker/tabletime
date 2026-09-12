@@ -157,3 +157,14 @@ the newest data.
 
 TO HOST AND/OR EDIT TABLETIME:
 -full install XAMPP sever with MySQL and PhpMyAdmin via Apache. Directory to store tabletime scripts and files is detailed by the empty guide directory here, namely xampp\htdocs\tabletime.
+
+TABLETIME USER THEMES (RESTORED)
+
+Logged-in users can open colorpick.php (also linked from Account) to edit the historical 18-color Tabletime palette, text color, and font size. Themes are stored in accounts.colors using the original semicolon-delimited format. The current implementation validates color values, safely saves with a prepared statement, works on PHP 8+, applies the palette through style.php to Tabletime pages, includes a live preview, and has a Reset to Tabletime Default action.
+
+
+2026-09-12 communications update
+- Persistent renewable login tokens (hashed server-side) keep users signed in across normal browser restarts until logout/revocation.
+- WebRTC video calls support private invite lists plus group/event membership scopes.
+- Browser notifications use the Notifications API + service worker for incoming call/activity notices while the Tabletime origin is active in the browser.
+- Call signaling is authenticated and permission-checked; media remains peer-to-peer WebRTC. For large deployments, place a TURN service and/or SFU behind the same call UI.

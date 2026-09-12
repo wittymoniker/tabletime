@@ -1,265 +1,127 @@
-<?php 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-session_start();
-if (!isset($_SESSION['loggedin'])) {
-	header('Location: login.php');
-	exit;
-}
-
-$DATABASE_HOST = 'sql103.infinityfree.com';
-$DATABASE_USER = 'if0_38191057';
-$DATABASE_PASS = 'Greenapples55';
-$DATABASE_NAME = 'if0_38191057_tabletime';
-$mysqli =  new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con =  $mysqli;
-if (mysqli_connect_errno()) {
-	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
-}
-$con =  $mysqli;
-$stmt = $con->prepare('SELECT password, email FROM accounts WHERE id = ?');
-
-$stmt->bind_param('i', $_SESSION['id']);
-$stmt->execute();
-$stmt->bind_result($password, $email);
- $stmt->fetch();
- $stmt->free_result();  // Free them
-$stmt->close();
-
-$id = $_SESSION['id'];
-$color;
-$con =  $mysqli;
-$stmt = $con->prepare('SELECT colors FROM accounts WHERE id =?');
-$con =  $mysqli;
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$stmt->bind_result($color);
- $stmt->fetch();
- $stmt->free_result();  // Free them
-$stmt->close();
-
-if ($color != NULL){
-	$color = explode(";", $color);
-	$colora= color[0];
-	$colorb= color[1];
-	$colorc= color[2];
-	$colord= color[3];
-	$colore= color[4];
-	$colorf= color[5];
-	
-	$colora2= color[6];
-	$colorb2= color[7];
-	$colorc2= color[8];
-	$colord2= color[9];
-	$colore2= color[10];
-	$colorf2= color[11];
-	
-	$colora3= color[12];
-	$colorb3= color[13];
-	$colorc3= color[14];
-	$colord3= color[15];
-	$colore3= color[16];
-	$colorf3= color[17];
-	
-	$colort = color[18];
-	$fontSize = [19];
-	
-}
-else{
-	$colora= "#ababab";
-$colorb= "#bcbcbc";
-$colorc= "#cdcdcd";
-$colord= "#dcdcdc";
-$colore= "#ededed";
-$colorf= "#dfdfdf";
-
-$colora2= "#0a0a0a";
-$colorb2= "#1b1b1b";
-$colorc2= "#2c2c2c";
-$colord2= "#3d3d3d";
-$colore2= "#4e4e4e";
-$colorf2= "#5f5f5f";
-
-$colora3= "#a3a3a3";
-$colorb3= "#b2b2b2";
-$colorc3= "#c1c1c1";
-$colord3= "#d1d1d1";
-$colore3= "#e2e2e2";
-$colorf3= "#f3f3f3";
-
-
-
-$colort = "#000000";
-$fontSize = "14";
-}
-$colorp = ["#ababab",  "#bcbcbc",  "#cdcdcd",  "#dcdcdc",  "#ededed",   
-"#dfdfdf",    "#0a0a0a", "#1b1b1b", "#2c2c2c","#3d3d3d","#4e4e4e", 
-"#5f5f5f",    "#a3a3a3",  "#b2b2b2",  "#c1c1c1","#d1d1d1", "#e2e2e2", 
-"#f3f3f3","#000000", "14"];
-
-
-$color = $colorp;
-$color[0] = (string)$_POST['style1a'];
-$color[1] = (string)$_POST['style1b'];
-$color[2] = (string)$_POST['style1c'];
-$color[3] = (string)$_POST['style2a'];
-$color[4] = (string)$_POST['style2b'];
-$color[5] = (string)$_POST['style2c'];
-$color[6] = (string)$_POST['style3a'];
-$color[7] = (string)$_POST['style3b'];
-$color[8] = (string)$_POST['style3c'];
-$color[9] = (string)$_POST['style4a'];
-$color[10] =(string) $_POST['style4b'];
-$color[11] =(string) $_POST['style4c'];
-$color[12] = (string)$_POST['style5a'];
-$color[13] =(string) $_POST['style5b'];
-$color[14] = (string)$_POST['style5c'];
-$color[15] = (string)$_POST['style6a'];
-$color[16] = (string)$_POST['style6b'];
-$color[17] = (string)$_POST['style6c'];
-$color[18] = (string)$_POST['styletext'];
-$color[19] = (string)$_POST['stylesize'];
-?>
-
-<html class = "tabletime">
-
-<link href="style.php" rel="stylesheet" type="text/css">
-
-
-
-
-		<meta charset="utf-8">
-		<br><br><title>TABLETIME</title>
-
-		<head class = "content">
-
-<body class = "html">
-
-		<nav class = "content">
-		<div class = "content">		
-			<h1>		<br><img src="tabletime logo.png" alt="tabletime logo" width="50" height="50"><br>
-			<b><a href="home.php">TABLETIME</a></b>
-<p>
-<a href="messages.php"><i class="tabletime"></i>Messages</a>
-<a href="post.php"><i class="tabletime"></i>Posts</a>
-<a href="forum.php"><i class="tabletime"></i>Forums</a><br>
-<a href="event.php"><i class="tabletime"></i>Events</a>
-<a href="tags.php"><i class="tabletime"></i>Tags</a>
-<a href="group.php"><i class="tabletime"></i>Groups</a><br>
-<a href="statsmap.php"><i class="tabletime"></i>Stats/Map</a>
-<a href="profile.php"><i class="tabletime"></i>Profiles</a>
-<a href="file.php"><i class="tabletime"></i>Files</a><br>
-<a href="create.php"><i class="tabletime"></i><b>Create</b></a></p></h1>
-			</div>
-</nav>
-
-
-<div>
-
-<form action = "colorpick.php" method = "POST">
-    <p> Colors:<br><br>
-<input method = "POST" type="color" name="style1a" default = "<?php echo $colora; ?>">
-<input method = "POST" type="color" name="style2a" default = "<?php echo $colord1; ?>">
-<input method = "POST" type="color" name="style3b" default = "<?php echo $colorb2; ?>">
-<input method = "POST" type="color" name="style4b" default = "<?php echo $colore2; ?>">
-<input method = "POST" type="color" name="style5b" default = "<?php echo $colorb3; ?>">
-<input method = "POST" type="color" name="style6b" default = "<?php echo $colore3; ?>">
-<br>
-
-<input method = "POST" type="color" name="style1b" default = "<?php echo $colorb; ?>">
-<input method = "POST" type="color" name="style2b" default = "<?php echo $colore; ?>">
-<input method = "POST" type="color" name="style3c" default = "<?php echo $colorc2; ?>">
-<input method = "POST" type="color" name="style4c" default = "<?php echo $colorf2; ?>">
-<input method = "POST" type="color" name="style5c" default = "<?php echo $colorc3; ?>">
-<input method = "POST" type="color" name="style6c" default = "<?php echo $colorf3; ?>">
-
-<br>
-
-<input method = "POST" type="color" name="style5a" default = "<?php echo $colora3; ?>">
-<input method = "POST" type="color" name="style6a" default = "<?php echo $colord3; ?>">
-<input method = "POST" type="color" name="style3a" default = "<?php echo $colora2; ?>">
-<input method = "POST" type="color" name="style4a" default = "<?php echo $colord2; ?>">
-<input method = "POST" type="color" name="style1c" default = "<?php echo $colorc; ?>">
-<input method = "POST" type="color" name="style2c" default = "<?php echo $colord; ?>"><br><br><br><br>
-<label name="reset">
-    reset to default:
-</label>
-<input method = "POST" type = "checkbox" name = "reset" value = "reset"><br><br><br><br><br><br><br><br>
-
-
-text: <input method = "POST" type="color" name="styletext"><br>
-font size: 
-<input method = "POST" type = "range" name = "stylesize" min = "3" max = "36">
-<input method ="POST" type = "submit" name= "enter" value = "enter" >
-
-
-
-</p>
-</form>
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-if ($_POST["submit"]) {
-    // Retrieve the selected values from the form
-$colorp = ["#ababab",  "#bcbcbc",  "#cdcdcd",  "#dcdcdc",  "#ededed",   
-"#dfdfdf",    "#0a0a0a", "#1b1b1b", "#2c2c2c","#3d3d3d","#4e4e4e", 
-"#5f5f5f",    "#a3a3a3",  "#b2b2b2",  "#c1c1c1","#d1d1d1", "#e2e2e2", 
-"#f3f3f3","#000000", "14"];
-    $id = $_SESSION['id'];
-    $con =  $mysqli;
-    $sql = "UPDATE accounts SET colors = ? WHERE id = accounts($id)";  
-
-    $color = $colorp;
-    $color[0] = (string)$_POST['style1a'];
-    $color[1] = (string)$_POST['style1b'];
-    $color[2] = (string)$_POST['style1c'];
-    $color[3] = (string)$_POST['style2a'];
-    $color[4] = (string)$_POST['style2b'];
-    $color[5] = (string)$_POST['style2c'];
-    $color[6] = (string)$_POST['style3a'];
-    $color[7] = (string)$_POST['style3b'];
-    $color[8] = (string)$_POST['style3c'];
-    $color[9] = (string)$_POST['style4a'];
-    $color[10] =(string) $_POST['style4b'];
-    $color[11] =(string) $_POST['style4c'];
-    $color[12] = (string)$_POST['style5a'];
-    $color[13] =(string) $_POST['style5b'];
-    $color[14] = (string)$_POST['style5c'];
-    $color[15] = (string)$_POST['style6a'];
-    $color[16] = (string)$_POST['style6b'];
-    $color[17] = (string)$_POST['style6c'];
-    $color[18] = (string)$_POST['styletext'];
-    $color[19] = (string)$_POST['stylesize'];
-    
-    $id = $_SESSION['id'];
-    if(($_POST['reset'])){
-        $color = $colorp;
-        $con =  $mysqli;
-        $sql = "UPDATE accounts SET account(colors) = '$send' WHERE id = '$id'";
-        $result = $con->query($sql);
-
-        header('Location: index.html');
-        
-    }
-    }
-
-    $send = [implode(";", $color)];
-    $sql = "UPDATE accounts SET account(colors) = '$send' WHERE id = '$id')";
-    $result = $con->query($sql);
-    $con =  $mysqli;
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/theme_lib.php';
+require_once __DIR__.'/session_bootstrap.php';
+if (empty($_SESSION['loggedin']) || empty($_SESSION['id'])) {
+    header('Location: login.php');
+    exit;
 }
 
+$con = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+if ($con->connect_errno) exit('Failed to connect to MySQL.');
+$con->set_charset('utf8mb4');
+$userId = (int)$_SESSION['id'];
+
+if (empty($_SESSION['theme_csrf'])) $_SESSION['theme_csrf'] = bin2hex(random_bytes(24));
+$message = '';
+$messageClass = 'ok';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $token = (string)($_POST['csrf'] ?? '');
+    if (!hash_equals((string)$_SESSION['theme_csrf'], $token)) {
+        $message = 'Theme update rejected: invalid form token. Refresh this page and try again.';
+        $messageClass = 'error';
+    } else {
+        $action = (string)($_POST['action'] ?? 'save');
+        $themeToSave = $action === 'reset' ? tt_theme_defaults() : tt_theme_from_post($_POST);
+        if (tt_theme_save($con, $userId, $themeToSave)) {
+            $_SESSION['colors'] = tt_theme_serialize($themeToSave);
+            $message = $action === 'reset' ? 'Tabletime theme reset to the default palette.' : 'Tabletime theme saved.';
+            $theme = $themeToSave;
+        } else {
+            $message = 'Could not save the theme.';
+            $messageClass = 'error';
+        }
+    }
+}
+
+if (!isset($theme)) $theme = tt_theme_load($con, $userId);
+$con->close();
+$names = [
+    'style1a','style1b','style1c','style2a','style2b','style2c',
+    'style3a','style3b','style3c','style4a','style4b','style4c',
+    'style5a','style5b','style5c','style6a','style6b','style6c'
+];
+$labels = [
+    'Light A','Light B','Light C','Light D','Light E','Light F',
+    'Dark A','Dark B','Dark C','Dark D','Dark E','Dark F',
+    'Surface A','Surface B','Surface C','Surface D','Surface E','Surface F'
+];
+function tt_h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 ?>
-
-
-</div>
-<div>
-<p>
-<h1>test:</h1>
-
-<iframe src="home.php" title="TEST VIEW"></iframe>
-</p>
-<div>
-
-</body>
+<!doctype html>
+<html class="tabletime" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tabletime Theme</title>
+<link href="style.php?v=theme2" rel="stylesheet" type="text/css">
 </head>
+<body class="content">
+<nav class="navtop"><div class="tabletime">
+<h1><a href="/">TABLETIME</a></h1>
+<a href="post.php">Messages</a><a href="create.php">Create</a><a href="friend.php">Friends</a>
+<a href="file.php">Files</a><a href="profile.php">Profile</a><a href="statsmap.php">Stats/Map</a>
+<a href="group.php">Groups</a><a href="people.php">People</a><a href="event.php">Events</a>
+</div></nav>
+
+<main class="tabletime">
+<h1>Color Formatting</h1>
+<p>Tabletime keeps the original 18-color user palette, plus a text color and font-size setting. Your saved palette follows your account on this Tabletime node.</p>
+<?php if ($message !== ''): ?><p class="notice <?= tt_h($messageClass) ?>"><?= tt_h($message) ?></p><?php endif; ?>
+
+<form method="post" action="colorpick.php" id="theme-form">
+<input type="hidden" name="csrf" value="<?= tt_h($_SESSION['theme_csrf']) ?>">
+<fieldset>
+<legend>18-color palette</legend>
+<div class="theme-grid">
+<?php foreach ($names as $i => $name): ?>
+<label class="theme-swatch"><?= tt_h($labels[$i]) ?>
+<input type="color" name="<?= tt_h($name) ?>" value="<?= tt_h($theme[$i]) ?>" data-theme-index="<?= $i ?>">
+</label>
+<?php endforeach; ?>
+</div>
+</fieldset>
+
+<fieldset>
+<legend>Text and scale</legend>
+<label>Text color
+<input type="color" name="styletext" value="<?= tt_h($theme[18]) ?>" data-theme-text>
+</label>
+<label>Font size: <output id="font-size-output"><?= (int)$theme[19] ?></output> px
+<input type="range" name="stylesize" min="3" max="36" value="<?= (int)$theme[19] ?>" data-theme-size>
+</label>
+</fieldset>
+
+<div class="theme-actions">
+<button type="submit" name="action" value="save">Save Theme</button>
+<button type="submit" name="action" value="reset" onclick="return confirm('Reset your Tabletime colors and font size to the default theme?')">Reset to Tabletime Default</button>
+<a href="profile.php">Back to Profile</a>
+</div>
+
+<div class="theme-preview" id="theme-preview">
+<strong>Live preview</strong>
+<div class="sample-panel">Panel / card surface. <a href="#preview">Example link</a> <span class="tag">example tag</span></div>
+<div class="sample-dark">Dark/action surface</div>
+</div>
+</form>
+</main>
+<script>
+(() => {
+  const root = document.documentElement;
+  const colors = [...document.querySelectorAll('[data-theme-index]')];
+  const text = document.querySelector('[data-theme-text]');
+  const size = document.querySelector('[data-theme-size]');
+  const out = document.getElementById('font-size-output');
+  const apply = () => {
+    colors.forEach((el, i) => root.style.setProperty(`--tt-c${i+1}`, el.value));
+    root.style.setProperty('--tt-text', text.value);
+    root.style.setProperty('--tt-font-size', `${size.value}px`);
+    out.value = size.value;
+  };
+  colors.forEach(el => el.addEventListener('input', apply));
+  text.addEventListener('input', apply); size.addEventListener('input', apply);
+})();
+</script>
+</body>
 </html>

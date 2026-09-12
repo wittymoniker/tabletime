@@ -1,0 +1,3 @@
+<?php
+require_once dirname(__DIR__).'/core.php';header('Content-Type: application/json; charset=utf-8');tt_require_login();$db=tt_db_open(true);$uid=(int)$_SESSION['id'];$after=max(0,(int)($_GET['after']??0));$q=$db->prepare('SELECT `id`,`kind`,`title`,`body`,`url`,`created_at` FROM `notifications` WHERE `account_id`=? AND `id`>? ORDER BY `id` ASC LIMIT 50');$q->bind_param('ii',$uid,$after);$q->execute();$rows=$q->get_result()->fetch_all(MYSQLI_ASSOC);$q->close();$db->close();echo json_encode(['notifications'=>$rows],JSON_UNESCAPED_SLASHES);
+?>
