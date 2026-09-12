@@ -203,3 +203,29 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `title` varchar(255) NOT NULL DEFAULT '', `body` varchar(1000) NOT NULL DEFAULT '', `url` varchar(1024) NOT NULL DEFAULT '',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `read_at` datetime DEFAULT NULL, PRIMARY KEY (`id`), KEY `idx_notifications_poll` (`account_id`,`read_at`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Restored Karma/Moksha ratings and README-defined delay locks.
+CREATE TABLE IF NOT EXISTS `post_ratings` (
+  `post_id` int unsigned NOT NULL,
+  `voter_account_id` int unsigned NOT NULL,
+  `perspective` smallint NOT NULL DEFAULT 0,
+  `normalized_score` double NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`post_id`,`voter_account_id`),
+  KEY `idx_post_ratings_voter` (`voter_account_id`,`updated_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `action_locks` (
+  `identity_hash` char(64) NOT NULL,
+  `action` varchar(32) NOT NULL,
+  `account_id` int unsigned DEFAULT NULL,
+  `failures` int unsigned NOT NULL DEFAULT 0,
+  `last_attempt_at` datetime DEFAULT NULL,
+  `last_success_at` datetime DEFAULT NULL,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`identity_hash`,`action`),
+  KEY `idx_action_locks_account` (`account_id`,`action`),
+  KEY `idx_action_locks_updated` (`updated_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

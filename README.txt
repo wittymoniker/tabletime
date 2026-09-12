@@ -168,3 +168,19 @@ Logged-in users can open colorpick.php (also linked from Account) to edit the hi
 - WebRTC video calls support private invite lists plus group/event membership scopes.
 - Browser notifications use the Notifications API + service worker for incoming call/activity notices while the Tabletime origin is active in the browser.
 - Call signaling is authenticated and permission-checked; media remains peer-to-peer WebRTC. For large deployments, place a TURN service and/or SFU behind the same call UI.
+
+2026-09-12 RESTORATION NOTE — KARMA/MOKSHA, SCOPING, AND DELAY FORMULAS
+The original continuous controls are active again in the current source:
+- Karma/Moksha perspective is -256 through +256.
+- Scope is -256 through +256 and follows the original view/256 thresholds:
+  <= -0.5 private, >= +0.5 global, otherwise public.
+- The action bases remain: messages 1 minute; group/video calls 3 minutes;
+  registration 30 minutes; posts 5 minutes; login 10 minutes.
+- Failed attempts double the active delay.
+- Delay calculation remains action_delay * number_of_votes / voteban_score.
+  The runtime represents neutral reputation so this ratio is 1 at neutral;
+  negative Karma/Moksha reduces the voteban score and a full -256 balance can
+  reach an infinite lock. Creator ratings retain one-to-one weight against all
+  external ratings on their own post.
+- Deleting a post removes its Karma/Moksha rating rows, so that post no longer
+  contributes to the creator's access-delay balance.

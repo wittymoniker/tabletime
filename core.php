@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/schema_compat.php';
+require_once __DIR__ . '/social_controls.php';
 require_once __DIR__.'/session_bootstrap.php';
 
 function tt_h($v): string { return htmlspecialchars((string)$v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }

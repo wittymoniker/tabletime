@@ -1,0 +1,8 @@
+<?php
+require_once __DIR__.'/core.php';tt_require_login();
+if($_SERVER['REQUEST_METHOD']!=='POST'){header('Location: post.php');exit;}
+$postId=(int)($_POST['post_id']??0);$perspective=tt_perspective_value($_POST['perspective']??0);$voter=(int)$_SESSION['id'];if($postId<=0)tt_fail('Invalid post id.',400,'Karma / Moksha');
+$db=tt_db_open(true);[$visible,$params,$types]=tt_visible_where('p');$sql='SELECT p.`name`,a.`id` FROM `posts` p LEFT JOIN `accounts` a ON a.`username`=p.`name` WHERE p.`id`=? AND '.$visible.' LIMIT 1';$q=tt_prepare($db,$sql);$bind=[$postId,...$params];$q->bind_param('i'.$types,...$bind);$q->execute();$r=$q->get_result()?->fetch_assoc();$q->close();if(!$r){$db->close();tt_fail('That post is not visible to this account.',403,'Karma / Moksha');}
+$norm=tt_perspective_normalized($perspective);$q=tt_prepare($db,'INSERT INTO `post_ratings` (`post_id`,`voter_account_id`,`perspective`,`normalized_score`,`created_at`,`updated_at`) VALUES (?,?,?,?,UTC_TIMESTAMP(),UTC_TIMESTAMP()) ON DUPLICATE KEY UPDATE `perspective`=VALUES(`perspective`),`normalized_score`=VALUES(`normalized_score`),`updated_at`=UTC_TIMESTAMP()');$q->bind_param('iiid',$postId,$voter,$perspective,$norm);if(!$q->execute()){$e=$q->error;$q->close();$db->close();tt_fail('Rating could not be saved: '.$e,503,'Karma / Moksha');}$q->close();
+$ownerId=(int)($r['id']??0);$summary=tt_post_rating_summary($db,$postId,$ownerId);$legacy=json_encode(['karma_moksha'=>$summary['value'],'count'=>$summary['count']],JSON_UNESCAPED_SLASHES);$u=$db->prepare('UPDATE `posts` SET `votes`=? WHERE `id`=?');if($u){$u->bind_param('si',$legacy,$postId);@$u->execute();$u->close();}$db->close();header('Location: post.php?rated='.$postId.'#post-'.$postId);exit;
+?>
