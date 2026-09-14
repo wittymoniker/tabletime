@@ -45,9 +45,31 @@ function tt_action_base_delay_seconds(string $action): int {
 function tt_action_for_post_type(string $type): string {
     return strtolower($type)==='message'?'message':'post';
 }
+function tt_delay_client_token(): string {
+    $name='tt_delay_client';
+    $token=(string)($_COOKIE[$name]??'');
+    if(!preg_match('/^[a-f0-9]{32}$/',$token)){
+        try{$token=bin2hex(random_bytes(16));}catch(Throwable $e){$token=hash('sha256',session_id().'|'.microtime(true));$token=substr($token,0,32);}
+        if(!headers_sent()){
+            setcookie($name,$token,[
+                'expires'=>time()+31536000,
+                'path'=>'/',
+                'secure'=>(!empty($_SERVER['HTTPS'])&&strtolower((string)$_SERVER['HTTPS'])!=='off'),
+                'httponly'=>true,
+                'samesite'=>'Lax',
+            ]);
+        }
+        $_COOKIE[$name]=$token;
+    }
+    return $token;
+}
 function tt_delay_identity(): string {
+    // Wasmer/edge deployments can place many visitors behind the same REMOTE_ADDR.
+    // Keep the address as one signal, but add a durable per-browser token so a
+    // failed auth attempt in one browser cannot impose a shared site-wide lock.
     $ip=(string)($_SERVER['REMOTE_ADDR']??'unknown');
-    return hash('sha256','tabletime-delay|'.$ip);
+    $client=tt_delay_client_token();
+    return hash('sha256','tabletime-delay|'.$ip.'|'.$client);
 }
 function tt_delay_human(?int $seconds): string {
     if($seconds===null)return '∞';
@@ -110,6 +132,12 @@ function tt_delay_row(mysqli $db,string $action): array {
 }
 function tt_delay_status(mysqli $db,string $action,?int $accountId=null): array {
     $action=strtolower($action);$row=tt_delay_row($db,$action);$failures=(int)$row['failures'];$rep=tt_account_reputation($db,$accountId);$duration=tt_formula_delay_seconds($action,$rep,$failures);
+    // Authentication timing is a failure throttle, not a boot/login cooldown.
+    // A successful login or registration must never make the next legitimate
+    // auth attempt wait 10/30 minutes. Only a recorded failure activates it.
+    if(in_array($action,['login','register','registration'],true) && $failures<=0){
+        return ['allowed'=>true,'infinite'=>false,'remaining'=>0,'duration'=>$duration,'failures'=>0,'base'=>tt_action_base_delay_seconds($action),'reputation'=>$rep];
+    }
     if($duration===null)return ['allowed'=>false,'infinite'=>true,'remaining'=>null,'duration'=>null,'failures'=>$failures,'base'=>tt_action_base_delay_seconds($action),'reputation'=>$rep];
     $anchor=$failures>0?($row['last_attempt_at']??$row['last_success_at']):($row['last_success_at']??$row['last_attempt_at']);
     if(!$anchor)return ['allowed'=>true,'infinite'=>false,'remaining'=>0,'duration'=>$duration,'failures'=>$failures,'base'=>tt_action_base_delay_seconds($action),'reputation'=>$rep];

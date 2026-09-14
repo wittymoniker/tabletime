@@ -1,0 +1,1 @@
+<?php http_response_code(410);header('Content-Type: text/plain; charset=utf-8');echo 'Ad-credit payouts disabled. Tabletime currently uses natural ad credits only: 1 credit = 1 impression.\n'; ?>

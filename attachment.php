@@ -19,7 +19,7 @@ if(!$allowed){http_response_code(403);exit('This attachment is private.');}
 $filename=preg_replace('/[\r\n"\\]+/','_',basename((string)$filename));if($filename==='')$filename='attachment.bin';
 header('Content-Type: '.((string)$mime!==''?(string)$mime:'application/octet-stream'));
 header('Content-Length: '.strlen((string)$data));
-header('Content-Disposition: attachment; filename="'.$filename.'"');
+header('Content-Disposition: '.(str_starts_with(strtolower((string)$mime),'image/')?'inline':'attachment').'; filename="'.$filename.'"');
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: private, max-age=300');
 echo $data;

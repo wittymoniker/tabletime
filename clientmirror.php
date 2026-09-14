@@ -1,12 +1,1 @@
-<?php ;?>
-
-
-<html class = "tabletime">
-<link href="style.php" rel="stylesheet" type="text/css">
-<head class = "html">
-		<meta charset="utf-8">
-		<title>TABLETIME</title>
-<body class = "content">  
-</body>
-</head>
-</html>
+<?php http_response_code(410); header('Content-Type: text/plain; charset=utf-8'); echo 'Legacy mirror placeholder retired.\n'; exit; ?>

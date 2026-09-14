@@ -1,32 +1,32 @@
 <?php
 require_once __DIR__.'/core.php';tt_require_login();
 $username=(string)$_SESSION['name'];$num1=random_int(1,500);$num2=random_int(1,500);
-$allowedModes=['post','media','message','comment','event','group','forum','profile'];
+$allowedModes=['post','media','ad','message','comment','event','group','forum','profile'];
 $mode=strtolower(trim((string)($_GET['mode']??'post')));if(!in_array($mode,$allowedModes,true))$mode='post';
-$intent=strtolower(trim((string)($_GET['intent']??'')));if(!in_array($intent,['reply','comment'],true))$intent='';
+$intent=strtolower(trim((string)($_GET['intent']??'')));if($intent!=='comment')$intent='';
 $targetPost=max(0,(int)($_GET['target_post']??0));
 $targetUser=trim(preg_replace('/[\r\n;]+/',' ',(string)($_GET['target_user']??''))??'');$targetUser=substr($targetUser,0,191);
 $targetType=tt_reply_mode_for_post_type((string)($_GET['target_type']??'post'));
 $targetTitle=trim(preg_replace('/[\r\n]+/',' ',(string)($_GET['target_title']??''))??'');$targetTitle=substr($targetTitle,0,220);
 $targetScope=strtolower(trim((string)($_GET['target_scope']??'public')));if(!in_array($targetScope,['private','public','global'],true))$targetScope='public';
 if($targetPost>0 && $intent==='comment')$mode='comment';
-elseif($targetPost>0 && $intent==='reply')$mode=tt_reply_mode_for_post_type($targetType);
 $prefillRecipients=$mode==='comment'&&$targetPost>0?(string)$targetPost:$targetUser;
 $baseTitle=preg_replace('/^(?:re|comment)\s*:\s*/i','',$targetTitle)??$targetTitle;
-$prefillTitle=$targetTitle!==''?(($mode==='comment'?'Comment: ':'Re: ').$baseTitle):'';
-$tagParts=[];if($targetPost>0){$tagParts[]=$intent==='comment'?'comment':'reply';if($intent!=='comment')$tagParts[]=tt_reply_identity_tag($targetPost);if($targetUser!=='')$tagParts[]='target-user:'.$targetUser;$tagParts[]='target-type:'.$targetType;}
+$prefillTitle=$targetTitle!==''?('Comment: '.$baseTitle):'';
+$tagParts=[];if($targetPost>0&&$intent==='comment'){$tagParts[]='comment';if($targetUser!=='')$tagParts[]='target-user:'.$targetUser;$tagParts[]='target-type:'.$targetType;}
 $prefillTags=implode('; ',$tagParts);
 $initialScope=$mode==='message'?'private':$targetScope;$initialScopeSlider=tt_scope_slider_value($initialScope);
+$selectModes=array_values(array_filter($allowedModes,fn($t)=>$t!=='message'||$mode==='message'));
 $db=tt_db_open(true);$uid=(int)$_SESSION['id'];$postDelay=tt_delay_status($db,'post',$uid);$messageDelay=tt_delay_status($db,'message',$uid);$db->close();
 ?>
 <!doctype html><html class="tabletime"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.php"><title>Tabletime · Create</title></head><body>
 <?php tt_nav('create.php'); ?>
 <main class="content"><h2>Create as <?=tt_h($username)?></h2>
-<?php if($targetPost>0):?><section class="card compose-context"><h3><?= $mode==='comment'?'Commenting on':'Replying to' ?> post #<?=$targetPost?></h3><p class="meta">Target <?= $targetUser!==''?'@'.tt_h($targetUser).' · ':'' ?>source mode <?=tt_h($targetType)?> · composer mode <strong><?=tt_h($mode)?></strong></p><p>The target is carried with this action automatically. Reply metadata is retained in searchable tags using the canonical <code>ID#:&lt;post-id&gt;</code> identity; comments attach directly to the selected post.</p><p><a href="post.php#post-<?=$targetPost?>">Back to target post</a></p></section><?php endif;?>
+<?php if($targetPost>0):?><section class="card compose-context"><h3>Commenting on post #<?=$targetPost?></h3><p class="meta">Target <?= $targetUser!==''?'@'.tt_h($targetUser).' · ':'' ?>source mode <?=tt_h($targetType)?> · composer mode <strong><?=tt_h($mode)?></strong></p><p>The target is carried automatically. Comments attach directly to the selected post; Tabletime no longer creates a separate reply-as-message/reply-as-post item.</p><p><a href="post.php#post-<?=$targetPost?>">Back to target post</a></p></section><?php endif;?>
 <section class="card"><h3>Tabletime timing</h3><p class="meta">Posts start at 5 minutes; messages start at 1 minute. Failed attempts double the current delay. Karma/Moksha uses the documented <code>action delay × number of votes ÷ voteban score</code> rule and can move the lock toward ∞.</p><p id="delay-readout"></p></section>
 <form method="post" action="createnew.php" enctype="multipart/form-data" id="create-form">
 <input type="hidden" name="reply_to_post" value="<?=$targetPost?>"><input type="hidden" name="reply_to_user" value="<?=tt_h($targetUser)?>"><input type="hidden" name="reply_to_type" value="<?=tt_h($targetType)?>"><input type="hidden" name="reply_intent" value="<?=tt_h($intent)?>">
-<label>Type</label><select name="type" id="post-type"><?php foreach($allowedModes as $t):?><option value="<?=tt_h($t)?>" <?=$mode===$t?'selected':''?>><?=$t==='profile'?'update your description':tt_h($t)?></option><?php endforeach;?></select>
+<label>Type</label><select name="type" id="post-type"><?php foreach($selectModes as $t):?><option value="<?=tt_h($t)?>" <?=$mode===$t?'selected':''?>><?=$t==='profile'?'update your description':tt_h($t)?></option><?php endforeach;?></select>
 <label for="scope-view">Post scope: <output id="scope-label"><?=tt_h($initialScope)?></output></label>
 <input class="scope-slider" type="range" name="view" id="scope-view" min="-256" max="256" step="1" value="<?=$initialScopeSlider?>" aria-describedby="scope-help">
 <input type="hidden" name="scope" id="scope-value" value="<?=tt_h($initialScope)?>">
@@ -35,8 +35,9 @@ $db=tt_db_open(true);$uid=(int)$_SESSION['id'];$postDelay=tt_delay_status($db,'p
 <label>File (optional, maximum 250 KB)</label><input type="hidden" name="MAX_FILE_SIZE" value="256000"><input type="file" name="file">
 <label>Title</label><input type="text" name="title" maxlength="255" value="<?=tt_h($prefillTitle)?>" required>
 <label>Content</label><textarea name="content" maxlength="32768" required></textarea>
-<label>Tags</label><input type="text" name="tags" maxlength="4096" value="<?=tt_h($prefillTags)?>" placeholder="food=0.5; table; fork<=7500; late=-15000-7500; -angry"><p class="meta">Tabletime accepts ordinary topic tags and numeric tags. Post replies require the canonical <code>ID#:&lt;post-id&gt;</code> tag; Reply inserts it automatically with the target user and source mode. Comments remain attached to the target post rather than becoming separate reply posts.</p>
+<label>Tags</label><input type="text" name="tags" maxlength="4096" value="<?=tt_h($prefillTags)?>" placeholder="food=0.5; table; fork<=7500; late=-15000-7500; -angry"><p class="meta">Tabletime accepts ordinary topic tags and numeric tags. Comments attach directly to the selected post. Messages are composed from the Messages page rather than as post replies.</p>
 <label>Recipients / comment target post id</label><input type="text" name="recipients" maxlength="4096" value="<?=tt_h($prefillRecipients)?>" placeholder="user1;user2 or post id">
+<fieldset class="ad-credit-box"><legend>Apply Ad Credits</legend><label>Boost amount (ad credits / impressions)</label><input type="number" name="boost_credits" min="0" step="1" value="0"><label>Target user/page (optional)</label><input type="text" name="ad_target_user" maxlength="50" placeholder="username"><label>Targeting tags (especially useful for Ad subtype)</label><input type="text" name="ad_target_tags" maxlength="1024" placeholder="music; math; local; crystals"><p class="meta">Every post type can be boosted. 1 ad credit funds exactly 1 counted impression. The Ad subtype is the targeted advertising post type; its image attachment is framed and links to the post.</p><p><a href="adcredits.php">View natural ad-credit balance</a></p></fieldset>
 <label><?= $num1 ?> + <?= $num2 ?></label><input type="hidden" name="no1" value="<?= $num1 ?>"><input type="hidden" name="no2" value="<?= $num2 ?>"><input type="text" name="test" inputmode="numeric" required>
 <input type="submit" name="enter" id="publish-button" value="Publish">
 </form></main>

@@ -205,6 +205,19 @@ CREATE TABLE IF NOT EXISTS `notifications` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+-- General post impression / hit tracking. One counted hit per browser/user, post, and 10-minute bucket.
+CREATE TABLE IF NOT EXISTS `post_impressions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `post_id` int unsigned NOT NULL,
+  `viewer_account_id` int unsigned DEFAULT NULL,
+  `impression_key` char(64) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_post_impression_key` (`impression_key`),
+  KEY `idx_post_impression_post` (`post_id`,`created_at`),
+  KEY `idx_post_impression_viewer` (`viewer_account_id`,`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Restored Karma/Moksha ratings and README-defined delay locks.
 CREATE TABLE IF NOT EXISTS `post_ratings` (
   `post_id` int unsigned NOT NULL,
@@ -228,4 +241,32 @@ CREATE TABLE IF NOT EXISTS `action_locks` (
   PRIMARY KEY (`identity_hash`,`action`),
   KEY `idx_action_locks_account` (`account_id`,`action`),
   KEY `idx_action_locks_updated` (`updated_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Advertising natural-credit ledger. Legacy *_mills columns are retained for compatibility; 1000 internal units = 1 ad credit = 1 impression. Paid ad-credit and payout tables are legacy/unused in this build.
+ALTER TABLE `accounts` ADD COLUMN IF NOT EXISTS `ad_credit_mills` bigint NOT NULL DEFAULT 0;
+ALTER TABLE `accounts` ADD COLUMN IF NOT EXISTS `ad_revenue_mills` bigint NOT NULL DEFAULT 0;
+ALTER TABLE `accounts` ADD COLUMN IF NOT EXISTS `viewer_revenue_micros` bigint NOT NULL DEFAULT 0;
+ALTER TABLE `accounts` ADD COLUMN IF NOT EXISTS `stripe_connect_account_id` varchar(191) NOT NULL DEFAULT '';
+CREATE TABLE IF NOT EXISTS `ad_boosts` (
+ `id` bigint unsigned NOT NULL AUTO_INCREMENT, `post_id` int unsigned NOT NULL, `buyer_account_id` int unsigned NOT NULL,
+ `target_username` varchar(50) NOT NULL DEFAULT '', `target_scope` varchar(32) NOT NULL DEFAULT 'public', `target_tags` varchar(1024) NOT NULL DEFAULT '',
+ `budget_mills` bigint NOT NULL, `spent_mills` bigint NOT NULL DEFAULT 0, `status` varchar(16) NOT NULL DEFAULT 'active',
+ `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY(`id`), KEY `idx_ad_boost_post`(`post_id`,`status`), KEY `idx_ad_boost_target`(`target_username`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS `ad_impressions` (
+ `id` bigint unsigned NOT NULL AUTO_INCREMENT, `boost_id` bigint unsigned NOT NULL, `viewer_account_id` int unsigned DEFAULT NULL, `page_owner_account_id` int unsigned DEFAULT NULL,
+ `impression_key` char(64) NOT NULL, `cost_mills` int NOT NULL DEFAULT 40, `owner_mills` int NOT NULL DEFAULT 30, `platform_mills` int NOT NULL DEFAULT 10, `viewer_micros` int NOT NULL DEFAULT 0, `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY(`id`), UNIQUE KEY `uq_ad_impression_key`(`impression_key`), KEY `idx_ad_impression_boost`(`boost_id`,`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS `ad_credit_purchases` (
+ `id` bigint unsigned NOT NULL AUTO_INCREMENT, `account_id` int unsigned NOT NULL, `stripe_checkout_session_id` varchar(191) NOT NULL DEFAULT '', `stripe_payment_intent_id` varchar(191) NOT NULL DEFAULT '',
+ `amount_cents` int NOT NULL DEFAULT 500, `credited_mills` bigint NOT NULL DEFAULT 500000, `status` varchar(24) NOT NULL DEFAULT 'pending', `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `paid_at` datetime DEFAULT NULL,
+ PRIMARY KEY(`id`), UNIQUE KEY `uq_ad_checkout_session`(`stripe_checkout_session_id`), KEY `idx_ad_purchase_account`(`account_id`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS `ad_payouts` (
+ `id` bigint unsigned NOT NULL AUTO_INCREMENT, `account_id` int unsigned NOT NULL, `amount_cents` int NOT NULL, `stripe_transfer_id` varchar(191) NOT NULL DEFAULT '', `status` varchar(24) NOT NULL DEFAULT 'pending', `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `paid_at` datetime DEFAULT NULL,
+ PRIMARY KEY(`id`), KEY `idx_ad_payout_account`(`account_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

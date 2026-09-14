@@ -4,12 +4,12 @@ const TT_SESSION_LIFETIME = 315576000; // ~10 years; renewed on activity.
 if (session_status() !== PHP_SESSION_ACTIVE) {
     @ini_set('session.gc_maxlifetime', (string)TT_SESSION_LIFETIME);
     @ini_set('session.cookie_lifetime', (string)TT_SESSION_LIFETIME);
-    $secure = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off');
+    $secure = ((!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off') || strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https');
     session_set_cookie_params(['lifetime'=>TT_SESSION_LIFETIME,'path'=>'/','secure'=>$secure,'httponly'=>true,'samesite'=>'Lax']);
     session_start();
 }
 function tt_remember_cookie_set(string $value): void {
-    $secure = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off');
+    $secure = ((!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off') || strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https');
     setcookie('tt_remember',$value,['expires'=>time()+TT_SESSION_LIFETIME,'path'=>'/','secure'=>$secure,'httponly'=>true,'samesite'=>'Lax']);
 }
 function tt_remember_issue(mysqli $db,int $accountId): void {
@@ -27,7 +27,7 @@ function tt_restore_persistent_session(): void {
     require_once __DIR__.'/db.php';require_once __DIR__.'/schema_compat.php';
     global $TT_DB_CONFIGURED,$DATABASE_HOST,$DATABASE_USER,$DATABASE_PASS,$DATABASE_NAME;
     if(empty($TT_DB_CONFIGURED)||!class_exists('mysqli'))return;
-    $db=@new mysqli($DATABASE_HOST,$DATABASE_USER,$DATABASE_PASS,$DATABASE_NAME);if($db->connect_errno)return;$db->set_charset('utf8mb4');$notes=[];if(!tt_upgrade_runtime_schema($db,$notes)){$db->close();return;}
+    $db=@new mysqli($DATABASE_HOST,$DATABASE_USER,$DATABASE_PASS,$DATABASE_NAME);if($db->connect_errno)return;$db->set_charset('utf8mb4');
     $s=$db->prepare('SELECT t.`account_id`,t.`token_hash`,a.`username`,a.`friends`,a.`posts`,a.`groups`,a.`events`,a.`colors`,a.`votes`,a.`forums`,a.`tags`,a.`aboutcontent`,a.`files` FROM `auth_tokens` t JOIN `accounts` a ON a.`id`=t.`account_id` WHERE t.`selector`=? AND t.`revoked_at` IS NULL LIMIT 1');
     if(!$s){$db->close();return;}$s->bind_param('s',$parts[0]);$s->execute();$row=$s->get_result()?->fetch_assoc();$s->close();
     if(!$row||!hash_equals((string)$row['token_hash'],hash('sha256',$parts[1]))){$db->close();tt_remember_cookie_set('');return;}

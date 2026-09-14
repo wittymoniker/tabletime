@@ -21,6 +21,11 @@ function tt_validate_peer_url(string $url): ?string {
     return $scheme.'://'.$host.(isset($p['port'])?':'.(int)$p['port']:'').(isset($p['path'])?rtrim($p['path'],'/'):'');
 }
 function tt_http_json(string $url,int $timeout=3): ?array {
+    if(getenv('TT_ENABLE_FEDERATION')!=='1')return null;
+    $host=(string)(parse_url($url,PHP_URL_HOST)?:'');
+    if($host==='')return null;
+    $ips=@gethostbynamel($host)?:[];
+    foreach($ips as $ip){if(!filter_var($ip,FILTER_VALIDATE_IP,FILTER_FLAG_NO_PRIV_RANGE|FILTER_FLAG_NO_RES_RANGE))return null;}
     $ctx=stream_context_create(['http'=>['timeout'=>$timeout,'ignore_errors'=>true,'header'=>"Accept: application/json\r\nUser-Agent: Tabletime-Federation/1.0\r\n"],'ssl'=>['verify_peer'=>true,'verify_peer_name'=>true]]);
     $raw=@file_get_contents($url,false,$ctx);if($raw===false||strlen($raw)>1048576)return null;$x=json_decode($raw,true);return is_array($x)?$x:null;
 }

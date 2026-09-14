@@ -76,3 +76,5 @@ fieldset{border:1px solid var(--line);margin:14px 0;padding:14px}legend{font-wei
 .forum-row-posts .post-card.is-expanded{grid-column:auto;flex-basis:min(900px,92vw);width:auto}
 .forum-cloud-post>p,.forum-cloud-post .comments-body{overflow-wrap:anywhere;word-break:break-word}
 @media(max-width:700px){.forum-cloud-post{flex-basis:86vw}.forum-row-posts .post-card.is-expanded{flex-basis:94vw}}
+
+.post-image-link{display:block;margin:10px 0}.post-image{display:block;max-width:100%;max-height:520px;object-fit:contain;border:1px solid var(--line);border-radius:10px;padding:4px;background:rgba(0,0,0,.15)}.ad-credit-box,.boost-disclosure{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:10px}.boost-form{display:grid;gap:8px}.ad-card{outline:1px solid var(--accent)}

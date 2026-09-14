@@ -17,9 +17,9 @@ function tt_db_open(bool $upgrade=false): mysqli {
     $db=@new mysqli($DATABASE_HOST,$DATABASE_USER,$DATABASE_PASS,$DATABASE_NAME);
     if ($db->connect_errno) tt_fail('Could not connect to the Tabletime database.',503,'Database unavailable');
     if (!$db->set_charset('utf8mb4')) { $db->close(); tt_fail('Could not enable utf8mb4 on the database connection.',503,'Database unavailable'); }
-    if ($upgrade) {
+    if ($upgrade && getenv('TABLETIME_ALLOW_RUNTIME_SCHEMA_UPGRADE') === '1') {
         $notes=[];
-        if (!tt_upgrade_runtime_schema($db,$notes)) { $db->close(); tt_fail('The existing Tabletime schema could not be upgraded safely. Open Database setup.',503,'Database schema'); }
+        if (!tt_upgrade_runtime_schema($db,$notes)) { $db->close(); tt_fail('The Tabletime schema maintenance step failed.',503,'Database schema'); }
     }
     return $db;
 }
@@ -32,7 +32,7 @@ function tt_require_login(): void {
     if (empty($_SESSION['loggedin']) || empty($_SESSION['id'])) { header('Location: login.php'); exit; }
 }
 function tt_nav(string $active=''): void {
-    $links=['home.php'=>'Home','post.php'=>'Posts','create.php'=>'Create','tags.php'=>'Tags','messages.php'=>'Messages','event.php'=>'Events','forum.php'=>'Forums','group.php'=>'Groups','profile.php'=>'People','file.php'=>'Files','calls.php'=>'Calls','account.php'=>'Account','extend.php'=>'Extend'];
+    $links=['home.php'=>'Home','post.php'=>'Posts','create.php'=>'Create','tags.php'=>'Tags','messages.php'=>'Messages','event.php'=>'Events','forum.php'=>'Forums','group.php'=>'Groups','profile.php'=>'People','file.php'=>'Files','calls.php'=>'Calls','adcredits.php'=>'Ads','account.php'=>'Account','extend.php'=>'Extend'];
     echo '<nav class="navtop"><div><h1><a href="/">TABLETIME</a></h1>';
     foreach($links as $href=>$label) echo '<a href="'.$href.'"'.($active===$href?' aria-current="page"':'').'>'.tt_h($label).'</a>';
     echo '<a href="logout.php">Logout</a></div></nav><script src="tabletime.js" defer></script>';
@@ -100,12 +100,12 @@ function tt_reply_target_user(string $author,string $recipients,string $viewer='
     return $author;
 }
 function tt_compose_url(string $intent,int $postId,string $author,string $type,string $title='',string $scope='public',string $recipient=''): string {
-    $intent=strtolower(trim($intent))==='comment'?'comment':'reply';
-    $mode=$intent==='comment'?'comment':tt_reply_mode_for_post_type($type);
+    // Replies are comments now. Historical reply metadata remains readable, but new
+    // reply-as-message/reply-as-post records are no longer created by the UI.
     $targetUser=trim($recipient)!==''?trim($recipient):trim($author);
     $params=[
-        'mode'=>$mode,
-        'intent'=>$intent,
+        'mode'=>'comment',
+        'intent'=>'comment',
         'target_post'=>max(0,$postId),
         'target_user'=>$targetUser,
         'target_type'=>tt_reply_mode_for_post_type($type),
