@@ -23,16 +23,16 @@ $db=tt_db_open(true);$uid=(int)$_SESSION['id'];$postDelay=tt_delay_status($db,'p
 <?php tt_nav('create.php'); ?>
 <main class="content"><h2>Create as <?=tt_h($username)?></h2>
 <?php if($targetPost>0):?><section class="card compose-context"><h3>Commenting on post #<?=$targetPost?></h3><p class="meta">Target <?= $targetUser!==''?'@'.tt_h($targetUser).' · ':'' ?>source mode <?=tt_h($targetType)?> · composer mode <strong><?=tt_h($mode)?></strong></p><p>The target is carried automatically. Comments attach directly to the selected post; Tabletime no longer creates a separate reply-as-message/reply-as-post item.</p><p><a href="post.php#post-<?=$targetPost?>">Back to target post</a></p></section><?php endif;?>
-<section class="card"><h3>Tabletime timing</h3><p class="meta">Posts start at 5 minutes; messages start at 1 minute. Failed attempts double the current delay. Karma/Moksha uses the documented <code>action delay × number of votes ÷ voteban score</code> rule and can move the lock toward ∞.</p><p id="delay-readout"></p></section>
+<section class="card"><h3>Tabletime timing</h3><p class="meta">Posts start at 5 minutes; messages start at 1 minute. Failed attempts double the current delay. Profile Moksha uses the documented <code>action delay × number of votes ÷ voteban score</code> rule and can move the lock toward ∞.</p><p id="delay-readout"></p></section>
 <form method="post" action="createnew.php" enctype="multipart/form-data" id="create-form">
 <input type="hidden" name="reply_to_post" value="<?=$targetPost?>"><input type="hidden" name="reply_to_user" value="<?=tt_h($targetUser)?>"><input type="hidden" name="reply_to_type" value="<?=tt_h($targetType)?>"><input type="hidden" name="reply_intent" value="<?=tt_h($intent)?>">
-<label>Type</label><select name="type" id="post-type"><?php foreach($selectModes as $t):?><option value="<?=tt_h($t)?>" <?=$mode===$t?'selected':''?>><?=$t==='profile'?'update your description':tt_h($t)?></option><?php endforeach;?></select>
+<label>Type</label><select name="type" id="post-type"><?php foreach($selectModes as $t):?><option value="<?=tt_h($t)?>" <?=$mode===$t?'selected':''?>><?=$t==='profile'?'update profile / picture':tt_h($t)?></option><?php endforeach;?></select>
 <label for="scope-view">Post scope: <output id="scope-label"><?=tt_h($initialScope)?></output></label>
 <input class="scope-slider" type="range" name="view" id="scope-view" min="-256" max="256" step="1" value="<?=$initialScopeSlider?>" aria-describedby="scope-help">
 <input type="hidden" name="scope" id="scope-value" value="<?=tt_h($initialScope)?>">
 <div class="slider-labels" id="scope-help"><span>−256 private</span><span>0 public</span><span>+256 global</span></div>
 <p class="meta">Original Tabletime mapping: slider ÷ 256; ≤ −0.5 private, ≥ +0.5 global, middle public.</p>
-<label>File (optional, maximum 250 KB)</label><input type="hidden" name="MAX_FILE_SIZE" value="256000"><input type="file" name="file">
+<label>File (optional, maximum 250 KB; an image on a Profile update becomes your profile picture)</label><input type="hidden" name="MAX_FILE_SIZE" value="256000"><input type="file" name="file">
 <label>Title</label><input type="text" name="title" maxlength="255" value="<?=tt_h($prefillTitle)?>" required>
 <label>Content</label><textarea name="content" maxlength="32768" required></textarea>
 <label>Tags</label><input type="text" name="tags" maxlength="4096" value="<?=tt_h($prefillTags)?>" placeholder="food=0.5; table; fork<=7500; late=-15000-7500; -angry"><p class="meta">Tabletime accepts ordinary topic tags and numeric tags. Comments attach directly to the selected post. Messages are composed from the Messages page rather than as post replies.</p>

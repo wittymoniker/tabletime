@@ -4,7 +4,7 @@
  *
  * Historical controls:
  *   - scope slider: -256..256; v/256 <= -.5 private, >= .5 global, middle public
- *   - Karma/Moksha slider: -256..256 continuous bad/good perspective
+ *   - Karma (posts) / Moksha (profiles): -256..256 continuous bad/good perspective
  *
  * Documented base delays:
  *   message 1m, group chat/video call 3m, registration 30m,
@@ -81,36 +81,21 @@ function tt_delay_human(?int $seconds): string {
     return $h.'h'.($rm?' '.$rm.'m':'');
 }
 
-/** Return effective Karma/Moksha reputation for an account. */
+/** Return effective profile Moksha reputation for an account. Post Karma stays content-specific. */
 function tt_account_reputation(mysqli $db,?int $accountId): array {
     if(!$accountId || $accountId<=0)return ['number_of_votes'=>1.0,'mean_perspective'=>0.0,'voteban_score'=>1.0,'slider'=>0,'ratings'=>0];
-    $q=$db->prepare('SELECT p.`id` AS post_id,p.`name`,pr.`voter_account_id`,pr.`perspective` FROM `posts` p JOIN `accounts` a ON a.`username`=p.`name` LEFT JOIN `post_ratings` pr ON pr.`post_id`=p.`id` WHERE a.`id`=? AND pr.`post_id` IS NOT NULL');
-    if(!$q)return ['number_of_votes'=>1.0,'mean_perspective'=>0.0,'voteban_score'=>1.0,'slider'=>0,'ratings'=>0];
-    $q->bind_param('i',$accountId);$q->execute();$r=$q->get_result();$byPost=[];$ratings=0;
-    while($r&&($row=$r->fetch_assoc())){
-        $pid=(int)$row['post_id'];if(!isset($byPost[$pid]))$byPost[$pid]=['ext_n'=>0,'ext_sum'=>0.0,'owner'=>null];
-        $n=tt_perspective_normalized((int)$row['perspective']);$ratings++;
-        if((int)$row['voter_account_id']===$accountId)$byPost[$pid]['owner']=$n;
-        else{$byPost[$pid]['ext_n']++;$byPost[$pid]['ext_sum']+=$n;}
-    }
-    if($r)$r->free();$q->close();
-    $weight=0.0;$sum=0.0;
-    foreach($byPost as $p){
-        $n=(int)$p['ext_n'];$weight+=$n;$sum+=(float)$p['ext_sum'];
-        if($p['owner']!==null){$ow=max(1,$n);$weight+=$ow;$sum+=(float)$p['owner']*$ow;}
-    }
-    if($weight<=0.0)return ['number_of_votes'=>1.0,'mean_perspective'=>0.0,'voteban_score'=>1.0,'slider'=>0,'ratings'=>0];
-    $mean=max(-1.0,min(1.0,$sum/$weight));
-    $votes=max(1.0,$weight);
-    $score=$votes*(1.0+$mean);
-    return ['number_of_votes'=>$votes,'mean_perspective'=>$mean,'voteban_score'=>$score,'slider'=>(int)round($mean*256),'ratings'=>$ratings];
+    // New model: Moksha is the profile rating. Keep a neutral fallback before schema maintenance.
+    $exists=false;$x=$db->query("SHOW TABLES LIKE 'account_ratings'");if($x){$exists=$x->num_rows>0;$x->free();}
+    if(!$exists)return ['number_of_votes'=>1.0,'mean_perspective'=>0.0,'voteban_score'=>1.0,'slider'=>0,'ratings'=>0];
+    $q=$db->prepare('SELECT `perspective` FROM `account_ratings` WHERE `target_account_id`=?');if(!$q)return ['number_of_votes'=>1.0,'mean_perspective'=>0.0,'voteban_score'=>1.0,'slider'=>0,'ratings'=>0];
+    $q->bind_param('i',$accountId);$q->execute();$r=$q->get_result();$n=0;$sum=0.0;while($r&&($row=$r->fetch_assoc())){$n++;$sum+=tt_perspective_normalized((int)$row['perspective']);}if($r)$r->free();$q->close();
+    if($n<=0)return ['number_of_votes'=>1.0,'mean_perspective'=>0.0,'voteban_score'=>1.0,'slider'=>0,'ratings'=>0];
+    $mean=max(-1.0,min(1.0,$sum/$n));$votes=max(1.0,(float)$n);$score=$votes*(1.0+$mean);
+    return ['number_of_votes'=>$votes,'mean_perspective'=>$mean,'voteban_score'=>$score,'slider'=>(int)round($mean*256),'ratings'=>$n];
 }
 function tt_post_rating_summary(mysqli $db,int $postId,int $ownerAccountId=0): array {
-    $q=$db->prepare('SELECT `voter_account_id`,`perspective` FROM `post_ratings` WHERE `post_id`=?');if(!$q)return ['value'=>0,'count'=>0];
-    $q->bind_param('i',$postId);$q->execute();$r=$q->get_result();$extN=0;$extSum=0.0;$owner=null;$count=0;
-    while($r&&($row=$r->fetch_assoc())){$count++;$v=tt_perspective_normalized((int)$row['perspective']);if($ownerAccountId>0&&(int)$row['voter_account_id']===$ownerAccountId)$owner=$v;else{$extN++;$extSum+=$v;}}
-    if($r)$r->free();$q->close();$weight=$extN;$sum=$extSum;if($owner!==null){$ow=max(1,$extN);$weight+=$ow;$sum+=$owner*$ow;}
-    $mean=$weight>0?max(-1.0,min(1.0,$sum/$weight)):0.0;return ['value'=>(int)round($mean*256),'count'=>$count];
+    $q=$db->prepare('SELECT `perspective` FROM `post_ratings` WHERE `post_id`=?');if(!$q)return ['value'=>0,'count'=>0];
+    $q->bind_param('i',$postId);$q->execute();$r=$q->get_result();$n=0;$sum=0.0;while($r&&($row=$r->fetch_assoc())){$n++;$sum+=tt_perspective_normalized((int)$row['perspective']);}if($r)$r->free();$q->close();$mean=$n>0?max(-1.0,min(1.0,$sum/$n)):0.0;return ['value'=>(int)round($mean*256),'count'=>$n];
 }
 function tt_user_rating_for_post(mysqli $db,int $postId,int $voterId): int {
     if($voterId<=0)return 0;$q=$db->prepare('SELECT `perspective` FROM `post_ratings` WHERE `post_id`=? AND `voter_account_id`=? LIMIT 1');if(!$q)return 0;$q->bind_param('ii',$postId,$voterId);$q->execute();$q->bind_result($v);$ok=$q->fetch();$q->close();return $ok?(int)$v:0;
@@ -154,7 +139,7 @@ function tt_delay_mark_success(mysqli $db,string $action,?int $accountId=null): 
 }
 function tt_delay_assert(mysqli $db,string $action,?int $accountId=null): array {
     $s=tt_delay_status($db,$action,$accountId);if($s['allowed'])return $s;
-    $why=$s['infinite']?'∞ (full negative Karma/Moksha / voteban score)':'another '.tt_delay_human((int)$s['remaining']);
-    throw new RuntimeException('Tabletime delay lock: '.$why.' before this '.$action.' action. Base '.tt_delay_human($s['base']).'; failed attempts double it, and Karma/Moksha applies the documented vote/voteban formula.');
+    $why=$s['infinite']?'∞ (full negative profile Moksha / voteban score)':'another '.tt_delay_human((int)$s['remaining']);
+    throw new RuntimeException('Tabletime delay lock: '.$why.' before this '.$action.' action. Base '.tt_delay_human($s['base']).'; failed attempts double it, and profile Moksha applies the documented vote/voteban formula.');
 }
 ?>

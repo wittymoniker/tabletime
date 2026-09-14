@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__.'/core.php';tt_require_login();if($_SERVER['REQUEST_METHOD']!=='POST')tt_fail('POST required.',405,'People rating');
-$db=tt_db_open(true);if(!tt_schema_table_exists($db,'account_ratings')){$db->close();tt_fail('People ratings need one protected schema maintenance run on this host.',503,'People rating');}
-$target=max(0,(int)($_POST['target_account_id']??0));$voter=(int)($_SESSION['id']??0);$v=max(-256,min(256,(int)($_POST['perspective']??0)));if($target<=0||$voter<=0){$db->close();tt_fail('Invalid rating target.',400,'People rating');}if($target===$voter){$db->close();tt_fail('Use your profile and Moksha controls for your own material; People ratings are from other users.',400,'People rating');}
-$q=tt_prepare($db,'SELECT `username` FROM `accounts` WHERE `id`=? LIMIT 1');$q->bind_param('i',$target);$q->execute();$q->bind_result($username);if(!$q->fetch()){$q->close();$db->close();tt_fail('Person not found.',404,'People rating');}$q->close();
+require_once __DIR__.'/core.php';tt_require_login();if($_SERVER['REQUEST_METHOD']!=='POST')tt_fail('POST required.',405,'Profile Moksha');
+$db=tt_db_open(true);if(!tt_schema_table_exists($db,'account_ratings')){$db->close();tt_fail('Profile Moksha needs one protected schema maintenance run on this host.',503,'Profile Moksha');}
+$target=max(0,(int)($_POST['target_account_id']??0));$voter=(int)($_SESSION['id']??0);$v=max(-256,min(256,(int)($_POST['perspective']??0)));if($target<=0||$voter<=0){$db->close();tt_fail('Invalid Moksha target.',400,'Profile Moksha');}if($target===$voter){$db->close();tt_fail('Moksha is the rating other users give your profile; self-rating is not counted.',400,'Profile Moksha');}
+$q=tt_prepare($db,'SELECT `username` FROM `accounts` WHERE `id`=? LIMIT 1');$q->bind_param('i',$target);$q->execute();$q->bind_result($username);if(!$q->fetch()){$q->close();$db->close();tt_fail('Person not found.',404,'Profile Moksha');}$q->close();
 $q=tt_prepare($db,'INSERT INTO `account_ratings` (`target_account_id`,`voter_account_id`,`perspective`,`created_at`,`updated_at`) VALUES (?,?,?,UTC_TIMESTAMP(),UTC_TIMESTAMP()) ON DUPLICATE KEY UPDATE `perspective`=VALUES(`perspective`),`updated_at`=UTC_TIMESTAMP()');$q->bind_param('iii',$target,$voter,$v);$q->execute();$q->close();$db->close();header('Location: profile.php?user='.rawurlencode((string)$username));exit;
 ?>

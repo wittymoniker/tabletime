@@ -86,3 +86,5 @@ fieldset{border:1px solid var(--line);margin:14px 0;padding:14px}legend{font-wei
 .profile-media{display:block;width:100%;max-width:720px;max-height:520px;object-fit:contain;margin:10px 0;border:1px solid var(--line);background:var(--surface2);border-radius:10px}
 .profile-audio{width:100%;margin:10px 0}.person-card .rating-form{margin-top:10px}
 @media(max-width:700px){.tt-expand-card.is-expanded{padding:18px}}
+
+.profile-heading{display:flex;gap:14px;align-items:center}.profile-avatar{width:88px;height:88px;object-fit:cover;border-radius:50%;border:1px solid var(--line);flex:0 0 88px}.profile-avatar-empty{display:grid;place-items:center;background:var(--surface2);font-weight:bold}.moksha-summary{margin:.35rem 0;padding:6px 8px;border:1px solid var(--line);background:var(--surface2)}.person-card{cursor:default}.profile-moksha-form{display:block!important;max-height:none!important;overflow:visible!important}.selected-profile{outline:2px solid var(--line)}
