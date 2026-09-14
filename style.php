@@ -88,3 +88,11 @@ fieldset{border:1px solid var(--line);margin:14px 0;padding:14px}legend{font-wei
 @media(max-width:700px){.tt-expand-card.is-expanded{padding:18px}}
 
 .profile-heading{display:flex;gap:14px;align-items:center}.profile-avatar{width:88px;height:88px;object-fit:cover;border-radius:50%;border:1px solid var(--line);flex:0 0 88px}.profile-avatar-empty{display:grid;place-items:center;background:var(--surface2);font-weight:bold}.moksha-summary{margin:.35rem 0;padding:6px 8px;border:1px solid var(--line);background:var(--surface2)}.person-card{cursor:default}.profile-moksha-form{display:block!important;max-height:none!important;overflow:visible!important}.selected-profile{outline:2px solid var(--line)}
+
+/* People profiles: compact summary stays visible; expansion reveals profile details and controls. */
+.person-card .person-expanded-content{display:none}
+.person-card.is-expanded .person-expanded-content,.person-card.selected-profile .person-expanded-content{display:block}
+.person-card .profile-heading{align-items:flex-start}
+.person-card .moksha-summary{margin:.2rem 0}
+.selected-profile-view{margin:18px 0}
+.post-author-link{font-weight:600}

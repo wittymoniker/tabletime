@@ -16,7 +16,7 @@ $prefillTitle=$targetTitle!==''?('Comment: '.$baseTitle):'';
 $tagParts=[];if($targetPost>0&&$intent==='comment'){$tagParts[]='comment';if($targetUser!=='')$tagParts[]='target-user:'.$targetUser;$tagParts[]='target-type:'.$targetType;}
 $prefillTags=implode('; ',$tagParts);
 $initialScope=$mode==='message'?'private':$targetScope;$initialScopeSlider=tt_scope_slider_value($initialScope);
-$selectModes=array_values(array_filter($allowedModes,fn($t)=>$t!=='message'||$mode==='message'));
+$selectModes=$allowedModes;
 $db=tt_db_open(true);$uid=(int)$_SESSION['id'];$postDelay=tt_delay_status($db,'post',$uid);$messageDelay=tt_delay_status($db,'message',$uid);$db->close();
 ?>
 <!doctype html><html class="tabletime"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.php"><title>Tabletime · Create</title></head><body>
@@ -35,7 +35,7 @@ $db=tt_db_open(true);$uid=(int)$_SESSION['id'];$postDelay=tt_delay_status($db,'p
 <label>File (optional, maximum 250 KB; an image on a Profile update becomes your profile picture)</label><input type="hidden" name="MAX_FILE_SIZE" value="256000"><input type="file" name="file">
 <label>Title</label><input type="text" name="title" maxlength="255" value="<?=tt_h($prefillTitle)?>" required>
 <label>Content</label><textarea name="content" maxlength="32768" required></textarea>
-<label>Tags</label><input type="text" name="tags" maxlength="4096" value="<?=tt_h($prefillTags)?>" placeholder="food=0.5; table; fork<=7500; late=-15000-7500; -angry"><p class="meta">Tabletime accepts ordinary topic tags and numeric tags. Comments attach directly to the selected post. Messages are composed from the Messages page rather than as post replies.</p>
+<label>Tags</label><input type="text" name="tags" maxlength="4096" value="<?=tt_h($prefillTags)?>" placeholder="food=0.5; table; fork<=7500; late=-15000-7500; -angry"><p class="meta">Tabletime accepts ordinary topic tags and numeric tags. Comments attach directly to the selected post. Message remains a normal post type. Comments are the reply mechanism for existing posts; reply-as-message is not used.</p>
 <label>Recipients / comment target post id</label><input type="text" name="recipients" maxlength="4096" value="<?=tt_h($prefillRecipients)?>" placeholder="user1;user2 or post id">
 <fieldset class="ad-credit-box"><legend>Apply Ad Credits</legend><label>Boost amount (ad credits / impressions)</label><input type="number" name="boost_credits" min="0" step="1" value="0"><label>Target user/page (optional)</label><input type="text" name="ad_target_user" maxlength="50" placeholder="username"><label>Targeting tags (especially useful for Ad subtype)</label><input type="text" name="ad_target_tags" maxlength="1024" placeholder="music; math; local; crystals"><p class="meta">Every post type can be boosted. 1 ad credit funds exactly 1 counted impression. The Ad subtype is the targeted advertising post type; its image attachment is framed and links to the post.</p><p><a href="adcredits.php">View natural ad-credit balance</a></p></fieldset>
 <label><?= $num1 ?> + <?= $num2 ?></label><input type="hidden" name="no1" value="<?= $num1 ?>"><input type="hidden" name="no2" value="<?= $num2 ?>"><input type="text" name="test" inputmode="numeric" required>
