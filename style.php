@@ -78,3 +78,11 @@ fieldset{border:1px solid var(--line);margin:14px 0;padding:14px}legend{font-wei
 @media(max-width:700px){.forum-cloud-post{flex-basis:86vw}.forum-row-posts .post-card.is-expanded{flex-basis:94vw}}
 
 .post-image-link{display:block;margin:10px 0}.post-image{display:block;max-width:100%;max-height:520px;object-fit:contain;border:1px solid var(--line);border-radius:10px;padding:4px;background:rgba(0,0,0,.15)}.ad-credit-box,.boost-disclosure{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:10px}.boost-form{display:grid;gap:8px}.ad-card{outline:1px solid var(--accent)}
+
+/* Reusable expandable cards for People, media, files/tags and other dense entry lists. */
+.tt-expand-card{cursor:zoom-in;transition:padding .15s ease,border-width .15s ease,box-shadow .15s ease}
+.tt-expand-card.is-expanded{grid-column:1/-1;cursor:zoom-out;padding:24px;border-width:2px;box-shadow:0 3px 14px rgba(0,0,0,.12)}
+.tt-expand-card.is-expanded>p:not(.meta){font-size:1.04em;line-height:1.55}
+.profile-media{display:block;width:100%;max-width:720px;max-height:520px;object-fit:contain;margin:10px 0;border:1px solid var(--line);background:var(--surface2);border-radius:10px}
+.profile-audio{width:100%;margin:10px 0}.person-card .rating-form{margin-top:10px}
+@media(max-width:700px){.tt-expand-card.is-expanded{padding:18px}}

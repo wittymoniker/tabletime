@@ -4,7 +4,7 @@
   window.__ttPostCardExpandBooted=true;
   const interactive='a,button,input,select,textarea,label,summary,details,form,video,audio,iframe,object,embed,[contenteditable="true"],[role="button"]';
   document.addEventListener('click',e=>{
-    const card=e.target.closest('.post-card[data-post-expandable="1"]');
+    const card=e.target.closest('.post-card[data-post-expandable="1"],.tt-expand-card[data-tt-expandable="1"]');
     if(!card||e.target.closest(interactive))return;
     const sel=window.getSelection&&window.getSelection();
     if(sel&&String(sel).trim()!=='')return;

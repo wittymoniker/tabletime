@@ -29,6 +29,27 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   KEY `idx_accounts_hostmode` (`hostmode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `account_ratings` (
+  `target_account_id` int unsigned NOT NULL,
+  `voter_account_id` int unsigned NOT NULL,
+  `perspective` smallint NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`target_account_id`,`voter_account_id`),
+  KEY `idx_account_ratings_voter` (`voter_account_id`,`updated_at`),
+  KEY `idx_account_ratings_target` (`target_account_id`,`updated_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `profile_media` (
+  `account_id` int unsigned NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `mime_type` varchar(191) NOT NULL DEFAULT 'application/octet-stream',
+  `size_bytes` int unsigned NOT NULL DEFAULT 0,
+  `data` mediumblob NOT NULL,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `events` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
