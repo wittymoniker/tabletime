@@ -26,10 +26,13 @@ try{tt_preflight_write($con,strlen($title)+strlen($content)+strlen($tags)+strlen
    $comments='';$votes='';$file='';$s=tt_prepare($con,'INSERT INTO `posts` (`title`,`content`,`dt`,`file`,`tags`,`name`,`comments`,`scope`,`recipients`,`type`,`votes`,`pinned`,`federated`) VALUES (?,?,?,?,?,?,?,?,?,?,?,0,0)');$s->bind_param('sssssssssss',$title,$content,$dt,$file,$tags,$author,$comments,$scope,$recipients,$type,$votes);if(!$s->execute())throw new RuntimeException($s->error);$postId=(int)$con->insert_id;$s->close();
    if($attachmentSize>0){$a=tt_prepare($con,'INSERT INTO `post_attachments` (`post_id`,`filename`,`mime_type`,`size_bytes`,`data`) VALUES (?,?,?,?,?)');$null=null;$a->bind_param('issib',$postId,$attachmentName,$attachmentMime,$attachmentSize,$null);$a->send_long_data(4,$attachmentData);if(!$a->execute())throw new RuntimeException($a->error);$a->close();$file='attachment.php?post='.$postId;$u=tt_prepare($con,'UPDATE `posts` SET `file`=? WHERE `id`=?');$u->bind_param('si',$file,$postId);if(!$u->execute())throw new RuntimeException($u->error);$u->close();}
    tt_index_post_tags($con,$postId,$tags);$sid=(string)$postId;$s=tt_prepare($con,"UPDATE `accounts` SET `posts`=TRIM(BOTH ';' FROM CONCAT_WS(';',NULLIF(`posts`,''),?)) WHERE `id`=?");$s->bind_param('si',$sid,$authorId);if(!$s->execute())throw new RuntimeException($s->error);$s->close();
+   // Natural ad economy: every successfully created post grants the author 3 free ad credits.
+   // 1 credit = 1 counted impression. Comments/profile edits do not create a new post row and do not receive this grant.
+   $earnedPostCredits=tt_ad_grant_post_credits($con,$authorId,3);
    if(in_array($type,['message','group','event'],true)){foreach(tt_user_ids($con,tt_member_list($recipients)) as $n=>$rid){if($rid===$authorId)continue;$kind=$type==='message'?'message':$type;$label=$type==='message'?'New message from '.$author:ucfirst($type).' invitation from '.$author;$url=$type==='message'?'messages.php':($type==='group'?'group.php':'event.php');tt_notify($con,$rid,$kind,$label,$title,$url);}}
  }
  if($postId>0 && $type!=='comment' && $type!=='profile'){ $bc=max(0,(int)($_POST['boost_credits']??0)); if($bc>0)tt_ad_apply_boost($con,$authorId,$postId,$bc,(string)($_POST['ad_target_user']??''),$scope,(string)($_POST['ad_target_tags']??'')); }
  tt_delay_mark_success($con,$action,$authorId);$con->commit();
 }catch(Throwable $e){@$con->rollback();tt_delay_mark_failure($con,$action,$authorId);$msg=$e->getMessage();$con->close();tt_fail('Could not publish: '.$msg,503,'Publish');}
-$con->close();if($type==='profile'){header('Location: profile.php?updated=1');}else{header('Location: post.php'.($postId?'?posted='.$postId:'#top'));}exit;
+$con->close();if($type==='profile'){header('Location: profile.php?updated=1');}else{header('Location: post.php'.($postId?'?posted='.$postId.'&earned=3':'#top'));}exit;
 ?>
