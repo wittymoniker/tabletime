@@ -3,22 +3,22 @@
  * Tabletime browser/session bootstrap.
  *
  * PHP's native session remains a fast cache, but authentication does not depend
- * on one PHP worker retaining its session files. A signed first-party tt_auth6
+ * on one PHP worker retaining its session files. A signed first-party tt_login12
  * cookie can reconstruct the account session from MySQL after worker rotation.
  */
 $ttSessionMode=strtolower(trim((string)(getenv('TABLETIME_SESSION_MODE') ?: '72h')));
 $ttSessionHours=(int)(getenv('TABLETIME_SESSION_HOURS') ?: 72);
 if($ttSessionMode==='infinite'){
     // Browsers do not support a literal never-expiring cookie consistently. Use
-    // a browser-safe long expiry and renew it on every authenticated request.
+    // a browser-safe long expiry and renew it only near expiry.
     $ttSessionLifetime=34560000; // 400 days, rolling = effectively infinite.
 }else{
     $ttSessionHours=max(1,min(9600,$ttSessionHours));
     $ttSessionLifetime=$ttSessionHours*3600;
 }
 if (!defined('TT_SESSION_LIFETIME')) define('TT_SESSION_LIFETIME', $ttSessionLifetime);
-if (!defined('TT_SESSION_NAME')) define('TT_SESSION_NAME', 'TTSESSID9');
-if (!defined('TT_AUTH_COOKIE')) define('TT_AUTH_COOKIE', 'tt_auth9');
+if (!defined('TT_SESSION_NAME')) define('TT_SESSION_NAME', 'TTSESSID12');
+if (!defined('TT_AUTH_COOKIE')) define('TT_AUTH_COOKIE', 'tt_login12');
 if (!defined('TT_AUTH_LEGACY_COOKIE')) define('TT_AUTH_LEGACY_COOKIE', 'tt_auth');
 
 // Tabletime responses vary by authentication cookies and must never be replayed
@@ -26,6 +26,8 @@ if (!defined('TT_AUTH_LEGACY_COOKIE')) define('TT_AUTH_LEGACY_COOKIE', 'tt_auth'
 if(!headers_sent()){header('Cache-Control: private, no-store, max-age=0, must-revalidate');header('Pragma: no-cache');header('Vary: Cookie',false);}
 
 function tt_request_is_https(): bool {
+    $host=strtolower(trim((string)($_SERVER['HTTP_HOST']??'')));$host=preg_replace('/:\d+$/','',$host)??$host;
+    if(in_array($host,['eski-web.org','www.eski-web.org'],true)) return true;
     if (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off') return true;
     $xfp=trim((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''));
     if ($xfp!=='') {
@@ -58,6 +60,9 @@ function tt_enforce_canonical_host(): void {
 tt_enforce_canonical_host();
 
 function tt_cookie_domain(): string { return ''; }
+function tt_host_cookie_options(int $expires,bool $httpOnly=true): array {
+    return ['expires'=>$expires,'path'=>'/','secure'=>tt_request_is_https(),'httponly'=>$httpOnly,'samesite'=>'Lax'];
+}
 function tt_cookie_options(int $expires,bool $httpOnly=true): array {
     $o=[
         'expires'=>$expires,
@@ -88,15 +93,16 @@ function tt_cookie_expire_legacy_scopes(string $name,bool $httpOnly=true): void 
 function tt_clear_legacy_browser_auth_state(): void {
     static $done=false;if($done)return;$done=true;
     $legacy=[
-        'TTSESSID','TTSESSID2','TTSESSID3','TTSESSID4','TTSESSID5','TTSESSID6','TTSESSID7','TTSESSID8',
-        'tt_auth','tt_auth2','tt_auth3','tt_auth4','tt_auth5','tt_auth6','tt_auth7','tt_auth8','tt_remember',
-        'tt_age18_passed','tabletime_age18','age18_confirmed','tt_age18_v2','tt_age18_v3','tt_age18_v4','tt_age18_v5','tt_age18_v6','tt_age18_v7','tt_age18_v8'
+        'TTSESSID','TTSESSID2','TTSESSID3','TTSESSID4','TTSESSID5','TTSESSID6','TTSESSID7','TTSESSID8','TTSESSID9','TTSESSID10',
+        'tt_auth','tt_auth2','tt_auth3','tt_auth4','tt_auth5','tt_auth6','tt_auth7','tt_auth8','tt_auth9','tt_auth9_host','tt_auth10','tt_auth10_host','tt_remember',
+        'tt_age18_passed','tabletime_age18','age18_confirmed','tt_age18_v2','tt_age18_v3','tt_age18_v4','tt_age18_v5','tt_age18_v6','tt_age18_v7','tt_age18_v8','tt_age18_v9','tt_age18_v10'
     ];
     foreach($legacy as $name)if(isset($_COOKIE[$name]))tt_cookie_expire_legacy_scopes($name,true);
 }
 
-tt_clear_legacy_browser_auth_state();
-
+// Legacy cookies are intentionally ignored, not expired on every request.
+// Repeated bulk Set-Cookie deletion can exceed reverse-proxy header budgets and
+// prevent the new persistent login cookie from reaching the browser.
 if (session_status() !== PHP_SESSION_ACTIVE) {
     // Avoid collisions with another PHP application hosted on eski-web.org.
     if (session_name() !== TT_SESSION_NAME) @session_name(TT_SESSION_NAME);
@@ -173,12 +179,12 @@ function tt_auth_cookie_build(int $accountId,string $passwordHash,int $expires=0
     try{$nonce=bin2hex(random_bytes(12));}catch(Throwable $e){$nonce=substr(hash('sha256',microtime(true).'|'.session_id()),0,24);}
     $payload=$accountId.'.'.$expires.'.'.$nonce;
     $sig=hash_hmac('sha256',$payload,tt_auth_cookie_key($passwordHash));
-    return 'v9.'.tt_b64url_encode($payload).'.'.$sig;
+    return 'v12.'.tt_b64url_encode($payload).'.'.$sig;
 }
 
 function tt_auth_cookie_parse(string $cookie): ?array {
     $parts=explode('.',$cookie,3);
-    if(count($parts)!==3||!in_array($parts[0],['v1','v2','v3','v4','v5','v6','v7','v8','v9'],true)||!preg_match('/^[a-f0-9]{64}$/',$parts[2]))return null;
+    if(count($parts)!==3||!in_array($parts[0],['v1','v2','v3','v4','v5','v6','v7','v8','v9','v10','v11','v12'],true)||!preg_match('/^[a-f0-9]{64}$/',$parts[2]))return null;
     $decoded=tt_b64url_decode($parts[1]);if($decoded===false)return null;
     $p=explode('.',$decoded,3);if(count($p)!==3)return null;
     $uid=(int)$p[0];$exp=(int)$p[1];$nonce=(string)$p[2];
@@ -189,16 +195,14 @@ function tt_auth_cookie_parse(string $cookie): ?array {
 function tt_auth_cookie_set(string $value,int $expires=0): void {
     if($expires<=0)$expires=$value===''?time()-3600:time()+TT_SESSION_LIFETIME;
     if($value===''){
-        tt_cookie_expire_both_scopes(TT_AUTH_COOKIE,true);
-        tt_cookie_expire_both_scopes(TT_AUTH_LEGACY_COOKIE,true);
-        unset($_COOKIE[TT_AUTH_COOKIE],$_COOKIE[TT_AUTH_LEGACY_COOKIE]);return;
+        if(!headers_sent())setcookie(TT_AUTH_COOKIE,'',tt_host_cookie_options(time()-3600,true));
+        unset($_COOKIE[TT_AUTH_COOKIE]);return;
     }
-    if(!headers_sent()){
-        // A distinct v6 cookie name means stale host-only tt_auth cookies are
-        // ignored rather than competing with the corrected cookie.
-        setcookie(TT_AUTH_COOKIE,$value,tt_cookie_options($expires,true));
-    }
-    $_COOKIE[TT_AUTH_COOKIE]=$value;unset($_COOKIE[TT_AUTH_LEGACY_COOKIE]);
+    // One canonical host-only persistent cookie. The site canonicalizes GET/HEAD
+    // to eski-web.org before protected content, so cross-host duplicate cookies
+    // are unnecessary and can race/proxy-truncate Set-Cookie headers.
+    if(!headers_sent())setcookie(TT_AUTH_COOKIE,$value,tt_host_cookie_options($expires,true));
+    $_COOKIE[TT_AUTH_COOKIE]=$value;
 }
 
 function tt_auth_cookie_issue(int $accountId,string $passwordHash): bool {
@@ -209,14 +213,14 @@ function tt_auth_cookie_issue(int $accountId,string $passwordHash): bool {
 function tt_auth_cookie_should_renew(string $cookie,int $uid,string $passwordHash): bool {
     $p=tt_auth_cookie_parse($cookie);if(!$p)return true;
     if((int)$p['uid']!==$uid||!tt_auth_cookie_verify($p,$passwordHash))return true;
-    if((string)($p['version']??'')!=='v9')return true;
+    if((string)($p['version']??'')!=='v12')return true;
     $window=min(43200,max(900,(int)(TT_SESSION_LIFETIME/4)));
     return ((int)$p['expires']-time()) <= $window;
 }
 
 function tt_auth_cookie_verify(array $parsed,string $passwordHash): bool {
     if($passwordHash==='')return false;
-    if(in_array((string)($parsed['version']??''),['v2','v3','v4','v5','v6','v7','v8','v9'],true))$sig=hash_hmac('sha256',(string)$parsed['payload'],tt_auth_cookie_key($passwordHash));
+    if(in_array((string)($parsed['version']??''),['v2','v3','v4','v5','v6','v7','v8','v9','v10','v11','v12'],true))$sig=hash_hmac('sha256',(string)$parsed['payload'],tt_auth_cookie_key($passwordHash));
     else $sig=hash_hmac('sha256',(string)$parsed['payload']."\0".$passwordHash,tt_auth_secret());
     return hash_equals($sig,(string)$parsed['sig']);
 }
@@ -242,6 +246,29 @@ function tt_login_handoff_verify(array $parsed,string $passwordHash): bool {
     if($passwordHash==='')return false;
     $sig=hash_hmac('sha256',"tabletime-login-handoff-v1\0".(string)$parsed['payload'],tt_auth_cookie_key($passwordHash));
     return hash_equals($sig,(string)$parsed['sig']);
+}
+
+/** Short-lived bearer used only by the Calls page so an already-open Safari
+ * call can recover from a lost cookie without dropping media/signaling. */
+function tt_call_api_token_build(int $accountId,string $passwordHash,int $lifetime=14400): string {
+    if($accountId<=0||$passwordHash==='')return '';$expires=time()+max(300,min(86400,$lifetime));
+    $payload=$accountId.'.'.$expires;$sig=hash_hmac('sha256',"tabletime-call-api-v1\0".$payload,tt_auth_cookie_key($passwordHash));
+    return 'ca1.'.tt_b64url_encode($payload).'.'.$sig;
+}
+function tt_call_api_token_parse(string $token): ?array {
+    $parts=explode('.',$token,3);if(count($parts)!==3||$parts[0]!=='ca1'||!preg_match('/^[a-f0-9]{64}$/',$parts[2]))return null;
+    $raw=tt_b64url_decode($parts[1]);if($raw===false)return null;$p=explode('.',$raw,2);if(count($p)!==2)return null;
+    $uid=(int)$p[0];$exp=(int)$p[1];$now=time();if($uid<=0||$exp<$now||$exp>$now+86460)return null;
+    return ['uid'=>$uid,'expires'=>$exp,'payload'=>$raw,'sig'=>$parts[2]];
+}
+function tt_restore_call_api_token(string $token): bool {
+    $parsed=tt_call_api_token_parse($token);if(!$parsed)return false;require_once __DIR__.'/db.php';
+    global $TT_DB_CONFIGURED,$DATABASE_HOST,$DATABASE_USER,$DATABASE_PASS,$DATABASE_NAME;if(empty($TT_DB_CONFIGURED)||!class_exists('mysqli'))return false;
+    $db=@new mysqli($DATABASE_HOST,$DATABASE_USER,$DATABASE_PASS,$DATABASE_NAME);if($db->connect_errno)return false;$db->set_charset('utf8mb4');
+    $row=tt_account_restore_query($db,(int)$parsed['uid']);if(!$row){$db->close();return false;}
+    $sig=hash_hmac('sha256',"tabletime-call-api-v1\0".(string)$parsed['payload'],tt_auth_cookie_key((string)$row['password']));
+    if(!hash_equals($sig,(string)$parsed['sig'])){$db->close();return false;}
+    tt_session_fill_from_account($row);$db->close();return true;
 }
 
 function tt_remember_cookie_set(string $value): void {
@@ -310,29 +337,51 @@ function tt_restore_login_handoff(string $ticket): bool {
     $row=tt_account_restore_query($db,(int)$parsed['uid']);
     if(!$row||!tt_login_handoff_verify($parsed,(string)$row['password'])){$db->close();return false;}
     tt_session_fill_from_account($row);
-    tt_auth_cookie_issue((int)$row['id'],(string)$row['password']);
+    $existing=(string)($_COOKIE[TT_AUTH_COOKIE]??'');
+    $existingParsed=$existing!==''?tt_auth_cookie_valid_for($existing,(int)$row['id'],(string)$row['password']):null;
+    if(!is_array($existingParsed))tt_auth_cookie_issue((int)$row['id'],(string)$row['password']);
     tt_age_cookie_set(true);
     @$db->query('UPDATE `accounts` SET `last_login_at`=UTC_TIMESTAMP() WHERE `id`='.(int)$row['id']);
     $db->close();
     return true;
 }
 
+function tt_auth_cookie_valid_for(string $cookie,int $uid,string $passwordHash): ?array {
+    $p=tt_auth_cookie_parse($cookie);if(!$p)return null;
+    if((int)$p['uid']!==$uid||!tt_auth_cookie_verify($p,$passwordHash))return null;
+    return $p;
+}
+
+function tt_auth_cookie_near_expiry(array $p): bool {
+    $window=min(43200,max(900,(int)(TT_SESSION_LIFETIME/4)));
+    return ((int)$p['expires']-time()) <= $window;
+}
+
 function tt_restore_signed_auth(): bool {
-    $cookie=(string)($_COOKIE[TT_AUTH_COOKIE]??'');if($cookie==='')return false;
-    $parsed=tt_auth_cookie_parse($cookie);if(!$parsed){tt_auth_cookie_set('');return false;}
+    $candidates=[];$v=(string)($_COOKIE[TT_AUTH_COOKIE]??'');if($v!=='')$candidates[]=$v;
+    if(!$candidates)return false;
     require_once __DIR__.'/db.php';
     global $TT_DB_CONFIGURED,$DATABASE_HOST,$DATABASE_USER,$DATABASE_PASS,$DATABASE_NAME;
     if(empty($TT_DB_CONFIGURED)||!class_exists('mysqli'))return false;
     $db=@new mysqli($DATABASE_HOST,$DATABASE_USER,$DATABASE_PASS,$DATABASE_NAME);if($db->connect_errno)return false;$db->set_charset('utf8mb4');
-    $row=tt_account_restore_query($db,(int)$parsed['uid']);
-    if(!$row||!tt_auth_cookie_verify($parsed,(string)$row['password'])){$db->close();tt_auth_cookie_set('');return false;}
-    tt_session_fill_from_account($row);
-    @$db->query('UPDATE `accounts` SET `last_login_at`=UTC_TIMESTAMP() WHERE `id`='.(int)$row['id']);$db->close();
-    // Keep the durable cookie stable during ordinary browsing. Safari/WebKit
-    // should not receive a new random auth cookie on every navigation.
-    if(tt_auth_cookie_should_renew($cookie,(int)$row['id'],(string)$row['password']))
-        tt_auth_cookie_issue((int)$row['id'],(string)$row['password']);
-    return true;
+    foreach($candidates as $cookie){
+        $parsed=tt_auth_cookie_parse($cookie);if(!$parsed)continue;
+        $row=tt_account_restore_query($db,(int)$parsed['uid']);
+        if(!$row||!tt_auth_cookie_verify($parsed,(string)$row['password']))continue;
+        tt_session_fill_from_account($row);
+        $db->close();
+        // Keep one authoritative byte-for-byte token for the whole browser session.
+        // Only mint a new token near expiry; otherwise heal both cookie scopes with
+        // the exact verified value so parallel page/API requests cannot race.
+        if((string)($parsed['version']??'')!=='v12'||tt_auth_cookie_near_expiry($parsed)){
+            tt_auth_cookie_issue((int)$row['id'],(string)$row['password']);
+        }
+        return true;
+    }
+    $db->close();
+    // Only clear after both independent cookies failed verification.
+    tt_auth_cookie_set('');
+    return false;
 }
 
 function tt_restore_legacy_remember(): bool {
@@ -367,17 +416,22 @@ function tt_refresh_authenticated_session(): void {
             if(!$db->connect_errno){$db->set_charset('utf8mb4');$row=tt_account_restore_query($db,$uid);$db->close();if($row){$hash=(string)$row['password'];$_SESSION['tt_auth_hash']=$hash;}}
         }
     }
-    // Treat PHP session storage as a disposable cache. The durable cookie is
-    // stable for normal browsing and is renewed only near expiry, which avoids
-    // repeated Set-Cookie churn on Safari while keeping the 72-hour/infinite
-    // serverless login behavior.
-    $current=(string)($_COOKIE[TT_AUTH_COOKIE]??'');
-    if($hash!=='' && tt_auth_cookie_should_renew($current,$uid,$hash))tt_auth_cookie_issue($uid,$hash);
+    if($hash!==''){
+        $current=(string)($_COOKIE[TT_AUTH_COOKIE]??'');
+        $parsed=$current!==''?tt_auth_cookie_valid_for($current,$uid,$hash):null;
+        if(!is_array($parsed))tt_auth_cookie_issue($uid,$hash);
+        elseif((string)($parsed['version']??'')!=='v12'||tt_auth_cookie_near_expiry($parsed))tt_auth_cookie_issue($uid,$hash);
+    }
     tt_age_session_set(true);if((string)($_COOKIE[TT_AGE_COOKIE]??'')!=='1')tt_age_cookie_set(true);
 }
+
 function tt_restore_persistent_session(): void {
-    if(!empty($_SESSION['loggedin'])&&!empty($_SESSION['id'])){tt_refresh_authenticated_session();return;}
+    // The signed persistent cookie is authoritative. Native PHP session files are
+    // only a cache and may disappear when a Wasmer worker is recycled.
     if(tt_restore_signed_auth()){tt_refresh_authenticated_session();return;}
+    // A just-authenticated request may still have a valid native session before
+    // the persistent cookie is observed by the next request; issue it once.
+    if(!empty($_SESSION['loggedin'])&&!empty($_SESSION['id'])){tt_refresh_authenticated_session();return;}
     if(tt_restore_legacy_remember())tt_refresh_authenticated_session();
 }
 

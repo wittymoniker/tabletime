@@ -1,0 +1,64 @@
+TABLETIME SQUARE / WASMER PRODUCTION SETUP — 2026-09-15
+
+OPERATOR / WASMER ENVIRONMENT VALUES
+------------------------------------
+Do not put secrets into PHP source or a user-visible page.
+
+Required for Tabletime's own Square checkout:
+SQUARE_ENV=production
+SQUARE_APPLICATION_ID=<Production Application ID>
+SQUARE_ACCESS_TOKEN=<Production access token for the Tabletime operator account>
+SQUARE_LOCATION_ID=<Production Square location ID>
+SQUARE_AD_VARIATION_ID=<Catalog variation ID for the Tabletime 1000-impression product>
+SQUARE_WEBHOOK_SIGNATURE_KEY=<Square webhook signature key>
+SQUARE_WEBHOOK_URL=https://eski-web.org/tabletime/square_webhook.php
+
+Required for users to connect their own Square seller account:
+SQUARE_OAUTH_APPLICATION_ID=<Production Application ID; may be the same as SQUARE_APPLICATION_ID>
+SQUARE_OAUTH_APPLICATION_SECRET=<Production Application Secret from Square Developer Console > OAuth>
+SQUARE_OAUTH_REDIRECT_URL=https://eski-web.org/tabletime/square_oauth_callback.php
+TABLETIME_TOKEN_ENCRYPTION_KEY=<long random server-side encryption secret>
+
+Optional override:
+SQUARE_OAUTH_SCOPES=MERCHANT_PROFILE_READ BANK_ACCOUNTS_READ PAYOUTS_READ
+
+Optional payout dispatcher integration:
+TABLETIME_PAYOUT_DISPATCH_URL=<HTTPS endpoint operated by the Tabletime payout service>
+TABLETIME_PAYOUT_DISPATCH_SECRET=<long shared HMAC secret>
+
+The dispatcher receives payout request ID, Tabletime account ID, amount in micros, and Square merchant ID. It never receives the user's Square OAuth token from Tabletime's dispatch payload.
+
+SQUARE DEVELOPER CONSOLE
+------------------------
+1. Open the Tabletime application and select Production.
+2. Under OAuth, register exactly:
+   https://eski-web.org/tabletime/square_oauth_callback.php
+3. Copy the Production Application ID and Application Secret into Wasmer secrets.
+4. Under Webhooks, use:
+   https://eski-web.org/tabletime/square_webhook.php
+   Subscribe to payment.updated (payment.created is also accepted by Tabletime).
+5. Copy the webhook Signature Key into SQUARE_WEBHOOK_SIGNATURE_KEY.
+6. Run Tabletime protected schema maintenance once after deployment, then turn the runtime-upgrade flag back off.
+
+USER SQUARE SETUP
+-----------------
+Users do not need your Application Secret or access token.
+They:
+1. Create/sign in to a Square seller account.
+2. Complete Square business/profile verification.
+3. Link the bank account or other eligible transfer destination in Square.
+4. In Tabletime, open Earnings > Square setup > Connect Square.
+5. Sign in on Square and approve the requested permissions.
+6. Return to Earnings to see the connected merchant and payout wallet/history.
+
+PAYMENT MODEL
+-------------
+1 natural ad credit = exactly 1 counted impression.
+Natural credits are non-cash and are earned by hosting another user's counted ad impression.
+$5 Square purchase = 1000 SFW funded impressions.
+A qualifying funded impression displayed on another user's page/profile records $0.004 (4/5) for the display subject and $0.001 (1/5) for Tabletime.
+Square-funded ads are SFW-only. Correctly gated NSFW advertising can use natural credits.
+
+IMPORTANT ABOUT PAYOUTS
+-----------------------
+Square's Payouts API reports Square payouts; it is not an arbitrary transfer-creation API. Tabletime therefore maintains a payout wallet/request/status/history and can hand approved requests to an operator-configured payout dispatcher. Do not mark a request paid until the actual transfer workflow confirms it.

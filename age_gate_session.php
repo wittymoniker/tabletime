@@ -1,6 +1,6 @@
 <?php
 /** Tabletime persistent 18+ self-attestation gate. */
-if (!defined('TT_AGE_COOKIE')) define('TT_AGE_COOKIE', 'tt_age18_v9');
+if (!defined('TT_AGE_COOKIE')) define('TT_AGE_COOKIE', 'tt_age18_v12');
 if (!defined('TT_AGE_COOKIE_LIFETIME')) define('TT_AGE_COOKIE_LIFETIME', defined('TT_SESSION_LIFETIME') ? TT_SESSION_LIFETIME : 315576000);
 
 function tt_age_secure_cookie(): bool {
@@ -19,7 +19,7 @@ function tt_age_cookie_set(bool $passed): void {
     if($passed)$_COOKIE[TT_AGE_COOKIE]='1';else unset($_COOKIE[TT_AGE_COOKIE]);
 }
 function tt_age_clear_legacy_cookies():void{
-    foreach(['tt_age18_passed','tabletime_age18','age18_confirmed','tt_age18_v2','tt_age18_v3','tt_age18_v4','tt_age18_v5','tt_age18_v6','tt_age18_v7','tt_age18_v8'] as $name){if(isset($_COOKIE[$name])&&!headers_sent())setcookie($name,'',tt_age_cookie_options(time()-3600));unset($_COOKIE[$name]);}
+    foreach(['tt_age18_passed','tabletime_age18','age18_confirmed','tt_age18_v2','tt_age18_v3','tt_age18_v4','tt_age18_v5','tt_age18_v6','tt_age18_v7','tt_age18_v8','tt_age18_v9','tt_age18_v10','tt_age18_v11'] as $name){if(isset($_COOKIE[$name])&&!headers_sent())setcookie($name,'',tt_age_cookie_options(time()-3600));unset($_COOKIE[$name]);}
 }
 function tt_age_session_set(bool $passed): void {foreach(['tt_age18_passed','age_verified','age18_confirmed','over18'] as $key){if($passed)$_SESSION[$key]=1;else unset($_SESSION[$key]);}}
 function tt_age_is_passed(): bool {
