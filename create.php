@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__.'/core.php';tt_require_login();
 $username=(string)$_SESSION['name'];$num1=random_int(1,500);$num2=random_int(1,500);
-$allowedModes=['post','media','ad','message','comment','event','group','forum','profile'];
-$mode=strtolower(trim((string)($_GET['mode']??'post')));if(!in_array($mode,$allowedModes,true))$mode='post';
+$allowedModes=['post','ad','message','comment','event','group','forum','profile'];
+$mode=strtolower(trim((string)($_GET['mode']??'post')));if($mode==='media')$mode='post';if(!in_array($mode,$allowedModes,true))$mode='post';
 $intent=strtolower(trim((string)($_GET['intent']??'')));if($intent!=='comment')$intent='';
 $targetPost=max(0,(int)($_GET['target_post']??0));
 $targetUser=trim(preg_replace('/[\r\n;]+/',' ',(string)($_GET['target_user']??''))??'');$targetUser=substr($targetUser,0,191);
@@ -32,12 +32,12 @@ $db=tt_db_open(true);$uid=(int)$_SESSION['id'];$postDelay=tt_delay_status($db,'p
 <input type="hidden" name="scope" id="scope-value" value="<?=tt_h($initialScope)?>">
 <div class="slider-labels" id="scope-help"><span>−256 private</span><span>0 public</span><span>+256 global</span></div>
 <p class="meta">Original Tabletime mapping: slider ÷ 256; ≤ −0.5 private, ≥ +0.5 global, middle public.</p>
-<label>File (optional, maximum 250 KB; an image on a Profile update becomes your profile picture)</label><input type="hidden" name="MAX_FILE_SIZE" value="256000"><input type="file" name="file">
+<label>File (optional, maximum 1 MB; images, audio, video, and other attachments are part of a normal Post; an image on a Profile update becomes your profile picture)</label><input type="hidden" name="MAX_FILE_SIZE" value="1048576"><input type="file" name="file">
 <label>Title</label><input type="text" name="title" maxlength="255" value="<?=tt_h($prefillTitle)?>" required>
 <label>Content</label><textarea name="content" maxlength="32768" required></textarea>
-<label>Tags</label><input type="text" name="tags" maxlength="4096" value="<?=tt_h($prefillTags)?>" placeholder="food=0.5; table; fork<=7500; late=-15000-7500; -angry"><p class="meta">Tabletime accepts ordinary topic tags and numeric tags. Comments attach directly to the selected post. Message remains a normal post type. Comments are the reply mechanism for existing posts; reply-as-message is not used.</p>
+<label>Tags</label><input type="text" name="tags" maxlength="4096" value="<?=tt_h($prefillTags)?>" placeholder="food=0.5; table; fork<=7500; late=-15000-7500; -angry"><label class="inline-check"><input type="checkbox" name="nsfw" value="1"> Mark this post NSFW / mature (18+ and click-to-reveal blur)</label><p class="meta">Tabletime accepts ordinary topic tags and numeric tags. Comments attach directly to the selected post. Message remains a normal post type. Comments are the reply mechanism for existing posts; reply-as-message is not used.</p>
 <label>Recipients / comment target post id</label><input type="text" name="recipients" maxlength="4096" value="<?=tt_h($prefillRecipients)?>" placeholder="user1;user2 or post id">
-<fieldset class="ad-credit-box"><legend>Apply Ad Credits</legend><label>Boost amount (ad credits / impressions)</label><input type="number" name="boost_credits" min="0" step="1" value="0"><label>Target user/page (optional)</label><input type="text" name="ad_target_user" maxlength="50" placeholder="username"><label>Targeting tags (especially useful for Ad subtype)</label><input type="text" name="ad_target_tags" maxlength="1024" placeholder="music; math; local; crystals"><p class="meta">Every successfully published post earns 3 free ad credits. Every post type can be boosted. 1 ad credit funds exactly 1 counted impression. The Ad subtype is the targeted advertising post type; its image attachment is framed and links to the post.</p><p><a href="adcredits.php">View natural ad-credit balance</a></p></fieldset>
+<fieldset class="ad-credit-box"><legend>Apply Ad Credits</legend><label>Boost amount (ad credits / impressions)</label><input type="number" name="boost_credits" min="0" step="1" value="0"><label>Target user/page (optional)</label><input type="text" name="ad_target_user" maxlength="191" autocomplete="off" placeholder="optional existing username, @username, or profile link"><label>Targeting tags (especially useful for Ad subtype)</label><input type="text" name="ad_target_tags" maxlength="1024" placeholder="music; math; local; crystals"><p class="meta">Every post type can be boosted. 1 natural ad credit funds exactly 1 counted impression. Square-funded impressions are purchased separately; Square-funded advertising must be SFW. Target user/page is optional; an unrecognized target safely falls back to untargeted delivery instead of blocking the spend. The Ad subtype is the targeted advertising post type; its image attachment is framed and links to the post.</p><p><a href="adcredits.php">View natural ad-credit balance</a></p></fieldset>
 <label><?= $num1 ?> + <?= $num2 ?></label><input type="hidden" name="no1" value="<?= $num1 ?>"><input type="hidden" name="no2" value="<?= $num2 ?>"><input type="text" name="test" inputmode="numeric" required>
 <input type="submit" name="enter" id="publish-button" value="Publish">
 </form></main>
@@ -51,4 +51,7 @@ function delayForType(){return typeSelect.value==='message'?delayState.message:d
 function fmt(n){if(n===null)return '∞';if(n<60)return n+'s';let m=Math.ceil(n/60);if(m<60)return m+'m';return Math.floor(m/60)+'h '+(m%60)+'m'}
 function paintDelay(){const s=delayForType(),b=document.getElementById('publish-button'),r=document.getElementById('delay-readout');if(s.infinite){b.disabled=true;r.textContent='Locked: ∞ until the full-negative/voteban balance is relieved (for example by deleting the rated content).';return}const elapsed=Math.floor((Date.now()/1000)-(window.__ttLoaded||Date.now()/1000)),left=Math.max(0,(s.remaining||0)-elapsed);b.disabled=left>0;r.textContent=left>0?'Locked for another '+fmt(left)+'. Current delay '+fmt(s.duration)+'.':'Ready. Current action delay '+fmt(s.duration)+'.';}
 window.__ttLoaded=Date.now()/1000;typeSelect.addEventListener('change',()=>{if(typeSelect.value==='message'){scope.value=-256;syncScope()}paintDelay()});paintDelay();setInterval(paintDelay,1000);
-</script></body></html>
+</script>
+<!-- TABLETIME_NSFW_BLUR_20260915 -->
+<script src="nsfw-blur.js?v=20260915c" defer></script>
+</body></html>

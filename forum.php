@@ -17,7 +17,7 @@ $replyAffinity=tt_reply_affinity_for_view($view,$scope==='all');ksort($bands,SOR
 foreach($bands as $block=>&$band){usort($band,fn($a,$b)=>(($b['_cloud_score']<=>$a['_cloud_score'])?:strcmp((string)$a['dt'],(string)$b['dt'])));$band=tt_sort_reply_threads($band,$replyAffinity);}unset($band);
 ?>
 <!doctype html><html class="tabletime"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.php"><title>Tabletime · <?=tt_h($title)?></title></head><body><?php tt_nav(TT_NAV_ACTIVE);?>
-<main class="content"><div class="actions"><a href="create.php?mode=forum">Create forum post</a><a href="post.php?type=forum">Search forums</a></div><h2><?=tt_h($title)?> · time/content cloud</h2>
+<main class="content"><div class="actions"><a href="create.php?mode=forum">Create forum post</a><a href="post.php?type=forum">Search forums</a><a href="calls.php?scope=forum">Forum call</a></div><h2><?=tt_h($title)?> · time/content cloud</h2>
 <form method="get" class="card forum-cloud-controls">
 <label for="forum-time-scale">Time block: <output id="forum-time-label"><?=$minutes?> min</output></label><input id="forum-time-scale" class="scope-slider" type="range" name="minutes" min="1" max="1440" step="1" value="<?=$minutes?>"><div class="slider-labels"><span>1 min</span><span>10 min default</span><span>24 h</span></div>
 <label>Content relevance focus</label><input type="text" name="focus" value="<?=tt_h($focus)?>" placeholder="Optional words/tags; blank uses the first forum post as the relevance anchor">
@@ -32,4 +32,7 @@ foreach($bands as $block=>&$band){usort($band,fn($a,$b)=>(($b['_cloud_score']<=>
 <script>
 const tm=document.getElementById('forum-time-scale'),tl=document.getElementById('forum-time-label');if(tm)tm.addEventListener('input',()=>{tl.value=tm.value+' min';tl.textContent=tl.value});
 const sv=document.getElementById('forum-scope-view'),sl=document.getElementById('forum-scope-label'),all=document.getElementById('forum-all-scopes');function sn(v){v=Number(v)/256;return v<=-.5?'private':(v>=.5?'global':'public')}if(sv){sv.addEventListener('input',()=>{all.checked=false;sl.value=sn(sv.value);sl.textContent=sl.value});all.addEventListener('change',()=>{sl.value=all.checked?'all':sn(sv.value);sl.textContent=sl.value})}
-</script></body></html>
+</script>
+<!-- TABLETIME_NSFW_BLUR_20260915 -->
+<script src="nsfw-blur.js?v=20260915c" defer></script>
+</body></html>

@@ -6,7 +6,7 @@ Welcome to TableTime, a social network featuring:
 -user status tags, group status tags, tag-based content management
 -user tags with ratings and statistics
 -groups
--posts/media
+-posts with image/audio/video/file attachments (1 MB max)
 -global forum
 -light scripting of posts for interactable menus and public
 counters and embed containers
@@ -184,3 +184,14 @@ The original continuous controls are active again in the current source:
   external ratings on their own post.
 - Deleting a post removes its Karma/Moksha rating rows, so that post no longer
   contributes to the creator's access-delay balance.
+
+2026-09-15 UPDATE
+-----------------
+* Fixed the 18+ confirmation refresh loop: durable age state is flushed before redirect and age-gate aliases cannot redirect back into the gate.
+* Added Square seller OAuth connection, encrypted token storage, payout wallet, request amount, and status/history UI.
+* Added in-app and packaged Square account setup instructions for users.
+* Removed the obsolete 3-free-ad-credits-per-post grant.
+* User-facing Square purchases are 1000 funded impressions for $5; natural credits remain the separate 1-credit/1-impression earn/spend economy.
+* Square-funded advertising is SFW-only; correctly gated NSFW advertising can use natural credits.
+* Users do not count/earn from their own ads.
+* NSFW cards are marked and use click-to-reveal blur.

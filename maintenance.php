@@ -8,7 +8,7 @@ function tt_db_limit_bytes(): int { $v=(int)(getenv('TT_DB_LIMIT_BYTES') ?: 1000
 function tt_db_soft_bytes(): int { return (int)(getenv('TT_DB_SOFT_BYTES') ?: min(tt_db_limit_bytes()-4000000,96000000)); }
 function tt_db_target_bytes(): int { return (int)(getenv('TT_DB_TARGET_BYTES') ?: min(tt_db_limit_bytes()-8000000,92000000)); }
 function tt_db_hard_bytes(): int { return (int)(getenv('TT_DB_HARD_BYTES') ?: min(tt_db_limit_bytes()-1000000,99000000)); }
-function tt_upload_limit_bytes(): int { return 250*1024; }
+function tt_upload_limit_bytes(): int { return 1024*1024; }
 function tt_db_size_bytes(mysqli $db): int {
     $r=$db->query("SELECT COALESCE(SUM(data_length+index_length),0) AS n FROM information_schema.tables WHERE table_schema=DATABASE()");
     if(!$r)return 0;$row=$r->fetch_assoc();$r->free();return (int)($row['n']??0);

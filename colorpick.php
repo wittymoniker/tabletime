@@ -2,23 +2,26 @@
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/theme_lib.php';
 require_once __DIR__.'/session_bootstrap.php';
+require_once __DIR__.'/age_gate_session.php';
 if (empty($_SESSION['loggedin']) || empty($_SESSION['id'])) {
     header('Location: login.php');
     exit;
 }
 
+
+tt_age_require_access();
 $con = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if ($con->connect_errno) exit('Failed to connect to MySQL.');
 $con->set_charset('utf8mb4');
 $userId = (int)$_SESSION['id'];
 
-if (empty($_SESSION['theme_csrf'])) $_SESSION['theme_csrf'] = bin2hex(random_bytes(24));
+$themeCsrf = tt_form_token('theme');
 $message = '';
 $messageClass = 'ok';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = (string)($_POST['csrf'] ?? '');
-    if (!hash_equals((string)$_SESSION['theme_csrf'], $token)) {
+    if (!tt_form_token_valid($token, 'theme')) {
         $message = 'Theme update rejected: invalid form token. Refresh this page and try again.';
         $messageClass = 'error';
     } else {
@@ -47,7 +50,7 @@ $labels = [
     'Dark A','Dark B','Dark C','Dark D','Dark E','Dark F',
     'Surface A','Surface B','Surface C','Surface D','Surface E','Surface F'
 ];
-function tt_h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
+function tt_theme_h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 ?>
 <!doctype html>
 <html class="tabletime" lang="en">
@@ -68,16 +71,16 @@ function tt_h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 <main class="tabletime">
 <h1>Color Formatting</h1>
 <p>Tabletime keeps the original 18-color user palette, plus a text color and font-size setting. Your saved palette follows your account on this Tabletime node.</p>
-<?php if ($message !== ''): ?><p class="notice <?= tt_h($messageClass) ?>"><?= tt_h($message) ?></p><?php endif; ?>
+<?php if ($message !== ''): ?><p class="notice <?= tt_theme_h($messageClass) ?>"><?= tt_theme_h($message) ?></p><?php endif; ?>
 
 <form method="post" action="colorpick.php" id="theme-form">
-<input type="hidden" name="csrf" value="<?= tt_h($_SESSION['theme_csrf']) ?>">
+<input type="hidden" name="csrf" value="<?= tt_theme_h($themeCsrf) ?>">
 <fieldset>
 <legend>18-color palette</legend>
 <div class="theme-grid">
 <?php foreach ($names as $i => $name): ?>
-<label class="theme-swatch"><?= tt_h($labels[$i]) ?>
-<input type="color" name="<?= tt_h($name) ?>" value="<?= tt_h($theme[$i]) ?>" data-theme-index="<?= $i ?>">
+<label class="theme-swatch"><?= tt_theme_h($labels[$i]) ?>
+<input type="color" name="<?= tt_theme_h($name) ?>" value="<?= tt_theme_h($theme[$i]) ?>" data-theme-index="<?= $i ?>">
 </label>
 <?php endforeach; ?>
 </div>
@@ -86,7 +89,7 @@ function tt_h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 <fieldset>
 <legend>Text and scale</legend>
 <label>Text color
-<input type="color" name="styletext" value="<?= tt_h($theme[18]) ?>" data-theme-text>
+<input type="color" name="styletext" value="<?= tt_theme_h($theme[18]) ?>" data-theme-text>
 </label>
 <label>Font size: <output id="font-size-output"><?= (int)$theme[19] ?></output> px
 <input type="range" name="stylesize" min="3" max="36" value="<?= (int)$theme[19] ?>" data-theme-size>
@@ -123,5 +126,8 @@ function tt_h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
   text.addEventListener('input', apply); size.addEventListener('input', apply);
 })();
 </script>
+
+<!-- TABLETIME_NSFW_BLUR_20260915 -->
+<script src="nsfw-blur.js?v=20260915c" defer></script>
 </body>
 </html>

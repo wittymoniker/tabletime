@@ -3,8 +3,16 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/schema_compat.php';
 require_once __DIR__ . '/social_controls.php';
 require_once __DIR__.'/session_bootstrap.php';
+require_once __DIR__.'/age_gate_session.php';
+tt_age_require_access();
 
 function tt_h($v): string { return htmlspecialchars((string)$v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
+function tt_content_is_nsfw(string $title='',string $tags=''): bool {
+    $title=trim($title);$tags=strtolower($tags);
+    if(preg_match('/^(?:\[nsfw\]|nsfw\s*:|mature\s*:|18\+\s*:)/i',$title))return true;
+    return (bool)preg_match('/(?:^|[;,\s])(?:nsfw|mature|adult|18\+)(?:$|[;,\s=])/i',$tags);
+}
+function tt_nsfw_attr(string $title='',string $tags=''): string { return tt_content_is_nsfw($title,$tags)?' data-tt-nsfw="1"':''; }
 function tt_fail(string $message, int $status=500, string $title='Tabletime'): void {
     http_response_code($status);
     echo '<!doctype html><html class="tabletime"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.php"><title>'.tt_h($title).'</title></head><body><main class="content"><h1><a href="/">TABLETIME</a></h1><section class="card"><h2>'.tt_h($title).'</h2><p>'.tt_h($message).'</p><p><a href="home.php">Tabletime home</a> · <a href="setup.php">Database setup</a> · <a href="/">Eski home</a></p></section></main></body></html>';
@@ -29,29 +37,44 @@ function tt_prepare(mysqli $db,string $sql): mysqli_stmt {
     return $stmt;
 }
 function tt_require_login(): void {
-    if (empty($_SESSION['loggedin']) || empty($_SESSION['id'])) { header('Location: login.php'); exit; }
+    if (empty($_SESSION['loggedin']) || empty($_SESSION['id'])) { header('Cache-Control: no-store, private, max-age=0'); header('Location: login.php'); exit; }
 }
 function tt_nav(string $active=''): void {
-    $links=['home.php'=>'Home','post.php'=>'Posts','create.php'=>'Create','tags.php'=>'Tags','messages.php'=>'Messages','event.php'=>'Events','forum.php'=>'Forums','group.php'=>'Groups','profile.php'=>'People','file.php'=>'Files','calls.php'=>'Calls','adcredits.php'=>'Ads','account.php'=>'Account','extend.php'=>'Extend'];
+    $links=['home.php'=>'Home','post.php'=>'Posts','create.php'=>'Create','tags.php'=>'Tags','messages.php'=>'Messages','event.php'=>'Events','forum.php'=>'Forums','group.php'=>'Groups','profile.php'=>'People','file.php'=>'Files','calls.php'=>'Calls <span id="tt-call-count"></span>','adcredits.php'=>'Ads','earnings.php'=>'Earnings','account.php'=>'Account','extend.php'=>'Extend'];
     echo '<nav class="navtop"><div><h1><a href="/">TABLETIME</a></h1>';
-    foreach($links as $href=>$label) echo '<a href="'.$href.'"'.($active===$href?' aria-current="page"':'').'>'.tt_h($label).'</a>';
+    foreach($links as $href=>$label){$shown=$href==='calls.php'?$label:tt_h($label);echo '<a href="'.$href.'"'.($active===$href?' aria-current="page"':'').'>'.$shown.'</a>';}
     echo '<a href="logout.php">Logout</a></div></nav><script src="tabletime.js" defer></script>';
+    if(!empty($GLOBALS['TT_LOGIN_HANDOFF_CONSUMED'])) echo '<script>(function(){try{var u=new URL(location.href);u.searchParams.delete("tt_login");history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash);}catch(e){}})();</script>';
 }
 
 function tt_member_list(string $raw): array { $parts=preg_split('/[;,\\n\\r]+/',trim($raw))?:[];$out=[];foreach($parts as $v){$v=trim($v);if($v!==''&&!in_array($v,$out,true))$out[]=$v;}return $out; }
 function tt_member_string(array $members): string { return implode(';',array_values(array_unique(array_filter(array_map('trim',$members),fn($v)=>$v!=='')))); }
-function tt_scope_members(mysqli $db,string $type,?int $scopeId,string $privateMembers=''): array {
-    $me=(string)($_SESSION['name']??'');$members=[$me];
+function tt_scope_members(mysqli $db,string $type,?int $scopeId,string $privateMembers='',string $scopeRef=''): array {
+    $me=(string)($_SESSION['name']??'');$members=[$me];$type=strtolower(trim($type));
     if($type==='private')$members=array_merge($members,tt_member_list($privateMembers));
     elseif(in_array($type,['group','event'],true)&&$scopeId){$table=$type==='group'?'groups':'events';$q=$db->prepare('SELECT `members` FROM `'.$table.'` WHERE `id`=?');if($q){$q->bind_param('i',$scopeId);$q->execute();$q->bind_result($raw);if($q->fetch())$members=array_merge($members,tt_member_list((string)$raw));$q->close();}}
-    return array_values(array_unique(array_filter($members,fn($v)=>$v!=='')));
+    elseif($type==='forum'){
+        $tag=trim($scopeRef);if($scopeId){$q=$db->prepare('SELECT `tag` FROM `forums` WHERE `id`=?');if($q){$q->bind_param('i',$scopeId);$q->execute();$q->bind_result($t);if($q->fetch())$tag=(string)$t;$q->close();}}
+        if($tag!=='')$members=array_merge($members,tt_scope_users_for_token($db,'forums',$tag,'forum'));
+    }elseif($type==='tag'&&trim($scopeRef)!=='')$members=array_merge($members,tt_scope_users_for_token($db,'tags',trim($scopeRef),'post'));
+    return array_values(array_unique(array_filter($members,fn($v)=>trim((string)$v)!=='')));
+}
+function tt_scope_users_for_token(mysqli $db,string $accountColumn,string $token,string $postType='post'): array {
+    $out=[];$token=trim($token);if($token==='')return$out;
+    $r=$db->query('SELECT `username`,`'.$accountColumn.'` AS memberships FROM `accounts`');if($r){while($x=$r->fetch_assoc()){foreach(tt_member_list((string)$x['memberships']) as $v)if(strcasecmp($v,$token)===0){$out[]=(string)$x['username'];break;}}$r->free();}
+    $esc=$db->real_escape_string($token);$like='%'.$esc.'%';$extra=$postType==='forum'?" AND `type`='forum'":'';$r=$db->query("SELECT DISTINCT `name` FROM `posts` WHERE (`tags` LIKE '$like' OR `title` LIKE '$like')".$extra);if($r){while($x=$r->fetch_assoc())$out[]=(string)$x['name'];$r->free();}
+    return array_values(array_unique(array_filter($out)));
 }
 function tt_user_ids(mysqli $db,array $names): array {if(!$names)return[];$out=[];foreach($names as $n){$q=$db->prepare('SELECT `id` FROM `accounts` WHERE `username`=? LIMIT 1');if(!$q)continue;$q->bind_param('s',$n);$q->execute();$q->bind_result($id);if($q->fetch())$out[$n]=(int)$id;$q->close();}return $out;}
 function tt_notify(mysqli $db,int $accountId,string $kind,string $title,string $body,string $url=''): void {$q=$db->prepare('INSERT INTO `notifications` (`account_id`,`kind`,`title`,`body`,`url`) VALUES (?,?,?,?,?)');if(!$q)return;$q->bind_param('issss',$accountId,$kind,$title,$body,$url);$q->execute();$q->close();}
 
-function tt_reply_mode_for_post_type(string $type): string {
+function tt_canonical_post_type(string $type): string {
     $type=strtolower(trim($type));
-    return in_array($type,['post','media','message','event','group','forum'],true)?$type:'post';
+    return $type==='media'?'post':$type;
+}
+function tt_reply_mode_for_post_type(string $type): string {
+    $type=tt_canonical_post_type($type);
+    return in_array($type,['post','message','event','group','forum'],true)?$type:'post';
 }
 function tt_reply_identity_tag(int $postId): string { return 'ID#:'.max(0,$postId); }
 function tt_reply_parent_id_from_tags(string $tags): int {

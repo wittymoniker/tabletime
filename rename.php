@@ -43,5 +43,8 @@ if (isset($_GET['file'])) {
             </form>
 
         </div>
-    </body>
+    
+<!-- TABLETIME_NSFW_BLUR_20260915 -->
+<script src="nsfw-blur.js?v=20260915c" defer></script>
+</body>
 </html>

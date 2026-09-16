@@ -202,9 +202,9 @@ CREATE TABLE IF NOT EXISTS `auth_tokens` (
 
 CREATE TABLE IF NOT EXISTS `calls` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT, `call_key` char(32) NOT NULL, `scope_type` varchar(16) NOT NULL DEFAULT 'private',
-  `scope_id` int unsigned DEFAULT NULL, `created_by` int unsigned NOT NULL, `title` varchar(255) NOT NULL DEFAULT '', `members` longtext NULL,
+  `scope_id` int unsigned DEFAULT NULL, `target_key` char(64) NOT NULL DEFAULT '', `created_by` int unsigned NOT NULL, `title` varchar(255) NOT NULL DEFAULT '', `members` longtext NULL,
   `status` varchar(16) NOT NULL DEFAULT 'open', `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`), UNIQUE KEY `uq_calls_key` (`call_key`), KEY `idx_calls_scope` (`scope_type`,`scope_id`,`status`), KEY `idx_calls_updated` (`updated_at`)
+  PRIMARY KEY (`id`), UNIQUE KEY `uq_calls_key` (`call_key`), KEY `idx_calls_scope` (`scope_type`,`scope_id`,`status`), KEY `idx_calls_target` (`target_key`,`status`,`updated_at`), KEY `idx_calls_updated` (`updated_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `call_participants` (
@@ -290,4 +290,43 @@ CREATE TABLE IF NOT EXISTS `ad_credit_purchases` (
 CREATE TABLE IF NOT EXISTS `ad_payouts` (
  `id` bigint unsigned NOT NULL AUTO_INCREMENT, `account_id` int unsigned NOT NULL, `amount_cents` int NOT NULL, `stripe_transfer_id` varchar(191) NOT NULL DEFAULT '', `status` varchar(24) NOT NULL DEFAULT 'pending', `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `paid_at` datetime DEFAULT NULL,
  PRIMARY KEY(`id`), KEY `idx_ad_payout_account`(`account_id`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Square-funded ad extension: $5 = 1000 funded impressions. Funded impressions allocate 80% to the display subject and 20% to Tabletime.
+ALTER TABLE `accounts` ADD COLUMN IF NOT EXISTS `ad_paid_credit_mills` bigint NOT NULL DEFAULT 0;
+ALTER TABLE `ad_boosts` ADD COLUMN IF NOT EXISTS `paid_budget_mills` bigint NOT NULL DEFAULT 0;
+ALTER TABLE `ad_boosts` ADD COLUMN IF NOT EXISTS `paid_spent_mills` bigint NOT NULL DEFAULT 0;
+CREATE TABLE IF NOT EXISTS `square_ad_purchases` (
+ `id` bigint unsigned NOT NULL AUTO_INCREMENT, `account_id` int unsigned NOT NULL, `environment` varchar(16) NOT NULL DEFAULT 'production',
+ `idempotency_key` varchar(191) NOT NULL, `payment_link_id` varchar(191) NOT NULL DEFAULT '', `order_id` varchar(191) DEFAULT NULL,
+ `payment_id` varchar(191) NOT NULL DEFAULT '', `square_event_id` varchar(191) NOT NULL DEFAULT '', `amount_cents` int NOT NULL DEFAULT 500,
+ `credits` int NOT NULL DEFAULT 1000, `status` varchar(24) NOT NULL DEFAULT 'pending', `last_error` varchar(500) NOT NULL DEFAULT '',
+ `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `paid_at` datetime DEFAULT NULL,
+ PRIMARY KEY(`id`), UNIQUE KEY `uq_square_ad_idempotency`(`idempotency_key`), UNIQUE KEY `uq_square_ad_order`(`order_id`), KEY `idx_square_ad_account`(`account_id`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS `ad_money_ledger` (
+ `id` bigint unsigned NOT NULL AUTO_INCREMENT, `beneficiary_account_id` int unsigned DEFAULT NULL, `boost_id` bigint unsigned NOT NULL,
+ `impression_id` bigint unsigned NOT NULL, `kind` varchar(24) NOT NULL, `amount_micros` bigint NOT NULL, `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY(`id`), UNIQUE KEY `uq_ad_money_impression_kind`(`impression_id`,`kind`), KEY `idx_ad_money_beneficiary`(`beneficiary_account_id`,`kind`,`created_at`), KEY `idx_ad_money_boost`(`boost_id`,`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabletime payout wallet and Square seller OAuth connection.
+CREATE TABLE IF NOT EXISTS `payout_requests` (
+ `id` bigint unsigned NOT NULL AUTO_INCREMENT, `account_id` int unsigned NOT NULL, `amount_micros` bigint NOT NULL,
+ `method` varchar(32) NOT NULL DEFAULT 'square', `destination_ref` varchar(191) NOT NULL DEFAULT '', `status` varchar(24) NOT NULL DEFAULT 'pending',
+ `provider_reference` varchar(191) NOT NULL DEFAULT '', `note` varchar(500) NOT NULL DEFAULT '', `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `paid_at` datetime DEFAULT NULL,
+ PRIMARY KEY(`id`), KEY `idx_payout_account`(`account_id`,`status`,`created_at`), KEY `idx_payout_status`(`status`,`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS `square_seller_connections` (
+ `account_id` int unsigned NOT NULL, `environment` varchar(16) NOT NULL DEFAULT 'production', `merchant_id` varchar(191) NOT NULL DEFAULT '',
+ `access_token_enc` longtext NOT NULL, `refresh_token_enc` longtext NOT NULL, `scopes` varchar(1024) NOT NULL DEFAULT '', `expires_at` datetime DEFAULT NULL,
+ `status` varchar(24) NOT NULL DEFAULT 'connected', `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY(`account_id`), KEY `idx_square_seller_merchant`(`merchant_id`), KEY `idx_square_seller_status`(`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS `payout_dispatches` (
+ `id` bigint unsigned NOT NULL AUTO_INCREMENT, `payout_request_id` bigint unsigned NOT NULL, `attempt` int unsigned NOT NULL DEFAULT 1,
+ `status` varchar(24) NOT NULL DEFAULT 'queued', `http_status` int NOT NULL DEFAULT 0, `response_excerpt` varchar(1000) NOT NULL DEFAULT '', `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY(`id`), KEY `idx_payout_dispatch_request`(`payout_request_id`,`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

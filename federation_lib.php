@@ -32,7 +32,7 @@ function tt_http_json(string $url,int $timeout=3): ?array {
 function tt_import_federated_post(mysqli $db,array $p,string $peerBase): bool {
     $scope=trim((string)($p['scope']??''));if(!in_array($scope,['public','global'],true))return false;
     $originHost=rtrim((string)($p['origin_host']??$peerBase),'/');$originId=(string)($p['origin_post_id']??$p['id']??'');if($originHost===''||$originId==='')return false;
-    $title=trim((string)($p['title']??''));$content=(string)($p['content']??'');$tags=tt_compact_tags((string)($p['tags']??''),4096);$author=substr(trim((string)($p['name']??'remote')),0,50);$type=substr(trim((string)($p['type']??'post')),0,32);$dt=(string)($p['dt']??gmdate('Y-m-d H:i:s'));
+    $title=trim((string)($p['title']??''));$content=(string)($p['content']??'');$tags=tt_compact_tags((string)($p['tags']??''),4096);$author=substr(trim((string)($p['name']??'remote')),0,50);$type=strtolower(substr(trim((string)($p['type']??'post')),0,32));if($type==='media')$type='post';$dt=(string)($p['dt']??gmdate('Y-m-d H:i:s'));
     if($title==='')$title='Federated post';$title=substr($title,0,255);if(strlen($content)>32768)$content=substr($content,0,32768);
     $file='';$remoteFile=(string)($p['file_url']??'');if(preg_match('~^https://~i',$remoteFile))$file=substr($remoteFile,0,1024);
     $comments='';$recipients='';$votes='';$federated=1;$originCreated=(string)($p['origin_created_at']??$dt);

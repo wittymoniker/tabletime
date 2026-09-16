@@ -36,6 +36,9 @@
 <h1>test:</h1>
 <iframe src="home.php" title="TEST VIEW"></iframe>
 </p>
+
+<!-- TABLETIME_NSFW_BLUR_20260915 -->
+<script src="nsfw-blur.js?v=20260915c" defer></script>
 </body>
 </head>
 </html>

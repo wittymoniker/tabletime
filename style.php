@@ -96,3 +96,56 @@ fieldset{border:1px solid var(--line);margin:14px 0;padding:14px}legend{font-wei
 .person-card .moksha-summary{margin:.2rem 0}
 .selected-profile-view{margin:18px 0}
 .post-author-link{font-weight:600}
+
+.earnings-total{font-size:2rem;font-weight:800;margin:.4rem 0}.earnings-list p{border-bottom:1px solid var(--line);padding:.55rem 0;margin:0}.earnings-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+
+/* TABLETIME_NSFW_BLUR_20260915 */
+[data-tt-nsfw-blur-ready="1"] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-tt-nsfw-blur-ready="1"].tt-nsfw-locked > :not(.tt-nsfw-reveal) {
+  filter: blur(18px);
+  opacity: .56;
+  pointer-events: none;
+  user-select: none;
+}
+
+.tt-nsfw-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  width: 100%;
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  border: 0;
+  border-radius: inherit;
+  color: inherit;
+  background: rgba(0, 0, 0, .22);
+  cursor: pointer;
+  text-align: center;
+}
+
+.tt-nsfw-reveal-inner {
+  display: grid;
+  gap: 4px;
+  max-width: 28rem;
+  padding: 12px 16px;
+  border: 1px solid var(--line, rgba(255,255,255,.45));
+  border-radius: 12px;
+  background: var(--surface, rgba(16,16,18,.94));
+  color: var(--ink, #fff);
+  box-shadow: 0 8px 24px rgba(0,0,0,.28);
+}
+
+.tt-nsfw-title { font-weight: 700; }
+.tt-nsfw-hint { font-size: .92em; opacity: .88; }
+.tt-nsfw-reveal:focus-visible .tt-nsfw-reveal-inner {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.tt-nsfw-revealed > .tt-nsfw-reveal { display: none; }
+.collection-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:12px 0 24px}.collection-media{margin:0;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}.collection-media img,.collection-media video{width:100%;max-height:320px;object-fit:contain;border-radius:8px}.collection-media audio{width:100%}.event-calendar{display:grid;gap:12px;margin-bottom:24px}.event-day h3{margin-top:0}.tt-call-dock{position:fixed;right:12px;bottom:12px;z-index:9999;width:min(360px,calc(100vw - 24px));display:grid;gap:8px}.tt-call-dock[hidden]{display:none}.tt-call-dock>div{background:var(--surface);border:2px solid var(--accent);box-shadow:0 8px 28px rgba(0,0,0,.25);padding:12px;border-radius:12px;display:grid;gap:6px}.call-presence-row{padding:8px 0;border-bottom:1px solid var(--line)}
